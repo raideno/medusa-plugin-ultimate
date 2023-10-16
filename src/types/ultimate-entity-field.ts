@@ -27,17 +27,19 @@ export type UltimateEntityFieldTypeMap = {
     | UltimateEntityFieldComponents.CHECBKOX;
   [UltimateEntityFieldTypes.IMAGE]: UltimateEntityFieldComponents.IMAGE_INPUT;
   [UltimateEntityFieldTypes.UNKNOWN]: UltimateEntityFieldComponents.INPUT;
-  [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]:
+  // [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]:
+  //   | UltimateEntityFieldComponents.SELECT
+  //   | UltimateEntityFieldComponents.RADIO_GROUP;
+  [UltimateEntityFieldTypes.SELECT]:
     | UltimateEntityFieldComponents.SELECT
     | UltimateEntityFieldComponents.RADIO_GROUP;
-  [UltimateEntityFieldTypes.SELECT]: UltimateEntityFieldComponents.SELECT;
   [UltimateEntityFieldTypes.STRING_ARRAY]: UltimateEntityFieldComponents.MULTI_STRING_INPUT;
 };
 
 export type UltimateEntityFieldDefaultValueMap = {
   [UltimateEntityFieldTypes.STRING]: string;
   [UltimateEntityFieldTypes.TEXT]: string;
-  [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]: string;
+  // [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]: string;
   [UltimateEntityFieldTypes.SELECT]: string;
   [UltimateEntityFieldTypes.BOOLEAN]: boolean;
   [UltimateEntityFieldTypes.IMAGE]: string;
@@ -75,7 +77,7 @@ export type UltimateEntityField =
   | UltimateFieldWithType<UltimateEntityFieldTypes.TEXT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.BOOLEAN>
   | UltimateFieldWithType<UltimateEntityFieldTypes.IMAGE>
-  | UltimateFieldWithType<UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT>
+  // | UltimateFieldWithType<UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.SELECT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.STRING_ARRAY>
   | UltimateFieldWithType<UltimateEntityFieldTypes.UNKNOWN>;
