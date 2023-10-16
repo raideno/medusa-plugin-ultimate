@@ -52,11 +52,11 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
 
   Use our custom decorators:
 
-  - `@UltimateEntity()` on your class a ui for them.
+  - `@UltimateEntity()` on your class to create a ui for it.
   - `@UltimateEntityField` on your class fields.
 
   ```ts
-  // src/models/post.ts
+  // src/models/person.ts
 
   import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
 

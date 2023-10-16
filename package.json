@@ -1,28 +1,52 @@
 {
-  "name": "medusa-starter-default",
+  "name": "medusa-plugin-ultimate",
   "version": "0.0.1",
-  "description": "A starter for Medusa projects.",
-  "author": "Sebastian Rindom <skrindom@gmail.com>",
+  "description": "Medusa Plugin Ultimate is a plugin made for medusa that give super powers to your entities.",
+  "author": "Raiden",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raideno/medusa-plugin-ultimate"
+  },
   "license": "MIT",
   "keywords": [
-    "sqlite",
-    "postgres",
-    "typescript",
+    "medusa-plugin-admin",
+    "medusa-plugin-other",
+    
+    "medusa-plugin",
+    "dashboard",
+    "user-interface",
+    "entity-management",
+    "CRUD",
+    "configuration",
+    "customization",
+    "routing",
+    "data-management",
     "ecommerce",
-    "headless",
-    "medusa"
-  ],
+    "typescript",
+    "store",
+    "headless-commerce",
+    "database"
+],
+
   "scripts": {
     "clean": "cross-env ./node_modules/.bin/rimraf dist",
-    "build": "cross-env npm run clean && npm run build:server && npm run build:admin",
-    "build:server": "cross-env npm run clean && tsc -p tsconfig.server.json",
-    "build:admin": "cross-env medusa-admin build",
+   
     "watch": "cross-env tsc --watch",
     "test": "cross-env jest",
     "seed": "cross-env medusa seed -f ./data/seed.json",
     "start": "cross-env npm run build && medusa start",
     "start:custom": "cross-env npm run build && node --preserve-symlinks --trace-warnings index.js",
-    "dev": "cross-env npm run build:server && medusa develop"
+    "dev": "cross-env npm run build:server && medusa develop",
+
+    "build": "cross-env npm run clean && npm run build:server && npm run build:admin",
+    "build:server": "cross-env npm run clean && tsc -p tsconfig.json",
+    "build:admin": "cross-env medusa-admin build",
+    "prepare": "cross-env NODE_ENV=production npm run build:server && medusa-admin bundle"
+  },
+  "peerDependencies": {
+    "@medusajs/medusa": "^1.16.0",
+    "@medusajs/ui": "^2.2.0",
+    "@medusajs/icons": "^1.0.0"
   },
   "dependencies": {
     "@medusajs/admin": "^7.1.1",
