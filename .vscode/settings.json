@@ -1,0 +1,23 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": true
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "connectString": "postgres://medusa_plugin_ultimate_user:clLk2dx4ORa8GPb1MpOdaaX3mbhMcSsK@dpg-ckg3936ct0pc73a6mobg-a.frankfurt-postgres.render.com/medusa_plugin_ultimate",
+            "name": "medusa-testing"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "local",
+            "username": "postgres",
+            "database": "medusa_plugin_ultimate"
+        }
+    ]
+}
