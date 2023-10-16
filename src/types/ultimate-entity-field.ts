@@ -15,6 +15,7 @@ export enum UltimateEntityFieldComponents {
   RADIO_GROUP,
   SELECT,
   IMAGE_INPUT,
+  MULTI_STRING_INPUT,
 }
 
 // TODO: transform components into enum
@@ -29,7 +30,8 @@ export type UltimateEntityFieldTypeMap = {
   [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]:
     | UltimateEntityFieldComponents.SELECT
     | UltimateEntityFieldComponents.RADIO_GROUP;
-  [UltimateEntityFieldTypes.SELECT]: "select";
+  [UltimateEntityFieldTypes.SELECT]: UltimateEntityFieldComponents.SELECT;
+  [UltimateEntityFieldTypes.STRING_ARRAY]: UltimateEntityFieldComponents.MULTI_STRING_INPUT;
 };
 
 export type UltimateEntityFieldDefaultValueMap = {
@@ -39,6 +41,7 @@ export type UltimateEntityFieldDefaultValueMap = {
   [UltimateEntityFieldTypes.SELECT]: string;
   [UltimateEntityFieldTypes.BOOLEAN]: boolean;
   [UltimateEntityFieldTypes.IMAGE]: string;
+  [UltimateEntityFieldTypes.STRING_ARRAY]: string[];
   [UltimateEntityFieldTypes.UNKNOWN]: any;
 };
 
@@ -74,4 +77,5 @@ export type UltimateEntityField =
   | UltimateFieldWithType<UltimateEntityFieldTypes.IMAGE>
   | UltimateFieldWithType<UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.SELECT>
+  | UltimateFieldWithType<UltimateEntityFieldTypes.STRING_ARRAY>
   | UltimateFieldWithType<UltimateEntityFieldTypes.UNKNOWN>;

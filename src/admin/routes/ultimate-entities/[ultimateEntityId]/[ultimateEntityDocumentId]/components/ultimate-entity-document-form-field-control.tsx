@@ -9,6 +9,7 @@ import SelectControl from "./ultimate-entity-document-form-field-controls/select
 import { UltimateEntityModel } from "../../../../../../types/ultimate-entity-model";
 import ImageControl from "./ultimate-entity-document-form-field-controls/image-control";
 import OneToManyRelationSelectControl from "./ultimate-entity-document-form-field-controls/one-to-many-relation-select-control";
+import StringArrayControl from "./ultimate-entity-document-form-field-controls/string-array-control";
 // import { UltimateEntityFieldTypes } from "../../../../../../types/ultimate-entity-field-types";
 
 export enum UltimateEntityFieldTypes {
@@ -17,8 +18,9 @@ export enum UltimateEntityFieldTypes {
   BOOLEAN = "BOOLEAN",
   IMAGE = "IMAGE",
   SELECT = "SELECT",
-  ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
+  // ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
   UNKNOWN = "UNKNOWN",
+  STRING_ARRAY = "STRING_ARRAY",
   //
   // STRING_ARRAY = "STRING_ARRAY",
   // DATE = "DATE",
@@ -77,6 +79,16 @@ const UltimateEntityFormFieldControl = ({
         <SelectControl
           options={field.options || []}
           // varaint={field.variant}
+          defaultValue={defaultDocument[field.id]}
+          value={document[field.id]}
+          onValueChange={handleValueChange.bind(null, field.id)}
+        />
+      );
+      break;
+
+    case UltimateEntityFieldTypes.STRING_ARRAY:
+      return (
+        <StringArrayControl
           defaultValue={defaultDocument[field.id]}
           value={document[field.id]}
           onValueChange={handleValueChange.bind(null, field.id)}
