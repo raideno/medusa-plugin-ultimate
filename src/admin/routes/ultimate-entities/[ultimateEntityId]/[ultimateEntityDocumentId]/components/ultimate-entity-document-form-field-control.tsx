@@ -104,15 +104,15 @@ const UltimateEntityFormFieldControl = ({
         />
       );
       break;
-    case UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT:
-      return (
-        <OneToManyRelationSelectControl
-          value={document[field.id]}
-          defaultValue={defaultDocument[field.id]}
-          onValueChange={handleValueChange.bind(null, field.id)}
-        />
-      );
-      break;
+    // case UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT:
+    //   return (
+    //     <OneToManyRelationSelectControl
+    //       value={document[field.id]}
+    //       defaultValue={defaultDocument[field.id]}
+    //       onValueChange={handleValueChange.bind(null, field.id)}
+    //     />
+    //   );
+    //   break;
 
     case UltimateEntityFieldTypes.UNKNOWN:
     default:
