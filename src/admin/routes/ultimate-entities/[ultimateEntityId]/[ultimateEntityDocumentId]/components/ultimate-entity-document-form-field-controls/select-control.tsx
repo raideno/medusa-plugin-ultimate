@@ -29,8 +29,6 @@ const SelectControl = ({
 
   return (
     <Select
-      // defaultOpen
-      // onOpenChange={}
       value={value}
       onValueChange={handleValueChange}
       defaultValue={defaultValue}

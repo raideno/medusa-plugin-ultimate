@@ -24,8 +24,6 @@ const StringArrayControl = ({
   const [inputValue, setInputValue] = useState<string>("");
 
   function handleClick(event: MouseEvent<HTMLButtonElement, MouseEvent>) {
-    event.preventDefault();
-
     const input = inputRef.current;
     if (!input) return;
 
@@ -35,9 +33,8 @@ const StringArrayControl = ({
   }
 
   function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
-    event.preventDefault();
-
     const key = event.key;
+
     if (key !== "Enter") return;
 
     const input = inputRef.current;

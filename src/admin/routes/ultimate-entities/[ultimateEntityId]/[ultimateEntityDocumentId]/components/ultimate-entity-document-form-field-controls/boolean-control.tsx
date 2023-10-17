@@ -74,12 +74,12 @@ const BooleanControl = ({
     onValueChange(value);
   }
 
-  console.log("[Boolean-varaint]:", varaint);
-
   switch (varaint) {
-    case UltimateEntityFieldComponents.CHECBKOX:
+    default:
+    case undefined:
+    case UltimateEntityFieldComponents.SWITCH:
       return (
-        <Checkbox
+        <Switch
           checked={value}
           onCheckedChange={handleValueChange}
           defaultChecked={defaultValue}
@@ -88,11 +88,9 @@ const BooleanControl = ({
       );
       break;
 
-    default:
-    case undefined:
-    case UltimateEntityFieldComponents.SWITCH:
+    case UltimateEntityFieldComponents.CHECBKOX:
       return (
-        <Switch
+        <Checkbox
           checked={value}
           onCheckedChange={handleValueChange}
           defaultChecked={defaultValue}

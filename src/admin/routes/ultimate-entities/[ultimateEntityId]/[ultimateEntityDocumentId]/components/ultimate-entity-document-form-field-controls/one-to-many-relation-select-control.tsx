@@ -3,6 +3,7 @@ import { ControlProps } from ".";
 import ErrorLayout from "../../../../../../components/error-layout";
 import Skeleton from "../../../../../../components/skeleton";
 import useUltimateEntityDocuments from "../../../../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
+import useDocumentName from "../../../../../../hooks/use-document-name";
 
 type HTMLElementType = HTMLSelectElement;
 
@@ -43,7 +44,9 @@ const OneToManyRelationSelectControl = ({
       onValueChange={handleValueChange}
       defaultValue={defaultValue}
     >
-      <Select.Trigger>
+      <Select.Trigger
+        placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
+      >
         <Select.Value
           placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
         />
@@ -55,7 +58,7 @@ const OneToManyRelationSelectControl = ({
               value={document.id}
               key={"select-one-to-many-relation-item-" + documentIndex}
             >
-              {document.id}
+              {useDocumentName(document)}
             </Select.Item>
           );
         })}

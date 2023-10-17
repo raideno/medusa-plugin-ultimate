@@ -1,17 +1,21 @@
-import { ArrowLeft } from "@medusajs/icons";
 import { Link, useParams } from "react-router-dom";
-import { Heading, Text, Button } from "@medusajs/ui";
+
 import { RouteProps } from "@medusajs/admin";
-import useUltimateEntityDocuments from "../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
-import UltimateEntityDocumentCard from "./components/ultimate-entity-document-card";
-import UltiamteEntityPageGoBackButton from "../../../components/ultimate-entity-page-go-back-button";
-import UltimateEntityPageHeader from "../../../components/ultimate-entity-page-header";
-import useUltimateEntity from "../../../hooks/ultimate-entities/use-ultimate-entity";
+import { Heading, Text, Button } from "@medusajs/ui";
+
 import { ULTIMATE_ENTITIES_FRONTEND_PATH } from "../../../config-values";
-import UltimateEntityDocumentsPageDocuments from "./components/ultimate-entity-documents-page-documents";
+
+import useUltimateEntity from "../../../hooks/ultimate-entities/use-ultimate-entity";
+
 import ErrorLayout from "../../../components/error-layout";
+import UltimateEntityPageHeader from "../../../components/ultimate-entity-page-header";
 import CreateUltimateEntityDocumentButton from "./components/create-ultimate-entity-document-button";
+import UltiamteEntityPageGoBackButton from "../../../components/ultimate-entity-page-go-back-button";
+import UltimateEntityDocumentsPageDocuments from "./components/ultimate-entity-documents-page-documents";
+
 import Skeleton from "../../../components/skeleton";
+
+import useEntityName from "../../../hooks/use-entity-name";
 
 const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
   const { ultimateEntityId } = useParams();
@@ -50,9 +54,9 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
         href={`${ULTIMATE_ENTITIES_FRONTEND_PATH}`}
       />
       <UltimateEntityPageHeader
-        title={`${entity.name || entity.id} Documents`}
+        title={`${useEntityName(entity)} Documents`}
         // TODO: make a helper unction that'll automatically get the ultimate entity name and capitalize it
-        description={`${entity.name || entity.id} ultimate entity documents.`}
+        description={`${useEntityName(entity)} ultimate entity documents.`}
       />
       <div className="mb-xsmall w-full flex flex-row items-center justify-end">
         <CreateUltimateEntityDocumentButton entity={entity} fields={fields} />

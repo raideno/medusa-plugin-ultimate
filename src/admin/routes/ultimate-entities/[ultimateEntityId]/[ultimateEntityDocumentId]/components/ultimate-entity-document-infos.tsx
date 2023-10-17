@@ -5,6 +5,7 @@ import { useUltimateEntityDocumentPage } from "../../../../../contexts/ultimate-
 import formatTime from "../../../../../utils/formatTime";
 import formatDate from "../../../../../utils/formatDate";
 import Skeleton from "../../../../../components/skeleton";
+import useDocumentName from "../../../../../hooks/use-document-name";
 
 const UltimateEntityDocumentInfos = () => {
   const { error, document, isLoading } = useUltimateEntityDocumentPage();
@@ -27,7 +28,7 @@ const UltimateEntityDocumentInfos = () => {
     <div className="mb-xsmall p-4 flex flex-col gap-1 bg-white rounded border border-border">
       <div className="flex flex-row items-center gap-1">
         <Badge>{"ID"}</Badge>
-        <Badge>{document.id}</Badge>
+        <Badge>{useDocumentName(document)}</Badge>
       </div>
       <div className="flex flex-row items-baseline gap-1">
         <Text className="text-grey-50">{"Created at"}</Text>

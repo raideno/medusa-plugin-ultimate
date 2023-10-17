@@ -7,6 +7,7 @@ import { UltimateEntity } from "../../../../../types/ultimate-entity";
 import { ULTIMATE_ENTITIES_FRONTEND_PATH } from "../../../../config-values";
 import deleteUltimateEntityDocument from "../../../../functions/ultimate-entities-documents-operations/delete-ultimate-entity-document";
 import { useNavigate } from "react-router-dom";
+import useDocumentName from "../../../../hooks/use-document-name";
 
 interface UltimateEntityDocumentCardProps {
   entity: UltimateEntity;
@@ -63,7 +64,7 @@ const UltimateEntityDocumentCard = ({
   return (
     <Container>
       <div className="w-full flex flex-row items-center justify-between">
-        <Badge>{document.id}</Badge>
+        <Badge>{useDocumentName(document)}</Badge>
         <div className="flex flex-row items-center gap-2">
           <IconButton
             onClick={handleEditButtonClick}

@@ -3,6 +3,7 @@ import { Badge, Heading, Text } from "@medusajs/ui";
 import { useUltimateEntityDocumentPage } from "../../../../../contexts/ultimate-entity-document-page";
 import Skeleton from "../../../../../components/skeleton";
 import ErrorLayout from "../../../../../components/error-layout";
+import useEntityName from "../../../../../hooks/use-entity-name";
 
 const UltimateEntityDocumentHeader = () => {
   const { error, isLoading, entity } = useUltimateEntityDocumentPage();
@@ -13,12 +14,12 @@ const UltimateEntityDocumentHeader = () => {
 
   return (
     <div className="mb-xlarge w-full bg-white rounded border border-border p-4">
-      <Heading className="inter-2xlarge-semibold mb-xsmall">{`${
-        entity.name || entity.id
-      } Documents`}</Heading>
-      <Text className="inter-base-regular text-grey-50">{`${
-        entity.name || entity.id
-      } ultimate entity documents.`}</Text>
+      <Heading className="inter-2xlarge-semibold mb-xsmall">{`${useEntityName(
+        entity
+      )} Documents`}</Heading>
+      <Text className="inter-base-regular text-grey-50">{`${useEntityName(
+        entity
+      )} ultimate entity documents.`}</Text>
     </div>
   );
 };
