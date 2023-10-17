@@ -87,7 +87,7 @@ const UltimateEntityFormFieldControl = ({
         <SelectControl
           options={field.options || []}
           // varaint={field.variant}
-          defaultValue={defaultDocument[field.id]}
+          defaultValue={defaultDocument[field.id] || []}
           value={document[field.id]}
           onValueChange={handleValueChange.bind(null, field.id)}
         />
@@ -98,7 +98,7 @@ const UltimateEntityFormFieldControl = ({
       return (
         <StringArrayControl
           defaultValue={defaultDocument[field.id] || []}
-          value={document[field.id]}
+          value={document[field.id] || []}
           onValueChange={handleValueChange.bind(null, field.id)}
         />
       );
