@@ -97,7 +97,7 @@ const UltimateEntityFormFieldControl = ({
     case UltimateEntityFieldTypes.STRING_ARRAY:
       return (
         <StringArrayControl
-          defaultValue={defaultDocument[field.id]}
+          defaultValue={defaultDocument[field.id] || []}
           value={document[field.id]}
           onValueChange={handleValueChange.bind(null, field.id)}
         />
