@@ -10,6 +10,8 @@ import { UltimateEntityModel } from "../../../../../../types/ultimate-entity-mod
 import ImageControl from "./ultimate-entity-document-form-field-controls/image-control";
 import OneToManyRelationSelectControl from "./ultimate-entity-document-form-field-controls/one-to-many-relation-select-control";
 import StringArrayControl from "./ultimate-entity-document-form-field-controls/string-array-control";
+import DateControl from "./ultimate-entity-document-form-field-controls/date-control";
+import MarkdownControl from "./ultimate-entity-document-form-field-controls/markdown-control";
 // import { UltimateEntityFieldTypes } from "../../../../../../types/ultimate-entity-field-types";
 
 export enum UltimateEntityFieldTypes {
@@ -18,15 +20,11 @@ export enum UltimateEntityFieldTypes {
   BOOLEAN = "BOOLEAN",
   IMAGE = "IMAGE",
   SELECT = "SELECT",
-  // ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
+  ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
   UNKNOWN = "UNKNOWN",
   STRING_ARRAY = "STRING_ARRAY",
-  //
-  // STRING_ARRAY = "STRING_ARRAY",
-  // DATE = "DATE",
-  // COLOR_PICKER = "COLOR_PICKER",
-  // TIME = "TIME",
-  // DATE_AND_TIME = "DATE_AND_TIME",
+  DATE = "DATE",
+  MARKDOWN = "MARKDOWN",
 }
 
 interface UltimateEntityFormFieldControlProps {
@@ -74,6 +72,16 @@ const UltimateEntityFormFieldControl = ({
         />
       );
       break;
+    case UltimateEntityFieldTypes.MARKDOWN:
+      return (
+        <MarkdownControl
+          // varaint={field.variant}
+          defaultValue={defaultDocument[field.id]}
+          value={document[field.id]}
+          onValueChange={handleValueChange.bind(null, field.id)}
+        />
+      );
+      break;
     case UltimateEntityFieldTypes.SELECT:
       return (
         <SelectControl
@@ -104,15 +112,25 @@ const UltimateEntityFormFieldControl = ({
         />
       );
       break;
-    // case UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT:
-    //   return (
-    //     <OneToManyRelationSelectControl
-    //       value={document[field.id]}
-    //       defaultValue={defaultDocument[field.id]}
-    //       onValueChange={handleValueChange.bind(null, field.id)}
-    //     />
-    //   );
-    //   break;
+    case UltimateEntityFieldTypes.DATE:
+      return (
+        <DateControl
+          defaultValue={defaultDocument[field.id]}
+          value={document[field.id]}
+          onValueChange={handleValueChange.bind(null, field.id)}
+        />
+      );
+      break;
+    case UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT:
+      return (
+        <OneToManyRelationSelectControl
+          relationEntityId={field.relationEntityId}
+          value={document[field.id]}
+          defaultValue={defaultDocument[field.id]}
+          onValueChange={handleValueChange.bind(null, field.id)}
+        />
+      );
+      break;
 
     case UltimateEntityFieldTypes.UNKNOWN:
     default:

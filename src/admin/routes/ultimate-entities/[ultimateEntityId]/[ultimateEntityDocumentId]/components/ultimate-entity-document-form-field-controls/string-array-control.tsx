@@ -21,6 +21,8 @@ const StringArrayControl = ({
 }: StringArrayControlProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [inputValue, setInputValue] = useState<string>("");
+
   function handleClick(event: MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault();
 
@@ -58,6 +60,7 @@ const StringArrayControl = ({
 
     if (!input) return;
 
+    setInputValue("");
     input.value = "";
   }
 
@@ -67,10 +70,21 @@ const StringArrayControl = ({
     onValueChange(newValue);
   }
 
+  function handleInputValueChange(event: ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value;
+    setInputValue(value);
+  }
+
   return (
     <div className="h-full border border-dashed rounded p-2 flex flex-col items-center gap-2">
       <div className="w-full gap-2 grid grid-cols[1fr_auto]">
-        <Input className="w-full" size="base" onKeyDown={handleKeyPress} />
+        <Input
+          className="w-full"
+          size="base"
+          value={inputValue}
+          onChange={handleInputValueChange}
+          onKeyDown={handleKeyPress}
+        />
         {/* TODO: fix any */}
         <Button variant="secondary" onClick={handleClick as any}>
           Add Keyword

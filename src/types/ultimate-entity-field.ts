@@ -8,14 +8,16 @@ import { UltimateEntityFieldTypes } from "./ultimate-entity-field-types";
 // }
 
 export enum UltimateEntityFieldComponents {
-  INPUT,
-  TEXT_AREA,
-  SWITCH,
-  CHECBKOX,
-  RADIO_GROUP,
-  SELECT,
-  IMAGE_INPUT,
-  MULTI_STRING_INPUT,
+  INPUT = "INPUT",
+  TEXT_AREA = "TEXT_AREA",
+  SWITCH = "SWITCH",
+  CHECBKOX = "CHECBKOX",
+  RADIO_GROUP = "RADIO_GROUP",
+  SELECT = "SELECT",
+  IMAGE_INPUT = "IMAGE_INPUT",
+  MULTI_STRING_INPUT = "MULTI_STRING_INPUT",
+  DATE_INPUT = "DATE_INPUT",
+  MARKDOWN_INPUT = "MARKDOWN_INPUT",
 }
 
 // TODO: transform components into enum
@@ -27,13 +29,15 @@ export type UltimateEntityFieldTypeMap = {
     | UltimateEntityFieldComponents.CHECBKOX;
   [UltimateEntityFieldTypes.IMAGE]: UltimateEntityFieldComponents.IMAGE_INPUT;
   [UltimateEntityFieldTypes.UNKNOWN]: UltimateEntityFieldComponents.INPUT;
-  // [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]:
-  //   | UltimateEntityFieldComponents.SELECT
-  //   | UltimateEntityFieldComponents.RADIO_GROUP;
+  [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]:
+    | UltimateEntityFieldComponents.SELECT
+    | UltimateEntityFieldComponents.RADIO_GROUP;
   [UltimateEntityFieldTypes.SELECT]:
     | UltimateEntityFieldComponents.SELECT
     | UltimateEntityFieldComponents.RADIO_GROUP;
   [UltimateEntityFieldTypes.STRING_ARRAY]: UltimateEntityFieldComponents.MULTI_STRING_INPUT;
+  [UltimateEntityFieldTypes.DATE]: UltimateEntityFieldComponents.DATE_INPUT;
+  [UltimateEntityFieldTypes.MARKDOWN]: UltimateEntityFieldComponents.MARKDOWN_INPUT;
 };
 
 export type UltimateEntityFieldDefaultValueMap = {
@@ -44,6 +48,9 @@ export type UltimateEntityFieldDefaultValueMap = {
   [UltimateEntityFieldTypes.BOOLEAN]: boolean;
   [UltimateEntityFieldTypes.IMAGE]: string;
   [UltimateEntityFieldTypes.STRING_ARRAY]: string[];
+  [UltimateEntityFieldTypes.DATE]: Date;
+  [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]: string;
+  [UltimateEntityFieldTypes.MARKDOWN]: string;
   [UltimateEntityFieldTypes.UNKNOWN]: any;
 };
 
@@ -61,6 +68,15 @@ export type UltimateFieldWithType<T extends UltimateEntityFieldTypes> = {
   note?: string;
   name?: string;
   description?: string;
+  /**
+   * table name of the target relation, only for ONE_TO_MANY_RELATION_SELECT types
+   * target relation must be an ultimate entity too
+   * note: in future, even non ultimate entities gonna be able to use it
+   */
+  relationEntityId?: string;
+  /**
+   * only for select components
+   */
   options?: UltimateFieldOption[];
   /**
    * default to true
@@ -77,7 +93,9 @@ export type UltimateEntityField =
   | UltimateFieldWithType<UltimateEntityFieldTypes.TEXT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.BOOLEAN>
   | UltimateFieldWithType<UltimateEntityFieldTypes.IMAGE>
-  // | UltimateFieldWithType<UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT>
+  | UltimateFieldWithType<UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.SELECT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.STRING_ARRAY>
+  | UltimateFieldWithType<UltimateEntityFieldTypes.DATE>
+  | UltimateFieldWithType<UltimateEntityFieldTypes.MARKDOWN>
   | UltimateFieldWithType<UltimateEntityFieldTypes.UNKNOWN>;
