@@ -36,14 +36,10 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
       resolve: 'medusa-plugin-ultimate',
       options: {
          enableUI: true,
-         storeEndpoint: MEDUSA_PLUGIN_ULTIMATE_STORE_ENDPOINT,
-         adminEndpoint: MEDUSA_PLUGIN_ULTIMATE_ADMIN_ENDPOINT,
       },
    },
    ```
    - `enableUI`: enable the plugin changes to the UI, if set to false marked entities will not have ui.
-   - `adminEndpoint`: admin endpoint where you can access the marked entities, set to `/admin/ultimate-entities` by default.
-   - `storeEndpoint`: store endpoint where you can access the marked entities, set to `/store/ultimate-entities` by default.
 
 ## Usage
 
