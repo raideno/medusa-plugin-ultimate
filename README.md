@@ -33,7 +33,6 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
    ```ts
    ///...other plugins
    {
-      /** @type {import('medusa-plugin-ultimate').Options} */
       resolve: 'medusa-plugin-ultimate',
       options: {
          enableUI: true,
@@ -67,7 +66,7 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
     UltimateEntity,
     UltimateEntityField,
     UltimateEntityFieldTypes,
-  } from "medusa-plugin-ultimate";
+  } from "medusa-plugin-ultimate/dist/index";
 
   export enum Gender {
     MALE = "MALE",
@@ -167,3 +166,32 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
   - list params
   -
   -
+
+## Endpoints
+
+we gonna take this entity as an example
+
+```ts
+@Entity()
+@UltimateEntity()
+export class BlogPost extends BaseEntity {
+  // code...
+}
+```
+
+the entity id will be <u>**blog_post**</u>
+
+- GET: `<ADMIN_BACKEND_URL>/store/ultimate-entities/:ultimate-entity-id/documents`
+
+  will return all the documents of that entity, filtering is also possible
+
+  - entity column: `<ADMIN_BACKEND_URL>/store/ultimate-entities/:ultimate-entity-id/documents?name=example-name-1,example-name-1`
+    => will return all the documents with a name of example-name-1 or example-name-2
+  - limit: number
+  - offset: number
+  - order: string | string[]
+  - q: string
+
+- GET: `<ADMIN_BACKEND_URL>/store/ultimate-entities/:ultimate-entity-id/documents/:documentId`
+
+  will return the coresponding document
