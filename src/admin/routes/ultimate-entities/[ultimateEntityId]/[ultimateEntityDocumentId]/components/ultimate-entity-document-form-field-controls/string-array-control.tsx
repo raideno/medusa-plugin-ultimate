@@ -63,12 +63,12 @@ const StringArrayControl = ({
 
   function removeKeyword(keywordIndex: number, keyword: string) {
     const newValue = JSON.parse(JSON.stringify(value)) as typeof value;
-    newValue.splice(keywordIndex);
+    newValue.splice(keywordIndex, 1);
     onValueChange(newValue);
   }
 
   return (
-    <div className="h-full border border-dashed rounded p-2 flex flex-row items-center gap-2">
+    <div className="h-full border border-dashed rounded p-2 flex flex-col items-center gap-2">
       <div className="w-full gap-2 grid grid-cols[1fr_auto]">
         <Input className="w-full" size="base" onKeyDown={handleKeyPress} />
         {/* TODO: fix any */}
