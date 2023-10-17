@@ -1,5 +1,5 @@
 // do verifications that it don't end with a "/" host
-export const BACKEND_URL = "http://localhost:9000";
+export const BACKEND_URL = process.env.BACKEND_URL;
 // do verifications that it don't end with a "/" and it's a valid path
 export const ULTIMATE_ENTITIES_BACKEND_PATH = "/admin/ultimate-entities";
 // do verifications that it don't end with a "/" and it's a valid path
