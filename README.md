@@ -29,6 +29,10 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
    ```
 
 2. **Configure the Plugin:**
+
+   **IMPORTANT:**
+   this env variables are required on the admin: `MEDUSA_ADMIN_BACKEND_URL` or `BACKEND_URL`
+
    Edit the configuration files to specify the entities you want to add the UI for and configure other settings as needed.
 
    ```ts
@@ -38,6 +42,9 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
      ///...other plugins
      {
        resolve: "medusa-plugin-ultimate",
+       options: {
+         enableUI: true,
+       },
      },
    ];
 

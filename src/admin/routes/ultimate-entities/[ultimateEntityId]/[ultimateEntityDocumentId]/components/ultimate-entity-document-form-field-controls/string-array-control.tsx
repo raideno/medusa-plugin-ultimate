@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import React, { useRef, useState, ChangeEvent, MouseEvent } from "react";
 import { Badge, Button, Input, Text, Tooltip } from "@medusajs/ui";
 
@@ -19,6 +20,8 @@ const StringArrayControl = ({
   onValueChange,
   ...props
 }: StringArrayControlProps) => {
+  // TODO: reorder this mess, either us the ref or the state
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [inputValue, setInputValue] = useState<string>("");
@@ -51,7 +54,7 @@ const StringArrayControl = ({
   }
 
   function addKeyword(keyword: string) {
-    if (!keyword || keyword === "" || keyword === " ") return;
+    if (isEmpty(keyword)) return;
 
     const newValue = JSON.parse(JSON.stringify(value)) as typeof value;
     newValue.push(keyword);
@@ -82,6 +85,7 @@ const StringArrayControl = ({
         <Input
           className="w-full"
           size="base"
+          ref={inputRef}
           value={inputValue}
           onChange={handleInputValueChange}
           onKeyDown={handleKeyPress}
