@@ -9,6 +9,7 @@ export enum UltimateEntityFieldTypes {
   STRING_ARRAY = "STRING_ARRAY",
   DATE = "DATE",
   MARKDOWN = "MARKDOWN",
+  COLOR = "COLOR",
 
   // COLOR_PICKER = "COLOR_PICKER",
   // TIME = "TIME",

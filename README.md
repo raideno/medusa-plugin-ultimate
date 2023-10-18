@@ -30,16 +30,21 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
 
 2. **Configure the Plugin:**
    Edit the configuration files to specify the entities you want to add the UI for and configure other settings as needed.
+
    ```ts
-   ///...other plugins
-   {
-      resolve: 'medusa-plugin-ultimate',
-      options: {
-         enableUI: true,
-      },
-   },
+   // medusa-config.js
+
+   const plugins = [
+     ///...other plugins
+     {
+       resolve: "medusa-plugin-ultimate",
+     },
+   ];
+
+   // ...
    ```
-   - `enableUI`: enable the plugin changes to the UI, if set to false marked entities will not have ui.
+
+   <!-- - `enableUI`: enable the plugin changes to the UI, if set to false marked entities will not have ui. -->
 
 ## Usage
 
@@ -47,8 +52,8 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
 
   Use our custom decorators:
 
-  - `@UltimateEntity()` on your class to create a ui for it.
-  - `@UltimateEntityField` on your class fields.
+  - `@UltimateEntity({})` on your class to create a ui for it.
+  - `@UltimateEntityField({})` on your class fields.
 
   ```ts
   // src/models/person.ts
@@ -71,7 +76,7 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
   }
 
   @Entity()
-  @UltimateEntity()
+  @UltimateEntity({})
   export class Person extends BaseEntity {
     @Column({ type: "varchar", nullable: false })
     @UltimateEntityField({
@@ -93,17 +98,14 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
         {
           value: Gender.MALE,
           label: "Male",
-          description: "Male gender.",
         },
         {
           value: Gender.FEMALE,
           label: "Female",
-          description: "Female gender.",
         },
         {
           value: Gender.UNKNOWN,
           label: "Unknown",
-          description: "Don't specify / unknown.",
         },
       ],
       description: "The person gender",
@@ -132,11 +134,10 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
   })
   ```
 
-  accepted params
-
-  - list params
-  -
-  -
+  | Param       | Type     | Details                     |
+  | ----------- | -------- | --------------------------- |
+  | name        | `string` | Will be displayed on the ui |
+  | description | `string` | Will be displayed on the ui |
 
 - **`UltimateEntityField()`:**
   ```ts
@@ -151,23 +152,29 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
       options?: [
          {
             value: "first-value",
-            label: "first-label",
-            description: "optional-description"
+            label: "first-label"
          },
          // other options here..
       ];
   })
   ```
-  accepted params
-  - list params
-  -
-  -
+  | Param           | Type                                 | Details                                                                                 |
+  | --------------- | ------------------------------------ | --------------------------------------------------------------------------------------- |
+  | type (required) | `UltimateEntityFieldTypes`           | Will be displayed on the ui                                                             |
+  | defaultValue    | `any`                                | Will be used if no value is provided on creation of a document from the admin dashboard |
+  | variant         | `UltimateEntityFieldComponents`      | UI Component used for that field                                                        |
+  | note            | `string`                             | Text do display when UI field is hovered                                                |
+  | name            | `string`                             | Will be displayed on the UI field as a label                                            |
+  | description     | `string`                             | Will be displayed on the UI field, on the bottom                                        |
+  | options         | `{ label: string, value: string }[]` | Required if the field type is a SELECT `UltimateEntityFieldTypes.SELECT`                |
 
 ## Endpoints
 
 we gonna take this entity as an example
 
 ```ts
+// src/models/person.ts
+
 @Entity()
 @UltimateEntity()
 export class BlogPost extends BaseEntity {
@@ -177,17 +184,67 @@ export class BlogPost extends BaseEntity {
 
 the entity id will be <u>**blog_post**</u>
 
-- GET: `<ADMIN_BACKEND_URL>/store/ultimate-entities/:ultimate-entity-id/documents`
+- ## List Entity Documents:
 
-  will return all the documents of that entity, filtering is also possible
+  Will return all the documents of the given ultimate-entity-id.
 
-  - entity column: `<ADMIN_BACKEND_URL>/store/ultimate-entities/:ultimate-entity-id/documents?name=example-name-1,example-name-1`
-    => will return all the documents with a name of example-name-1 or example-name-2
-  - limit: number
-  - offset: number
-  - order: string | string[]
-  - q: string
+  ### Endpoint
 
-- GET: `<ADMIN_BACKEND_URL>/store/ultimate-entities/:ultimate-entity-id/documents/:documentId`
+  **GET:** `<BACKEND_URL>/store/ultimate-entities/<ULTIMATE_ENTITY_ID>/documents`
 
-  will return the coresponding document
+  ### Path Parameters
+
+  | Param     | Type                 | Details                                                                                                                              |
+  | --------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+  | `<field>` | `string \| string[]` | Any of your document field to filter on, example: title=brand-name-1,brand-name-2: will return all documents with one of this titles |
+  | limit     | `number`             | The number of products to skip when retrieving the documents                                                                         |
+  | offset    | `number`             | Will be displayed on the ui                                                                                                          |
+  | order     | `string \| string[]` | A document field(s) to sort-order the retrieved documents by.                                                                        |
+  | q         | `string`             | Used to search on documents fields specified in the @UltimateEntity decorator                                                        |
+
+  ### Response
+
+  ```ts
+  {
+    documents: {
+      id: string;
+      /**
+       * other fields of your entity
+       */
+      updated_at: string;
+      created_at: string;
+      // deleted_at: string;
+    }
+    [];
+  }
+  ```
+
+- ## Retreive Entity Document:
+
+  Retreive an ultimate entity document with it's id.
+
+  ### Endpoint
+
+  **GET:** `<BACKEND_URL>/store/ultimate-entities/<ULTIMATE_ENTITY_ID>/documents/<DOCUMENT_ID>`
+
+  ### Path Parameters
+
+  | Param | Type | Details |
+  | ----- | ---- | ------- |
+
+  ### Response
+
+  ```ts
+  {
+    document: {
+      id: string;
+      /**
+       * other fields of your entity
+       */
+      updated_at: string;
+      created_at: string;
+      // deleted_at: string;
+    }
+    [];
+  }
+  ```

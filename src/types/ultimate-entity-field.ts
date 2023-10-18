@@ -1,12 +1,5 @@
 import { UltimateEntityFieldTypes } from "./ultimate-entity-field-types";
 
-// interface UltimateEntityField<T extends UltimateEntityFieldTypes> {
-//   type: T;
-//   defaultValue: any;
-//   /**will depend on te type, if the type is "string" you'll be able to put input, if it's boolean you'll be able to choose between switch and checkbox */
-//   varaint: VariantMap[T];
-// }
-
 export enum UltimateEntityFieldComponents {
   INPUT = "INPUT",
   TEXT_AREA = "TEXT_AREA",
@@ -18,10 +11,12 @@ export enum UltimateEntityFieldComponents {
   MULTI_STRING_INPUT = "MULTI_STRING_INPUT",
   DATE_INPUT = "DATE_INPUT",
   MARKDOWN_INPUT = "MARKDOWN_INPUT",
+  COLOR_INPUT = "COLOR_INPUT",
 }
 
 // TODO: transform components into enum
 export type UltimateEntityFieldTypeMap = {
+  [UltimateEntityFieldTypes.COLOR]: UltimateEntityFieldComponents.COLOR_INPUT;
   [UltimateEntityFieldTypes.STRING]: UltimateEntityFieldComponents.INPUT;
   [UltimateEntityFieldTypes.TEXT]: UltimateEntityFieldComponents.TEXT_AREA;
   [UltimateEntityFieldTypes.BOOLEAN]:
@@ -43,10 +38,10 @@ export type UltimateEntityFieldTypeMap = {
 export type UltimateEntityFieldDefaultValueMap = {
   [UltimateEntityFieldTypes.STRING]: string;
   [UltimateEntityFieldTypes.TEXT]: string;
-  // [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]: string;
   [UltimateEntityFieldTypes.SELECT]: string;
   [UltimateEntityFieldTypes.BOOLEAN]: boolean;
   [UltimateEntityFieldTypes.IMAGE]: string;
+  [UltimateEntityFieldTypes.COLOR]: string;
   [UltimateEntityFieldTypes.STRING_ARRAY]: string[];
   [UltimateEntityFieldTypes.DATE]: Date;
   [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]: string;
@@ -65,6 +60,9 @@ export type UltimateFieldWithType<T extends UltimateEntityFieldTypes> = {
   type: T;
   defaultValue?: UltimateEntityFieldDefaultValueMap[T];
   variant?: UltimateEntityFieldTypeMap[T];
+  /**
+   * not implemented yet
+   */
   note?: string;
   name?: string;
   description?: string;
@@ -78,18 +76,11 @@ export type UltimateFieldWithType<T extends UltimateEntityFieldTypes> = {
    * only for select components
    */
   options?: UltimateFieldOption[];
-  /**
-   * default to true
-   */
-  editable?: boolean;
-  /**
-   * default to true
-   */
-  validate?: boolean;
 };
 
 export type UltimateEntityField =
   | UltimateFieldWithType<UltimateEntityFieldTypes.STRING>
+  | UltimateFieldWithType<UltimateEntityFieldTypes.COLOR>
   | UltimateFieldWithType<UltimateEntityFieldTypes.TEXT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.BOOLEAN>
   | UltimateFieldWithType<UltimateEntityFieldTypes.IMAGE>
