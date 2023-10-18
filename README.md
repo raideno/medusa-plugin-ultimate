@@ -147,6 +147,7 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
   | description | `string` | Will be displayed on the ui |
 
 - **`UltimateEntityField()`:**
+
   ```ts
   UltimateEntityField({
       type: UltimateEntityFieldTypes.STRING;
@@ -165,6 +166,7 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
       ];
   })
   ```
+
   | Param           | Type                                 | Details                                                                                 |
   | --------------- | ------------------------------------ | --------------------------------------------------------------------------------------- |
   | type (required) | `UltimateEntityFieldTypes`           | Will be displayed on the ui                                                             |
@@ -174,6 +176,23 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
   | name            | `string`                             | Will be displayed on the UI field as a label                                            |
   | description     | `string`                             | Will be displayed on the UI field, on the bottom                                        |
   | options         | `{ label: string, value: string }[]` | Required if the field type is a SELECT `UltimateEntityFieldTypes.SELECT`                |
+
+- **`UltimateEntityFieldTypes`:**
+  ```ts
+  export enum UltimateEntityFieldTypes {
+    STRING = "STRING",
+    TEXT = "TEXT",
+    BOOLEAN = "BOOLEAN",
+    IMAGE = "IMAGE",
+    SELECT = "SELECT",
+    ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
+    UNKNOWN = "UNKNOWN",
+    STRING_ARRAY = "STRING_ARRAY",
+    DATE = "DATE",
+    MARKDOWN = "MARKDOWN",
+    COLOR = "COLOR",
+  }
+  ```
 
 ## Endpoints
 
