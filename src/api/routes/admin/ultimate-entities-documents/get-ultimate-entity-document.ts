@@ -45,9 +45,7 @@ export default async (req: Request, res: Response): Promise<void> => {
     ultimateEntityId,
     ultimateEntityDocumentId,
     {
-      relations: relations
-        ? ultimateEntity.relations.map((relation) => relation.id)
-        : undefined,
+      relations: ultimateEntity.relations.map((relation) => relation.id),
     }
   );
 
