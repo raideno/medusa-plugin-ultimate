@@ -63,6 +63,7 @@ const OneToManyRelationSelectControl = ({
   }
 
   async function handleCreateEntityAndAssign(document: UltimateEntityModel) {
+    addDocument(document.id);
     await mutate({
       ...data,
       documents: [
@@ -93,10 +94,17 @@ const OneToManyRelationSelectControl = ({
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-2">
         {value.map((documentId) => {
+          const doc = documents.find((doc) => doc.id === documentId);
+
+          if (!doc || doc === undefined || doc === null) {
+            console.log("[invalid-doc]:", documentId, documents);
+            return null;
+          }
+
           return (
             <div className="relative" key={documentId}>
               <UltimateEntityDocumentCard
-                document={documents.find((doc) => doc.id === documentId)}
+                document={doc}
                 editPage={UltimateEntityDocumentEditPages.DRAWER}
                 entity={entity}
               />
@@ -110,20 +118,20 @@ const OneToManyRelationSelectControl = ({
           );
         })}
       </div>
-      <div className="grid grid-cols-[auto_1fr] gap-2">
-        <Tooltip content="Create a new document.">
-          <CreateUltimateEntityDocumentButton
-            entity={entity}
-            fields={fields}
-            relations={relations}
-            onCreationCancel={() => undefined}
-            onCreationComplete={handleCreateEntityAndAssign}
-          >
-            <Badge className="flex flex-col items-center justify-center aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
+      <div className="grid grid-cols-[auto_1fr] items-center gap-2">
+        <CreateUltimateEntityDocumentButton
+          entity={entity}
+          fields={fields}
+          relations={relations}
+          onCreationCancel={() => undefined}
+          onCreationComplete={handleCreateEntityAndAssign}
+        >
+          <Tooltip asChild content="Create a new document.">
+            <Badge className="min-h-[calc(4px*10)] h-[calc(4px*10)] max-h-[calc(4px*10)] min-w-[calc(4px*10)] w-[calc(4px*10)] max-w-[calc(4px*10)] flex flex-col items-center justify-center aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
               <Plus />
             </Badge>
-          </CreateUltimateEntityDocumentButton>
-        </Tooltip>
+          </Tooltip>
+        </CreateUltimateEntityDocumentButton>
         <Select onValueChange={addDocument}>
           <Select.Trigger
             placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}

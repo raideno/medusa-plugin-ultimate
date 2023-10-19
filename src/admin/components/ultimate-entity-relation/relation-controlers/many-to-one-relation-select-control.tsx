@@ -70,7 +70,7 @@ const ManyToOneRelationSelectControl = ({
   const { entity, fields, relations } = entityData.entity;
 
   return (
-    <div className="grid grid-cols-[auto_1fr] gap-2">
+    <div className="grid grid-cols-[auto_1fr] items-center gap-2">
       <CreateUltimateEntityDocumentButton
         entity={entity}
         fields={fields}
@@ -78,8 +78,8 @@ const ManyToOneRelationSelectControl = ({
         onCreationCancel={() => undefined}
         onCreationComplete={handleCreateEntityAndAssign}
       >
-        <Tooltip content="Create a new document.">
-          <Badge className="flex flex-col items-center justify-center aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
+        <Tooltip asChild content="Create a new document.">
+          <Badge className="min-h-[calc(4px*10)] h-[calc(4px*10)] max-h-[calc(4px*10)] min-w-[calc(4px*10)] w-[calc(4px*10)] max-w-[calc(4px*10)] flex flex-col items-center justify-center aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
             <Plus />
           </Badge>
         </Tooltip>
