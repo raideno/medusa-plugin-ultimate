@@ -17,7 +17,8 @@ interface UltimateEntityRelationProps {
 
 // TODO: fix this
 const getValue = (relation: any) => {
-  if (relation === undefined) return undefined;
+  if (!relation || relation === undefined || relation === null)
+    return undefined;
 
   if (typeof relation === "string") return relation;
 

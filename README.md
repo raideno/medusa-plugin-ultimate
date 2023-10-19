@@ -136,9 +136,11 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
 
   ```ts
   UltimateEntityField({
-      name: "Name displayed on the entity page.";
-      description: "Description displayed on the entity page";
-  })
+    name: "Name displayed on the entity page.",
+    description: "Description displayed on the entity page",
+    hidden: false,
+    group: "Store",
+  });
   ```
 
   | Param       | Type      | Details                                               |
@@ -152,26 +154,26 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
 
   ```ts
   UltimateEntityField({
-      type: UltimateEntityFieldTypes.STRING;
-      defaultValue?: "default-name";
-      variant?: UltimateEntityFieldTypeMap[T];
-      note?: "will appear when hover on infos icon of the field.";
-      name?: "field name.";
-      description?: "field description";
-      // only for fields with type set to UltimateEntityFieldTypes.SELECT
-      options?: [
-         {
-            value: "first-value",
-            label: "first-label"
-         },
-         // other options here..
-      ];
-  })
+    type: UltimateEntityFieldTypes.STRING,
+    defaultValue: "default-name",
+    variant: UltimateEntityFieldTypeMap[T],
+    note: "will appear when hover on infos icon of the field.",
+    name: "field name.",
+    description: "field description",
+    // only for fields with type set to UltimateEntityFieldTypes.SELECT
+    options: [
+      {
+        value: "first-value",
+        label: "first-label",
+      },
+      // other options here..
+    ],
+  });
   ```
 
   | Param           | Type                                 | Details                                                                                 |
   | --------------- | ------------------------------------ | --------------------------------------------------------------------------------------- |
-  | type (required) | `UltimateEntityFieldTypes`           | Will be displayed on the ui                                                             |
+  | type (required) | `UltimateEntityFieldTypes`           | Field type, important to display the correct field                                      |
   | defaultValue    | `any`                                | Will be used if no value is provided on creation of a document from the admin dashboard |
   | variant         | `UltimateEntityFieldComponents`      | UI Component used for that field                                                        |
   | note            | `string`                             | Text do display when UI field is hovered                                                |
@@ -180,6 +182,7 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
   | options         | `{ label: string, value: string }[]` | Required if the field type is a SELECT `UltimateEntityFieldTypes.SELECT`                |
 
 - **`UltimateEntityFieldTypes`:**
+
   ```ts
   export enum UltimateEntityFieldTypes {
     STRING = "STRING",
@@ -192,6 +195,37 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
     DATE = "DATE",
     MARKDOWN = "MARKDOWN",
     COLOR = "COLOR",
+  }
+  ```
+
+- **`UltimateEntityRelation()`:**
+
+  ```ts
+  UltimateEntityRelation({
+    type: UltimateEntityRelationTypes.ONE_TO_MANY_RELATION_SELECT,
+    relationEntityId: "string",
+    note: "will appear when hover on infos icon of the field.",
+    name: "field name.",
+    description: "field description",
+  });
+  ```
+
+  | Param                       | Type                          | Details                                          |
+  | --------------------------- | ----------------------------- | ------------------------------------------------ |
+  | type (required)             | `UltimateEntityRelationTypes` | Relation type, important to determine the ui     |
+  | relationEntityId (required) | `string`                      | The target relation entity id                    |
+  | note                        | `string`                      | Text do display when UI field is hovered         |
+  | name                        | `string`                      | Will be displayed on the UI field as a label     |
+  | description                 | `string`                      | Will be displayed on the UI field, on the bottom |
+
+- **`UltimateEntityRelationTypes`:**
+  ```ts
+  export enum UltimateEntityRelationTypes {
+    ONE_TO_ONE_RELATION_SELECT = "ONE_TO_ONE_RELATION_SELECT",
+    ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
+    MANY_TO_ONE_RELATION_SELECT = "MANY_TO_ONE_RELATION_SELECT",
+    MANY_TO_MANY_RELATION_SELECT = "MANY_TO_MANY_RELATION_SELECT",
+    UNKNOWN = "UNKNOWN",
   }
   ```
 
