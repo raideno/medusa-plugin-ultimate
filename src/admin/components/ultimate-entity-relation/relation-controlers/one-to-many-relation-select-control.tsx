@@ -46,10 +46,6 @@ const OneToManyRelationSelectControl = ({
     isLoading: entityIsLoading,
   } = useUltimateEntity(relationEntityId);
 
-  // function handleValueChange(value: string) {
-  //   onValueChange(value);
-  // }
-
   function removeDocument(documentId: string) {
     const newValue = cloneDeep(value);
     const documentIndex = newValue.findIndex((docId) => docId === documentId);
