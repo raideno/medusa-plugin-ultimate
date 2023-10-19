@@ -1,9 +1,9 @@
-import { ControlProps } from "..";
+import { ControlProps } from ".";
 
-import useUltimateEntityDocuments from "../../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
+import useUltimateEntityDocuments from "../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
 
-import ErrorLayout from "../../../layout/error-layout";
-import Skeleton from "../../../layout/skeleton";
+import ErrorLayout from "../../layout/error-layout";
+import Skeleton from "../../layout/skeleton";
 
 type HTMLElementType = HTMLSelectElement;
 
@@ -37,6 +37,8 @@ const ManyToOneRelationSelectControl = ({
   if (error) return <ErrorLayout />;
 
   const documents = data.documents;
+
+  return <div>MANY-TO-ONE CONTROLLER, target-relation:{relationEntityId}</div>;
 
   return (
     <div>

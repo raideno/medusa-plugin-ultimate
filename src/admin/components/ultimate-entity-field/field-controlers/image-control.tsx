@@ -3,7 +3,7 @@ import { Badge, Input } from "@medusajs/ui";
 import { Product } from "@medusajs/medusa";
 import { useAdminUploadFile } from "medusa-react";
 
-import { ControlProps } from "..";
+import { ControlProps } from ".";
 import ImageControlsImage from "./image-controls-image";
 import ImageControlsUploading from "./image-controls-uploading";
 import ImageControlsNoImage from "./image-controls-no-image";

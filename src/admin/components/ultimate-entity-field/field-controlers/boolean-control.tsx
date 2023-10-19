@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
 import { Checkbox, Input, Select, Switch, Textarea } from "@medusajs/ui";
-import { ControlProps } from "..";
+import { ControlProps } from ".";
 // import {
 //   // UltimateEntityFieldComponents,
 //   // UltimateEntityFieldTypeMap,
@@ -16,9 +16,6 @@ export type UltimateEntityFieldTypeMap = {
     | UltimateEntityFieldComponents.CHECBKOX;
   [UltimateEntityFieldTypes.IMAGE]: UltimateEntityFieldComponents.IMAGE_INPUT;
   [UltimateEntityFieldTypes.UNKNOWN]: UltimateEntityFieldComponents.INPUT;
-  [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]:
-    | UltimateEntityFieldComponents.SELECT
-    | UltimateEntityFieldComponents.RADIO_GROUP;
   [UltimateEntityFieldTypes.SELECT]: "select";
 };
 
@@ -38,16 +35,12 @@ export enum UltimateEntityFieldTypes {
   BOOLEAN = "BOOLEAN",
   IMAGE = "IMAGE",
   SELECT = "SELECT",
-  ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
-  MANY_TO_ONE_RELATION_SELECT = "MANY_TO_ONE_RELATION_SELECT",
   UNKNOWN = "UNKNOWN",
   STRING_ARRAY = "STRING_ARRAY",
   DATE = "DATE",
   MARKDOWN = "MARKDOWN",
   COLOR = "COLOR",
 }
-
-//
 const DEFAULT_SELECT_CONTROL_PLACEHOLDER = "Select an option.";
 
 type HTMLElementType = HTMLButtonElement;

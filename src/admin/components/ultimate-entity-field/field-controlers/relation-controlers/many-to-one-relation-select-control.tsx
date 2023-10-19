@@ -1,13 +1,13 @@
+import { ControlProps } from "..";
+
 import useUltimateEntityDocuments from "../../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
 
-import Skeleton from "../../../layout/skeleton";
 import ErrorLayout from "../../../layout/error-layout";
-
-import { ControlProps } from "..";
+import Skeleton from "../../../layout/skeleton";
 
 type HTMLElementType = HTMLSelectElement;
 
-interface ManyToManyRelationSelectControlProps
+interface ManyToOneRelationSelectControlProps
   extends Omit<
       React.InputHTMLAttributes<HTMLElementType>,
       "value" | "defaultValue" | "size" | "onChange"
@@ -18,13 +18,13 @@ interface ManyToManyRelationSelectControlProps
 
 const DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER = "Select a relation.";
 
-const ManyToManyRelationSelectControl = ({
+const ManyToOneRelationSelectControl = ({
   value,
   defaultValue,
   onValueChange,
   relationEntityId,
   ...props
-}: ManyToManyRelationSelectControlProps) => {
+}: ManyToOneRelationSelectControlProps) => {
   const { data, isLoading, error } =
     useUltimateEntityDocuments(relationEntityId);
 
@@ -37,6 +37,8 @@ const ManyToManyRelationSelectControl = ({
   if (error) return <ErrorLayout />;
 
   const documents = data.documents;
+
+  return <div>MANY-TO-ONE CONTROLLER, target-relation:{relationEntityId}</div>;
 
   return (
     <div>
@@ -89,4 +91,4 @@ const ManyToManyRelationSelectControl = ({
   // );
 };
 
-export default ManyToManyRelationSelectControl;
+export default ManyToOneRelationSelectControl;

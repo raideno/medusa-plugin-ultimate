@@ -1,29 +1,31 @@
 import React, { ChangeEvent } from "react";
-import { Input, Textarea } from "@medusajs/ui";
-import { ControlProps } from "..";
+import { Input } from "@medusajs/ui";
 
-type HTMLElementType = HTMLTextAreaElement;
+import { ControlProps } from ".";
 
-interface TextControlProps
+type HTMLElementType = HTMLInputElement;
+
+interface StringControlProps
   extends Omit<
       React.InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "onChange"
+      "value" | "defaultValue" | "size" | "onChange"
     >,
     ControlProps<string> {}
 
-const TextControl = ({
+const StringControl = ({
   value,
   defaultValue,
   onValueChange,
   ...props
-}: TextControlProps) => {
+}: StringControlProps) => {
   function handleValueChange(event: ChangeEvent<HTMLElementType>) {
     const value = event.target.value;
     onValueChange(value);
   }
 
   return (
-    <Textarea
+    <Input
+      size="base"
       value={value}
       defaultValue={defaultValue}
       onChange={handleValueChange}
@@ -32,4 +34,4 @@ const TextControl = ({
   );
 };
 
-export default TextControl;
+export default StringControl;

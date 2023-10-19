@@ -17,7 +17,6 @@ export enum UltimateEntityFieldComponents {
 
 // TODO: transform components into enum
 export type UltimateEntityFieldTypeMap = {
-  [UltimateEntityFieldTypes.MANY_TO_ONE_RELATION_SELECT]: UltimateEntityFieldComponents.MULTI_SELECT;
   [UltimateEntityFieldTypes.COLOR]: UltimateEntityFieldComponents.COLOR_INPUT;
   [UltimateEntityFieldTypes.STRING]: UltimateEntityFieldComponents.INPUT;
   [UltimateEntityFieldTypes.TEXT]: UltimateEntityFieldComponents.TEXT_AREA;
@@ -26,9 +25,6 @@ export type UltimateEntityFieldTypeMap = {
     | UltimateEntityFieldComponents.CHECBKOX;
   [UltimateEntityFieldTypes.IMAGE]: UltimateEntityFieldComponents.IMAGE_INPUT;
   [UltimateEntityFieldTypes.UNKNOWN]: UltimateEntityFieldComponents.INPUT;
-  [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]:
-    | UltimateEntityFieldComponents.SELECT
-    | UltimateEntityFieldComponents.RADIO_GROUP;
   [UltimateEntityFieldTypes.SELECT]:
     | UltimateEntityFieldComponents.SELECT
     | UltimateEntityFieldComponents.RADIO_GROUP;
@@ -46,8 +42,6 @@ export type UltimateEntityFieldDefaultValueMap = {
   [UltimateEntityFieldTypes.COLOR]: string;
   [UltimateEntityFieldTypes.STRING_ARRAY]: string[];
   [UltimateEntityFieldTypes.DATE]: Date;
-  [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]: string;
-  [UltimateEntityFieldTypes.MANY_TO_ONE_RELATION_SELECT]: string[];
   [UltimateEntityFieldTypes.MARKDOWN]: string;
   [UltimateEntityFieldTypes.UNKNOWN]: any;
 };
@@ -70,26 +64,17 @@ export type UltimateFieldWithType<T extends UltimateEntityFieldTypes> = {
   name?: string;
   description?: string;
   /**
-   * table name of the target relation, only for ONE_TO_MANY_RELATION_SELECT types
-   * target relation must be an ultimate entity too
-   * note: in future, even non ultimate entities gonna be able to use it
-   */
-  isRelation?: boolean;
-  relationEntityId?: string;
-  /**
    * only for select components
    */
   options?: UltimateFieldOption[];
 };
 
 export type UltimateEntityField =
-  | UltimateFieldWithType<UltimateEntityFieldTypes.MANY_TO_ONE_RELATION_SELECT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.STRING>
   | UltimateFieldWithType<UltimateEntityFieldTypes.COLOR>
   | UltimateFieldWithType<UltimateEntityFieldTypes.TEXT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.BOOLEAN>
   | UltimateFieldWithType<UltimateEntityFieldTypes.IMAGE>
-  | UltimateFieldWithType<UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.SELECT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.STRING_ARRAY>
   | UltimateFieldWithType<UltimateEntityFieldTypes.DATE>

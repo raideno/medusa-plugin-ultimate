@@ -1,9 +1,9 @@
 import React from "react";
 import { Select } from "@medusajs/ui";
 
-import { UltimateFieldOption } from "../../../../../types/ultimate-entity-field";
+import { UltimateFieldOption } from "../../../../types/ultimate-entity-field";
 
-import { ControlProps } from "..";
+import { ControlProps } from ".";
 
 const DEFAULT_SELECT_CONTROL_PLACEHOLDER = "Select an option.";
 

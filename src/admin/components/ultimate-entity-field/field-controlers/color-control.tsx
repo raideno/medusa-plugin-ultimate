@@ -3,7 +3,7 @@ import { InputHTMLAttributes, ChangeEvent, useState } from "react";
 
 import { Badge, Input, Text, useToggleState } from "@medusajs/ui";
 
-import { ControlProps } from "..";
+import { ControlProps } from ".";
 
 type HTMLElementType = HTMLInputElement;
 

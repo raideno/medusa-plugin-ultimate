@@ -3,7 +3,7 @@ import { DatePicker } from "@medusajs/ui";
 import React, { ChangeEvent } from "react";
 import { Input } from "@medusajs/ui";
 
-import { ControlProps } from "..";
+import { ControlProps } from ".";
 
 // TODO: fix the any
 type HTMLElementType = any;

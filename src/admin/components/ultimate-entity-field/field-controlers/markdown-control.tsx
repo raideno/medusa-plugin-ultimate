@@ -1,5 +1,5 @@
 import React from "react";
-import { ControlProps } from "..";
+import { ControlProps } from ".";
 
 import MDEditor from "@uiw/react-md-editor";
 

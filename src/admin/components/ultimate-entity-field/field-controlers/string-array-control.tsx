@@ -2,7 +2,7 @@ import { isEmpty } from "lodash";
 import React, { useRef, useState, ChangeEvent, MouseEvent } from "react";
 import { Badge, Button, Input, Text, Tooltip } from "@medusajs/ui";
 
-import { ControlProps } from "..";
+import { ControlProps } from ".";
 import { XMark } from "@medusajs/icons";
 
 type HTMLElementType = HTMLInputElement;

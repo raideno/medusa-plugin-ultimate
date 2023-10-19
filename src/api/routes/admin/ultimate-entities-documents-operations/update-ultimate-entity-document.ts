@@ -12,17 +12,13 @@ import { UltimateEntityField } from "../../../../types/ultimate-entity-field";
  * - pass
  */
 
-interface GetUltimateEntitiesResponse {
-  entities: {
-    entity: UltimateEntity;
-    fields: UltimateEntityField;
-  }[];
-}
-
 import { Request, Response } from "express";
 import UltimateEntityService from "../../../../services/ultimate-entity";
 import UltimateEntityDocumentsService from "../../../../services/ultimate-entity-documents";
 import { UpdateUltimateEntityDocumentResponse } from "../../../../types/api/update-ultimate-entity-document-response";
+import validateBodyKeys from "./utils/validate-body-keys";
+import validateBodyFields from "./utils/validate-body-fields";
+import validateBodyRelations from "./utils/validate-body-relations";
 
 const EXCLUDED_KEYS = ["id", "created_at", "updated_at"];
 
@@ -71,36 +67,54 @@ export default async (req: Request, res: Response): Promise<void> => {
   // place the req.body keys inside of the document object
   // validate the document object
 
-  const updatableDocumentKeys = ultimateEntity.fields
-    .filter((field) => !EXCLUDED_KEYS.includes(field.id))
-    .map((field) => field.id);
-
-  const [notAllowedDocumentKeys, allowedDocumentKeys] = partition(
-    Object.keys(req.body),
-    (key) => !updatableDocumentKeys.includes(key)
-  );
-
-  if (notAllowedDocumentKeys.length > 0)
+  const bodyKeysValidation = await validateBodyKeys(req.body, ultimateEntity);
+  if (bodyKeysValidation.error)
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Not allowed keys present on body: ${notAllowedDocumentKeys.join(", ")}.`
+      `Body Keys Validation Errors`,
+      undefined
     );
 
+  const bodyFieldsValidation = await validateBodyFields(
+    req.body,
+    ultimateEntity
+  );
+  if (bodyFieldsValidation.error)
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Body Fields Validation Errors`,
+      undefined
+    );
+
+  const bodyRelationsValidation = await validateBodyRelations(
+    req.body,
+    ultimateEntity
+  );
+  if (bodyRelationsValidation.error)
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Body Relations Validation Errors`,
+      undefined
+    );
+
+  // TODO: validation is missing
+  /**now everything in the body is valid, just construct the document again and update it */
+
   const newDocument = cloneDeep(document);
+
+  bodyFieldsValidation.fields.forEach((allowedBodyField) => {
+    newDocument[allowedBodyField] = req.body[allowedBodyField];
+  });
+
+  bodyRelationsValidation.relations.forEach((allowedBodyRelation) => {
+    newDocument[allowedBodyRelation] = req.body[allowedBodyRelation];
+  });
 
   EXCLUDED_KEYS.forEach((excludedKey) => {
     delete newDocument[excludedKey];
   });
 
-  allowedDocumentKeys.forEach((allowedDocumentKey) => {
-    newDocument[allowedDocumentKey] = req.body[allowedDocumentKey];
-  });
-
-  // TODO: implement validation controls
-
   const validationErrors = await validate(newDocument);
-
-  console.log("[validationErrors]:", validationErrors);
 
   if (validationErrors.length > 0)
     throw new MedusaError(

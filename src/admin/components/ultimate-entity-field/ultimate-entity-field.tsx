@@ -2,17 +2,15 @@ import { UltimateEntityField } from "../../../types/ultimate-entity-field";
 import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
 import { UltimateEntityFieldTypes } from "../../../types/ultimate-entity-field-types";
 
-import TextControl from "./field-controlers/atomic-fields/text-control";
-import DateControl from "./field-controlers/atomic-fields/date-control";
-import ColorControl from "./field-controlers/atomic-fields/color-control";
-import ImageControl from "./field-controlers/atomic-fields/image-control";
-import SelectControl from "./field-controlers/atomic-fields/select-control";
-import StringControl from "./field-controlers/atomic-fields/string-control";
-import BooleanControl from "./field-controlers/atomic-fields/boolean-control";
-import MarkdownControl from "./field-controlers/atomic-fields/markdown-control";
-import StringArrayControl from "./field-controlers/atomic-fields/string-array-control";
-
-import OneToManyRelationSelectControl from "./field-controlers/relation-fields/one-to-many-relation-select-control";
+import TextControl from "./field-controlers/text-control";
+import DateControl from "./field-controlers/date-control";
+import ColorControl from "./field-controlers/color-control";
+import ImageControl from "./field-controlers/image-control";
+import SelectControl from "./field-controlers/select-control";
+import StringControl from "./field-controlers/string-control";
+import BooleanControl from "./field-controlers/boolean-control";
+import MarkdownControl from "./field-controlers/markdown-control";
+import StringArrayControl from "./field-controlers/string-array-control";
 
 interface UltimateEntityFieldProps {
   field: UltimateEntityField;
@@ -116,27 +114,6 @@ const UltimateEntityField = ({
         <DateControl
           defaultValue={defaultDocument[field.id]}
           value={document[field.id]}
-          onValueChange={handleValueChange.bind(null, field.id)}
-        />
-      );
-      break;
-    case UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT:
-      return (
-        <OneToManyRelationSelectControl
-          relationEntityId={field.relationEntityId}
-          value={document[field.id]}
-          defaultValue={defaultDocument[field.id]}
-          onValueChange={handleValueChange.bind(null, field.id)}
-        />
-      );
-      break;
-
-    case UltimateEntityFieldTypes.MANY_TO_ONE_RELATION_SELECT:
-      return (
-        <OneToManyRelationSelectControl
-          relationEntityId={field.relationEntityId}
-          value={document[field.id]}
-          defaultValue={defaultDocument[field.id]}
           onValueChange={handleValueChange.bind(null, field.id)}
         />
       );

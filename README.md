@@ -187,8 +187,6 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
     BOOLEAN = "BOOLEAN",
     IMAGE = "IMAGE",
     SELECT = "SELECT",
-    ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
-    MANY_TO_ONE_RELATION_SELECT = "MANY_TO_ONE_RELATION_SELECT",
     UNKNOWN = "UNKNOWN",
     STRING_ARRAY = "STRING_ARRAY",
     DATE = "DATE",

@@ -12,6 +12,10 @@ import { ULTIMATE_ENTITY_FIELD_METADATA_KEY_NAME } from "../decorators/ultimate-
 import { EntityMetadata, EntityTarget, Repository } from "typeorm";
 import { UltimateEntityFieldTypes } from "../types/ultimate-entity-field-types";
 import { UltimateEntityModel } from "../types/ultimate-entity-model";
+import { UltimateEntityRelation } from "../types/ultimate-entity-relation";
+import { ULTIMATE_ENTITY_RELATION_METADATA_KEY_NAME } from "../decorators/ultimate-entity-relation";
+import { UltimateEntityRelationTypes } from "../types/ultimate-entity-relation-types";
+import { UltimateEntityObject } from "../types/ultimate-entity-object";
 
 export default class UltimateEntityService extends TransactionBaseService {
   static LIFE_TIME = Lifetime.SCOPED;
@@ -75,6 +79,48 @@ export default class UltimateEntityService extends TransactionBaseService {
     return genericEntityRepo;
   }
 
+  listUltimateEntityRelations(
+    entityMetadata: EntityMetadata,
+    entityTarget: EntityTarget<UltimateEntityModel>
+  ): UltimateEntityRelation[] {
+    const relations = entityMetadata.relations
+      .map((entityRelationMetadata) => {
+        let ultimateEntityRelationMetadata:
+          | UltimateEntityRelation
+          | null
+          | undefined = undefined;
+
+        ULTIMATE_ENTITY_RELATION_METADATA_KEY_NAME;
+
+        try {
+          ultimateEntityRelationMetadata = Reflect.getMetadata(
+            ULTIMATE_ENTITY_RELATION_METADATA_KEY_NAME,
+            new (entityTarget as any)(),
+            entityRelationMetadata.propertyName
+          );
+        } catch {
+          ultimateEntityRelationMetadata = null;
+        }
+
+        if (
+          !entityRelationMetadata ||
+          entityRelationMetadata === null ||
+          entityRelationMetadata === undefined
+        )
+          return null;
+
+        return {
+          id: entityRelationMetadata.propertyName,
+          ...ultimateEntityRelationMetadata,
+        };
+      })
+      .filter(
+        (relation) => relation && relation !== null && relation !== undefined
+      );
+
+    return relations;
+  }
+
   listUltimateEntityFields(
     entityMetadata: EntityMetadata,
     entityTarget: EntityTarget<UltimateEntityModel>
@@ -111,11 +157,8 @@ export default class UltimateEntityService extends TransactionBaseService {
     return fields;
   }
 
-  listUltimateEntities() {
-    const entities: {
-      fields: UltimateEntityField[];
-      entity: UltimateEntity;
-    }[] = [];
+  listUltimateEntities(): UltimateEntityObject[] {
+    const entities: UltimateEntityObject[] = [];
 
     ULTIMATE_ENTITY_METADATA_KEY_NAME;
     ULTIMATE_ENTITY_FIELD_METADATA_KEY_NAME;
@@ -145,14 +188,17 @@ export default class UltimateEntityService extends TransactionBaseService {
       )
         return;
 
-      const entity: { fields: UltimateEntityField[]; entity: UltimateEntity } =
-        {
-          entity: {
-            ...ultimateEntityMetadata,
-            id: ultimateEntityDefaultId,
-          },
-          fields: this.listUltimateEntityFields(entityMetadata, entityTarget),
-        };
+      const entity: UltimateEntityObject = {
+        entity: {
+          ...ultimateEntityMetadata,
+          id: ultimateEntityDefaultId,
+        },
+        fields: this.listUltimateEntityFields(entityMetadata, entityTarget),
+        relations: this.listUltimateEntityRelations(
+          entityMetadata,
+          entityTarget
+        ),
+      };
 
       entities.push(entity);
     });
@@ -160,12 +206,7 @@ export default class UltimateEntityService extends TransactionBaseService {
     return entities;
   }
 
-  retrieveUltimateEntity(id: string):
-    | {
-        fields: UltimateEntityField[];
-        entity: UltimateEntity;
-      }
-    | undefined {
+  retrieveUltimateEntity(id: string): UltimateEntityObject | undefined {
     const ultimateEntities = this.listUltimateEntities();
     const ultimateEntity = ultimateEntities.find(
       (ultimateEntity) => ultimateEntity.entity.id === id
