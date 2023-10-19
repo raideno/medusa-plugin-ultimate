@@ -22,6 +22,18 @@ const UltimateEntityRelation = ({
   handleValueChange,
 }: UltimateEntityRelationProps) => {
   switch (relation.type) {
+    case UltimateEntityRelationTypes.ONE_TO_ONE_RELATION_SELECT:
+      return (
+        <ManyToManyControl
+          relationEntityId={relation.relationEntityId}
+          // TODO: remove the any
+          defaultValue={defaultDocument[relation.id]}
+          value={document[relation.id]}
+          onValueChange={handleValueChange.bind(null, relation.id)}
+        />
+      );
+      break;
+
     case UltimateEntityRelationTypes.MANY_TO_MANY_RELATION_SELECT:
       return (
         <ManyToManyControl
@@ -57,8 +69,10 @@ const UltimateEntityRelation = ({
         />
       );
       break;
+
+    case UltimateEntityRelationTypes.UNKNOWN:
     default:
-      return <div>input</div>;
+      return <div>invalid-relation-type</div>;
       break;
   }
 };

@@ -1,8 +1,8 @@
 import UltimateEntity from "./decorators/ultimate-entity";
 import UltimateEntityField from "./decorators/ultimate-entity-field";
+import UltimateEntityRelation from "./decorators/ultimate-entity-relation";
 
-export { UltimateEntity, UltimateEntityField };
+export { UltimateEntity, UltimateEntityField, UltimateEntityRelation };
 
-// export { UltimateEntity } from "./types/ultimate-entity";
-// export { UltimateEntityField } from "./types/ultimate-entity-field";
 export { UltimateEntityFieldTypes } from "./types/ultimate-entity-field-types";
+export { UltimateEntityRelationTypes } from "./types/ultimate-entity-relation-types";
