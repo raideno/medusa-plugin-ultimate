@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-ultimate",
-  "version": "0.1.4-beta.9",
+  "version": "0.1.4-beta.10",
   "description": "Medusa Plugin Ultimate is a plugin made for medusa that give super powers to your entities.",
   "author": "Raiden",
   "main": "./src/index.ts",
