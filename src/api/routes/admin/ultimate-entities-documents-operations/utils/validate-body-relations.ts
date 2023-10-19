@@ -15,12 +15,15 @@ export default async (
   // should receive a body with only allowed keys (relations / relations)
   // return the body relations (separate from relation)
 
+  const fieldsKeys = ultimateEntity.fields.map((field) => field.id);
+
   const updatableDocumentKeys = ultimateEntity.relations
     .filter((relation) => !EXCLUDED_KEYS.includes(relation.id))
     .map((relation) => relation.id);
 
   const [notAllowedDocumentKeys, allowedDocumentKeys] = partition(
-    Object.keys(body),
+    Object.keys(body).filter((key) => !fieldsKeys.includes(key)),
+    // filter fields keys
     (key) => !updatableDocumentKeys.includes(key)
   );
 

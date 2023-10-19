@@ -125,34 +125,50 @@ export default class UltimateEntityService extends TransactionBaseService {
     entityMetadata: EntityMetadata,
     entityTarget: EntityTarget<UltimateEntityModel>
   ): UltimateEntityField[] {
-    const fields = entityMetadata.columns.map((entityColumnMetadata) => {
-      let ultimateEntityColumnMetadata: UltimateEntityField | null | undefined =
-        undefined;
+    const fields = entityMetadata.columns
+      .map((entityColumnMetadata) => {
+        let ultimateEntityColumnMetadata:
+          | UltimateEntityField
+          | null
+          | undefined = undefined;
 
-      ULTIMATE_ENTITY_FIELD_METADATA_KEY_NAME;
+        ULTIMATE_ENTITY_FIELD_METADATA_KEY_NAME;
 
-      try {
-        ultimateEntityColumnMetadata = Reflect.getMetadata(
-          ULTIMATE_ENTITY_FIELD_METADATA_KEY_NAME,
-          new (entityTarget as any)(),
-          entityColumnMetadata.propertyName
-        );
-      } catch {
-        ultimateEntityColumnMetadata = null;
-      }
+        try {
+          ultimateEntityColumnMetadata = Reflect.getMetadata(
+            ULTIMATE_ENTITY_FIELD_METADATA_KEY_NAME,
+            new (entityTarget as any)(),
+            entityColumnMetadata.propertyName
+          );
+        } catch {
+          ultimateEntityColumnMetadata = null;
+        }
 
-      return {
-        id: entityColumnMetadata.propertyName,
-        ...(ultimateEntityColumnMetadata
-          ? {
-              type: ultimateEntityColumnMetadata.type,
-              ...ultimateEntityColumnMetadata,
-            }
-          : {
-              type: UltimateEntityFieldTypes.UNKNOWN,
-            }),
-      };
-    });
+        if (
+          !ultimateEntityColumnMetadata ||
+          ultimateEntityColumnMetadata === undefined ||
+          ultimateEntityColumnMetadata === null
+        )
+          return null;
+
+        return {
+          id: entityColumnMetadata.propertyName,
+          ...ultimateEntityColumnMetadata,
+        };
+
+        // return {
+        //   id: entityColumnMetadata.propertyName,
+        //   ...(ultimateEntityColumnMetadata
+        //     ? {
+        //         type: ultimateEntityColumnMetadata.type,
+        //         ...ultimateEntityColumnMetadata,
+        //       }
+        //     : {
+        //         type: UltimateEntityFieldTypes.UNKNOWN,
+        //       }),
+        // };
+      })
+      .filter((field) => field && field !== null && field !== undefined);
 
     return fields;
   }

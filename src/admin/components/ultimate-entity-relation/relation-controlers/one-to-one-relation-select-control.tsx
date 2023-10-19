@@ -24,7 +24,7 @@ interface OneToOneRelationSelectControlProps
   relationEntityId: string;
 }
 
-const DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER = "Select a relation.";
+const DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER = "Select an document.";
 
 const OneToOneRelationSelectControl = ({
   value,
@@ -77,20 +77,21 @@ const OneToOneRelationSelectControl = ({
   // return <div>ONE-TO-ONE CONTROLLER, target-relation:{relationEntityId}</div>;
 
   return (
-    <div>
+    <div className="grid grid-cols-[auto_1fr] gap-2">
       <Select
         value={value}
         onValueChange={handleValueChange}
         defaultValue={defaultValue}
       >
         <Select.Trigger
+          className="w-full"
           placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
         >
           <Select.Value
             placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
           />
         </Select.Trigger>
-        <Select.Content>
+        <Select.Content className="z-[999]">
           {documents.map((document, documentIndex) => {
             return (
               <Select.Item
@@ -103,19 +104,19 @@ const OneToOneRelationSelectControl = ({
           })}
         </Select.Content>
       </Select>
-      <Tooltip content="Create a new document.">
-        <CreateUltimateEntityDocumentButton
-          entity={entity}
-          fields={fields}
-          relations={relations}
-          onCreationCancel={() => undefined}
-          onCreationComplete={handleCreateEntityAndAssign}
-        >
-          <Badge className="hover:opacity-75 active:pacity-50 cursor-pointer">
+      <CreateUltimateEntityDocumentButton
+        entity={entity}
+        fields={fields}
+        relations={relations}
+        onCreationCancel={() => undefined}
+        onCreationComplete={handleCreateEntityAndAssign}
+      >
+        <Tooltip content="Create a new document.">
+          <Badge className="aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
             <Plus />
           </Badge>
-        </CreateUltimateEntityDocumentButton>
-      </Tooltip>
+        </Tooltip>
+      </CreateUltimateEntityDocumentButton>
     </div>
   );
 };

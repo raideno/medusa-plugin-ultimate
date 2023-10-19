@@ -121,7 +121,7 @@ const OneToManyRelationSelectControl = ({
             placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
           />
         </Select.Trigger>
-        <Select.Content>
+        <Select.Content className="z-[999]">
           {/* TODO: filter, don't display the documents that are already selected */}
           {/* TODO: filter, put a tag on the ones used (owned) by other documents */}
           {documents.map((document, documentIndex) => {
@@ -137,7 +137,7 @@ const OneToManyRelationSelectControl = ({
         </Select.Content>
       </Select>
       <div>create button (select)</div>
-      {/* <Tooltip content="Create a new document.">
+      <Tooltip content="Create a new document.">
         <CreateUltimateEntityDocumentButton
           entity={entity}
           fields={fields}
@@ -149,7 +149,7 @@ const OneToManyRelationSelectControl = ({
             <Plus />
           </Badge>
         </CreateUltimateEntityDocumentButton>
-      </Tooltip> */}
+      </Tooltip>
     </div>
   );
 };

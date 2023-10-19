@@ -24,6 +24,7 @@ const TextControl = ({
 
   return (
     <Textarea
+      className="border border-border"
       value={value}
       defaultValue={defaultValue}
       onChange={handleValueChange}

@@ -26,6 +26,7 @@ const StringControl = ({
   return (
     <Input
       size="base"
+      className="border border-border"
       value={value}
       defaultValue={defaultValue}
       onChange={handleValueChange}
