@@ -8,6 +8,7 @@ import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
 import createUltimateEntityDocument from "../../functions/ultimate-entities-documents-operations/create-ultimate-entity-document";
 
 import UltimateEntityField from "../ultimate-entity-field/ultimate-entity-field";
+import UltimateEntityFieldContainer from "../ultimate-entity-field/ultimate-entity-field-container";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
@@ -104,7 +105,7 @@ const UltimateEntityDocumentCreationDrawer = ({
   return (
     <Drawer open={isDrawerOpen} onOpenChange={handleDrawerOpenChange}>
       <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>
-      <Drawer.Content>
+      <Drawer.Content className="z-[99]">
         <Drawer.Header>
           <Drawer.Title>Create Document</Drawer.Title>
         </Drawer.Header>
@@ -117,7 +118,7 @@ const UltimateEntityDocumentCreationDrawer = ({
               .filter((field) => !EXCLUDED_FIELDS_IDS.includes(field.id))
               .map((field) => {
                 return (
-                  <UltimateEntityField
+                  <UltimateEntityFieldContainer
                     field={field}
                     document={document}
                     handleValueChange={handleValueChange}

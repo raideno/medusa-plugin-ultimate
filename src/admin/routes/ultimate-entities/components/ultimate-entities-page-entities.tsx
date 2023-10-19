@@ -89,7 +89,7 @@ const UltimateEntitiesPageEntitites = () => {
                   );
                 })}
               {groupIndex !== groups.length - 1 && (
-                <div className="w-full h-[1px] border border-border rounded" />
+                <div className="w-full h-[1px] mt-xlarge border border-border rounded" />
               )}
             </div>
           );

@@ -5,7 +5,7 @@ import { useUltimateEntityDocumentPage } from "../../../../../contexts/ultimate-
 import ErrorLayout from "../../../../../components/layout/error-layout";
 import LoadingSkeletonsWrapper from "../../../../../components/layout/loading-skeletons-wrapper";
 import UltimateEntitiyFieldSkeleton from "../../../../../components/ultimate-entity-field/ultimate-entity-field-skeleton";
-import UltimateEntityField from "../../../../../components/ultimate-entity-field/ultimate-entity-field";
+import UltimateEntityFieldContainer from "../../../../../components/ultimate-entity-field/ultimate-entity-field-container";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
@@ -62,7 +62,7 @@ const UltimateEntityDocumentForm = ({}: UltimateEntityDocumentFormProps) => {
         .filter((field) => !EXCLUDED_FIELDS_IDS.includes(field.id))
         .map((field) => {
           return (
-            <UltimateEntityField
+            <UltimateEntityFieldContainer
               key={field.id}
               field={field}
               document={document}

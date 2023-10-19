@@ -4,19 +4,19 @@ import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
 
 import UltimateEntityField from "./ultimate-entity-field";
 
-interface UltimateEntityFormFieldProps {
+interface UltimateEntityFieldContainerProps {
   field: UltimateEntityField;
   document: UltimateEntityModel;
   defaultDocument?: UltimateEntityModel;
   handleValueChange: (key: string, value: any) => void;
 }
 
-const UltimateEntityFormField = ({
+const UltimateEntityFieldContainer = ({
   document,
   handleValueChange,
   defaultDocument,
   field,
-}: UltimateEntityFormFieldProps) => {
+}: UltimateEntityFieldContainerProps) => {
   return (
     <div className="w-full p-4 rounded bg-white border border-border">
       <Text className="text-dark" size="large">
@@ -35,4 +35,4 @@ const UltimateEntityFormField = ({
   );
 };
 
-export default UltimateEntityFormField;
+export default UltimateEntityFieldContainer;

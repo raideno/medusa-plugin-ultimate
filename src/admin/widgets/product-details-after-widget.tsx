@@ -12,7 +12,7 @@ import updateUltimateEntityDocument from "../functions/ultimate-entities-documen
 
 import Skeleton from "../components/layout/skeleton";
 import ErrorLayout from "../components/layout/error-layout";
-import UltimateEntityField from "../components/ultimate-entity-field/ultimate-entity-field";
+import UltimateEntityFieldContainer from "../components/ultimate-entity-field/ultimate-entity-field-container";
 
 export enum UltimateEntityFieldTypes {
   STRING = "STRING",
@@ -195,7 +195,7 @@ const ProductDetailsBeforeWidget = ({
             .filter((field) => field.type !== UltimateEntityFieldTypes.UNKNOWN)
             .map((field) => {
               return (
-                <UltimateEntityField
+                <UltimateEntityFieldContainer
                   document={document}
                   handleValueChange={handleValueChange}
                   key={field.id}
