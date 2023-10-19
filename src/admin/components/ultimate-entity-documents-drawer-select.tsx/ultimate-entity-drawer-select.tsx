@@ -65,6 +65,7 @@ const UltimateEntityDocumentsDrawerSelect = ({
           {documents.map((document) => {
             return (
               <UltimateEntityDocumentCard
+                className="cursor-pointer hover:opacity-75 active:opacity-50"
                 onClick={handleDrawerSelect.bind(null, document.id)}
                 document={document}
                 entity={{ id: ultimateEntityId }}
@@ -79,3 +80,5 @@ const UltimateEntityDocumentsDrawerSelect = ({
     </Drawer>
   );
 };
+
+export default UltimateEntityDocumentsDrawerSelect;

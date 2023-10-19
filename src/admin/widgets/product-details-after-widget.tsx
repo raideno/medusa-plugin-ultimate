@@ -13,6 +13,8 @@ import updateUltimateEntityDocument from "../functions/ultimate-entities-documen
 import Skeleton from "../components/layout/skeleton";
 import ErrorLayout from "../components/layout/error-layout";
 import UltimateEntityFieldContainer from "../components/ultimate-entity-field/ultimate-entity-field-container";
+import UltimateEntityRelationContainer from "../components/ultimate-entity-relation/ultimate-entity-relation-container";
+import { UltimateEntityRelationTypes } from "../../types/ultimate-entity-relation-types";
 
 export enum UltimateEntityFieldTypes {
   STRING = "STRING",
@@ -169,7 +171,7 @@ const ProductDetailsBeforeWidget = ({
 
   if (!response) return null;
 
-  const { entity, fields } = data.entity;
+  const { entity, fields, relations } = data.entity;
 
   if (isDocumentLoading) return <Skeleton className="w-full h-[512px]" />;
 
@@ -199,6 +201,23 @@ const ProductDetailsBeforeWidget = ({
                   key={field.id}
                   defaultDocument={DEFUALT_DOCUMENT}
                   field={field}
+                />
+              );
+            })}
+          {relations
+            .filter(
+              (relation) =>
+                relation.type &&
+                relation.type !== UltimateEntityRelationTypes.UNKNOWN
+            )
+            .map((relation) => {
+              return (
+                <UltimateEntityRelationContainer
+                  document={document}
+                  handleValueChange={handleValueChange}
+                  key={relation.id}
+                  defaultDocument={DEFUALT_DOCUMENT}
+                  relation={relation}
                 />
               );
             })}

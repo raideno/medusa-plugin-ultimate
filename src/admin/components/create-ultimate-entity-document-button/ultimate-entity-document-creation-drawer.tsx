@@ -9,6 +9,8 @@ import createUltimateEntityDocument from "../../functions/ultimate-entities-docu
 
 import UltimateEntityField from "../ultimate-entity-field/ultimate-entity-field";
 import UltimateEntityFieldContainer from "../ultimate-entity-field/ultimate-entity-field-container";
+import { UltimateEntityRelation } from "../../../types/ultimate-entity-relation";
+import UltimateEntityRelationContainer from "../ultimate-entity-relation/ultimate-entity-relation-container";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
@@ -22,6 +24,7 @@ interface UltimateEntityDocumentCreationDrawerProps {
   children: React.ReactNode;
   entity: UltimateEntity;
   fields: UltimateEntityField[];
+  relations: UltimateEntityRelation[];
   onCreationComplete?: (document: UltimateEntityModel) => Promise<void>;
   onCreationCancel?: () => void;
 }
@@ -29,6 +32,7 @@ interface UltimateEntityDocumentCreationDrawerProps {
 const UltimateEntityDocumentCreationDrawer = ({
   entity,
   fields,
+  relations,
   children: trigger,
   onCreationCancel,
   onCreationComplete,
@@ -127,6 +131,17 @@ const UltimateEntityDocumentCreationDrawer = ({
                   />
                 );
               })}
+            {relations.map((relation) => {
+              return (
+                <UltimateEntityRelationContainer
+                  key={relation.id}
+                  relation={relation}
+                  document={document}
+                  handleValueChange={handleValueChange}
+                  defaultDocument={DEFUALT_DOCUMENT}
+                />
+              );
+            })}
           </form>
         </Drawer.Body>
         <Drawer.Footer>

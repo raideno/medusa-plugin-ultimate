@@ -2,9 +2,10 @@ import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
 import { UltimateEntityRelation } from "../../../types/ultimate-entity-relation";
 import { UltimateEntityRelationTypes } from "../../../types/ultimate-entity-relation-types";
 
-import ManyToManyControl from "./relation-controlers/many-to-many-relation-select-control";
+import OneToOneyControl from "./relation-controlers/one-to-one-relation-select-control";
 import ManyToOneControl from "./relation-controlers/many-to-one-relation-select-control";
 import OneToManyControl from "./relation-controlers/one-to-many-relation-select-control";
+import ManyToManyControl from "./relation-controlers/many-to-many-relation-select-control";
 
 interface UltimateEntityRelationProps {
   relation: UltimateEntityRelation;
@@ -21,14 +22,19 @@ const UltimateEntityRelation = ({
   /*---*/
   handleValueChange,
 }: UltimateEntityRelationProps) => {
+  // TODO: for the value / default value, give the ids, don't pass the whole object
   switch (relation.type) {
     case UltimateEntityRelationTypes.ONE_TO_ONE_RELATION_SELECT:
       return (
-        <ManyToManyControl
+        <OneToOneyControl
           relationEntityId={relation.relationEntityId}
           // TODO: remove the any
-          defaultValue={defaultDocument[relation.id]}
-          value={document[relation.id]}
+          defaultValue={
+            defaultDocument[relation.id]
+              ? defaultDocument[relation.id].id
+              : undefined
+          }
+          value={document[relation.id] ? document[relation.id].id : undefined}
           onValueChange={handleValueChange.bind(null, relation.id)}
         />
       );
@@ -39,8 +45,16 @@ const UltimateEntityRelation = ({
         <ManyToManyControl
           relationEntityId={relation.relationEntityId}
           // TODO: remove the any
-          defaultValue={defaultDocument[relation.id]}
-          value={document[relation.id]}
+          defaultValue={
+            defaultDocument[relation.id]
+              ? defaultDocument[relation.id].map((doc) => doc.id)
+              : undefined
+          }
+          value={
+            document[relation.id]
+              ? document[relation.id].map((doc) => doc.id)
+              : []
+          }
           onValueChange={handleValueChange.bind(null, relation.id)}
         />
       );
@@ -51,8 +65,12 @@ const UltimateEntityRelation = ({
         <ManyToOneControl
           relationEntityId={relation.relationEntityId}
           // TODO: remove the any
-          defaultValue={defaultDocument[relation.id]}
-          value={document[relation.id]}
+          defaultValue={
+            defaultDocument[relation.id]
+              ? defaultDocument[relation.id].id
+              : undefined
+          }
+          value={document[relation.id] ? document[relation.id].id : undefined}
           onValueChange={handleValueChange.bind(null, relation.id)}
         />
       );
@@ -63,8 +81,16 @@ const UltimateEntityRelation = ({
         <OneToManyControl
           relationEntityId={relation.relationEntityId}
           // TODO: remove the any
-          defaultValue={defaultDocument[relation.id]}
-          value={document[relation.id]}
+          defaultValue={
+            defaultDocument[relation.id]
+              ? defaultDocument[relation.id].map((doc) => doc.id)
+              : undefined
+          }
+          value={
+            document[relation.id]
+              ? document[relation.id].map((doc) => doc.id)
+              : []
+          }
           onValueChange={handleValueChange.bind(null, relation.id)}
         />
       );

@@ -33,7 +33,7 @@ const OneToOneRelationSelectControl = ({
   relationEntityId,
   ...props
 }: OneToOneRelationSelectControlProps) => {
-  const { data, isLoading, error } =
+  const { data, isLoading, error, mutate } =
     useUltimateEntityDocuments(relationEntityId);
 
   const {
@@ -47,7 +47,15 @@ const OneToOneRelationSelectControl = ({
   }
 
   async function handleCreateEntityAndAssign(document: UltimateEntityModel) {
-    // push the entity into the data array
+    await mutate({
+      ...data,
+      documents: [
+        ...(JSON.parse(JSON.stringify(data.documents)) as typeof documents),
+        document,
+      ],
+    });
+    handleValueChange(document.id);
+    // push the entity into the data array (selectable values)
     // assign the entity id into the value field via the handleValueChange function
   }
 
@@ -60,9 +68,13 @@ const OneToOneRelationSelectControl = ({
   if (entityError) return <ErrorLayout />;
 
   const documents = data.documents;
-  const { entity, fields } = entityData.entity;
 
-  return <div>ONE-TO-ONE CONTROLLER, target-relation:{relationEntityId}</div>;
+  const { entity, fields, relations } = entityData.entity;
+
+  /**
+   * a simple select form to select from the available entities
+   */
+  // return <div>ONE-TO-ONE CONTROLLER, target-relation:{relationEntityId}</div>;
 
   return (
     <div>
@@ -91,10 +103,11 @@ const OneToOneRelationSelectControl = ({
           })}
         </Select.Content>
       </Select>
-      {/* <Tooltip content="Create a new document.">
+      <Tooltip content="Create a new document.">
         <CreateUltimateEntityDocumentButton
           entity={entity}
           fields={fields}
+          relations={relations}
           onCreationCancel={() => undefined}
           onCreationComplete={handleCreateEntityAndAssign}
         >
@@ -102,7 +115,7 @@ const OneToOneRelationSelectControl = ({
             <Plus />
           </Badge>
         </CreateUltimateEntityDocumentButton>
-      </Tooltip> */}
+      </Tooltip>
     </div>
   );
 };

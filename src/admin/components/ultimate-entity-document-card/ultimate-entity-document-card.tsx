@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { Pencil, Trash } from "@medusajs/icons";
-import { Container, Badge, IconButton, usePrompt } from "@medusajs/ui";
+import { Container, Badge, IconButton, usePrompt, clx } from "@medusajs/ui";
 
 import { UltimateEntity } from "../../../types/ultimate-entity";
 import { UltimateEntityDocument } from "../../../types/ultimate-entity-document";
@@ -22,6 +22,7 @@ interface UltimateEntityDocumentCardProps {
   document: UltimateEntityDocument;
   editPage: UltimateEntityDocumentEditPages;
   onClick?: () => void;
+  className?: string;
 }
 
 const UltimateEntityDocumentCard = ({
@@ -29,6 +30,7 @@ const UltimateEntityDocumentCard = ({
   document,
   editPage,
   onClick,
+  className,
 }: UltimateEntityDocumentCardProps) => {
   const prompt = usePrompt();
   const navigate = useNavigate();
@@ -74,7 +76,7 @@ const UltimateEntityDocumentCard = ({
   if (haveBeenDeleted) return null;
 
   return (
-    <Container onClick={onClick}>
+    <Container onClick={onClick} className={clx(className)}>
       <div className="w-full flex flex-row items-center justify-between">
         <Badge>{useDocumentName(document)}</Badge>
         <div className="flex flex-row items-center gap-2">

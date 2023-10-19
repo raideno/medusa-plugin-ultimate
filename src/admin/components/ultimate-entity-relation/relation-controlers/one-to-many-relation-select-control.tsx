@@ -1,4 +1,4 @@
-import { Plus } from "@medusajs/icons";
+import { Plus, XMark } from "@medusajs/icons";
 import { Badge, IconButton, Select, Tooltip } from "@medusajs/ui";
 
 import { UltimateEntityModel } from "../../../../types/ultimate-entity-model";
@@ -12,6 +12,9 @@ import Skeleton from "../../layout/skeleton";
 import ErrorLayout from "../../layout/error-layout";
 
 import { ControlProps } from ".";
+import UltimateEntityDocumentCard, {
+  UltimateEntityDocumentEditPages,
+} from "../../ultimate-entity-document-card/ultimate-entity-document-card";
 
 type HTMLElementType = HTMLSelectElement;
 
@@ -20,7 +23,7 @@ interface OneToManyRelationSelectControlProps
       React.InputHTMLAttributes<HTMLElementType>,
       "value" | "defaultValue" | "size" | "onChange"
     >,
-    ControlProps<string> {
+    ControlProps<string[]> {
   relationEntityId: string;
 }
 
@@ -33,7 +36,7 @@ const OneToManyRelationSelectControl = ({
   relationEntityId,
   ...props
 }: OneToManyRelationSelectControlProps) => {
-  const { data, isLoading, error } =
+  const { data, isLoading, error, mutate } =
     useUltimateEntityDocuments(relationEntityId);
 
   const {
@@ -42,12 +45,34 @@ const OneToManyRelationSelectControl = ({
     isLoading: entityIsLoading,
   } = useUltimateEntity(relationEntityId);
 
-  function handleValueChange(value: string) {
-    onValueChange(value);
+  // function handleValueChange(value: string) {
+  //   onValueChange(value);
+  // }
+
+  function removeDocument(documentId: string) {
+    const newValue = JSON.parse(JSON.stringify(value)) as typeof value;
+    const documentIndex = newValue.findIndex((docId) => docId === documentId);
+    if (documentIndex !== -1) newValue.splice(documentIndex, 1);
+    onValueChange(newValue);
+  }
+
+  function addDocument(documentId: string) {
+    const newValue = JSON.parse(JSON.stringify(value)) as typeof value;
+    newValue.push(documentId);
+    onValueChange(newValue);
   }
 
   async function handleCreateEntityAndAssign(document: UltimateEntityModel) {
-    // push the entity into the data array
+    await mutate({
+      ...data,
+      documents: [
+        ...(JSON.parse(JSON.stringify(data.documents)) as typeof documents),
+        document,
+      ],
+    });
+    // handleValueChange should be a push to an array
+    // handleValueChange(document.id);
+    // push the entity into the data array (selectable values)
     // assign the entity id into the value field via the handleValueChange function
   }
 
@@ -60,17 +85,35 @@ const OneToManyRelationSelectControl = ({
   if (entityError) return <ErrorLayout />;
 
   const documents = data.documents;
-  const { entity, fields } = entityData.entity;
 
-  return <div>ONE-TO-MANY CONTROLLER, target-relation:{relationEntityId}</div>;
+  const { entity, fields, relations } = entityData.entity;
 
   return (
-    <div>
-      <Select
-        value={value}
-        onValueChange={handleValueChange}
-        defaultValue={defaultValue}
-      >
+    // UltimateEntityDocumentsDrawerSelect
+    <div className="flex flex-col gap-3">
+      <div>list of documents (edit-icon, delete-icon, remove-icon)</div>
+
+      <div className="flex flex-col gap-2">
+        {value.map((documentId) => {
+          return (
+            <div className="relative" key={documentId}>
+              <UltimateEntityDocumentCard
+                document={documents.find((doc) => doc.id === documentId)}
+                editPage={UltimateEntityDocumentEditPages.DRAWER}
+                entity={entity}
+              />
+              <Badge
+                onClick={removeDocument.bind(null, documentId)}
+                className="cursor-pointer aspect-square absolute top-0 right-0 hover:opacity-75 hover:scale-95 active:opacity-50"
+              >
+                <XMark />
+              </Badge>
+            </div>
+          );
+        })}
+      </div>
+      <div>select from existing button (select)</div>
+      <Select onValueChange={addDocument}>
         <Select.Trigger
           placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
         >
@@ -79,6 +122,8 @@ const OneToManyRelationSelectControl = ({
           />
         </Select.Trigger>
         <Select.Content>
+          {/* TODO: filter, don't display the documents that are already selected */}
+          {/* TODO: filter, put a tag on the ones used (owned) by other documents */}
           {documents.map((document, documentIndex) => {
             return (
               <Select.Item
@@ -91,10 +136,12 @@ const OneToManyRelationSelectControl = ({
           })}
         </Select.Content>
       </Select>
+      <div>create button (select)</div>
       {/* <Tooltip content="Create a new document.">
         <CreateUltimateEntityDocumentButton
           entity={entity}
           fields={fields}
+          relations={relations}
           onCreationCancel={() => undefined}
           onCreationComplete={handleCreateEntityAndAssign}
         >
