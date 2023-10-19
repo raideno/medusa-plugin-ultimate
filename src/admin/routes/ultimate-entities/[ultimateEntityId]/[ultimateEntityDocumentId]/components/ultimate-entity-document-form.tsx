@@ -6,6 +6,7 @@ import ErrorLayout from "../../../../../components/layout/error-layout";
 import LoadingSkeletonsWrapper from "../../../../../components/layout/loading-skeletons-wrapper";
 import UltimateEntitiyFieldSkeleton from "../../../../../components/ultimate-entity-field/ultimate-entity-field-skeleton";
 import UltimateEntityFieldContainer from "../../../../../components/ultimate-entity-field/ultimate-entity-field-container";
+import UltimateEntityRelationContainer from "../../../../../components/ultimate-entity-relation/ultimate-entity-relation-container";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
@@ -18,6 +19,7 @@ const UltimateEntityDocumentForm = ({}: UltimateEntityDocumentFormProps) => {
     submit,
     document,
     fields,
+    relations,
     isSubmitLoading,
     isBeingDeleted,
     isDeleted,
@@ -71,6 +73,17 @@ const UltimateEntityDocumentForm = ({}: UltimateEntityDocumentFormProps) => {
             />
           );
         })}
+      {relations.map((relation) => {
+        return (
+          <UltimateEntityRelationContainer
+            key={relation.id}
+            relation={relation}
+            document={document}
+            defaultDocument={defaultDocument}
+            handleValueChange={handleValueChange}
+          />
+        );
+      })}
     </form>
   );
 };

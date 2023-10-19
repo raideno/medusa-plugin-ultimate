@@ -1,15 +1,19 @@
 "use client";
 
-import React, { createContext, useEffect, useContext, useState } from "react";
-import { UltimateEntityModel } from "../../types/ultimate-entity-model";
-import updateUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/update-ultimate-entity-document";
-import { useNavigate } from "react-router-dom";
 import { usePrompt } from "@medusajs/ui";
-import deleteUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/delete-ultimate-entity-document";
+import { useNavigate } from "react-router-dom";
+import React, { createContext, useEffect, useContext, useState } from "react";
+
 import { UltimateEntity } from "../../types/ultimate-entity";
+import { UltimateEntityModel } from "../../types/ultimate-entity-model";
 import { UltimateEntityField } from "../../types/ultimate-entity-field";
+
+import { UltimateEntityRelation } from "../../types/ultimate-entity-relation";
 import getUltimateEntity from "../functions/ultimate-entities/get-ultimate-entity";
 import getUltimateEntitiyDocument from "../functions/ultimate-entities-documents/get-ultimate-entitiy-document";
+import updateUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/update-ultimate-entity-document";
+import deleteUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/delete-ultimate-entity-document";
+
 import getPagePathname from "../utils/get-page-pathname";
 
 interface UltimateEntityDocumentPageContext {
@@ -19,6 +23,7 @@ interface UltimateEntityDocumentPageContext {
   defaultDocument?: UltimateEntityModel | undefined;
   entity?: UltimateEntity | undefined;
   fields?: UltimateEntityField[] | undefined;
+  relations?: UltimateEntityRelation[] | undefined;
 
   //  submit: (data: UltimateEntityModel) => Promise<void>
   //  cancel: (data: UltimateEntityModel) => Promise<void>
@@ -71,6 +76,9 @@ export const UltimateEntityDocumentPageProvider = ({
   const [fields, setFields] = useState<UltimateEntityField[] | undefined>(
     undefined
   );
+  const [relations, setRelations] = useState<
+    UltimateEntityRelation[] | undefined
+  >(undefined);
   const [defaultDocument, setDefaultDocument] = useState<
     UltimateEntityModel | undefined
   >(undefined);
@@ -91,7 +99,7 @@ export const UltimateEntityDocumentPageProvider = ({
 
       try {
         const {
-          entity: { entity, fields },
+          entity: { entity, fields, relations },
         } = await getUltimateEntity(ultimateEntityId);
         const { document } = await getUltimateEntitiyDocument(
           ultimateEntityId,
@@ -101,6 +109,7 @@ export const UltimateEntityDocumentPageProvider = ({
         setDocument(document);
         setDefaultDocument(document);
         setFields(fields);
+        setRelations(relations);
         setEntity(entity);
       } catch (error) {
         setError(true);
@@ -240,6 +249,7 @@ export const UltimateEntityDocumentPageProvider = ({
         defaultDocument,
         entity,
         fields,
+        relations,
 
         ultimateEntityDocumentId,
         ultimateEntityId,
