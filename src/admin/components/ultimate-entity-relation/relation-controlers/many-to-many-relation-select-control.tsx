@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import { Plus, XMark } from "@medusajs/icons";
 import { Badge, IconButton, Select, Tooltip } from "@medusajs/ui";
 
@@ -50,15 +51,17 @@ const ManyToManyRelationSelectControl = ({
   // }
 
   function removeDocument(documentId: string) {
-    const newValue = JSON.parse(JSON.stringify(value)) as typeof value;
+    const newValue = cloneDeep(value);
     const documentIndex = newValue.findIndex((docId) => docId === documentId);
     if (documentIndex !== -1) newValue.splice(documentIndex, 1);
+    console.log("[old-new]", value, newValue);
     onValueChange(newValue);
   }
 
   function addDocument(documentId: string) {
-    const newValue = JSON.parse(JSON.stringify(value)) as typeof value;
+    const newValue = cloneDeep(value);
     newValue.push(documentId);
+    console.log("[old-new]", value, newValue);
     onValueChange(newValue);
   }
 
