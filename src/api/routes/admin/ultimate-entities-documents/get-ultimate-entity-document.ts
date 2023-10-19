@@ -17,6 +17,9 @@ export default async (req: Request, res: Response): Promise<void> => {
 
   // /:ultimateEntityId/documents/:documentId
 
+  // TODO: add it to doc, if set to yes will extend all the ultimate relations
+  const relations = req.params["relations"];
+
   const ultimateEntityId = req.params["ultimateEntityId"];
   const ultimateEntityDocumentId = req.params["documentId"];
 
@@ -40,7 +43,12 @@ export default async (req: Request, res: Response): Promise<void> => {
 
   const document = await ultimateEntityDocumentsService.retrieve(
     ultimateEntityId,
-    ultimateEntityDocumentId
+    ultimateEntityDocumentId,
+    {
+      relations: relations
+        ? ultimateEntity.relations.map((relation) => relation.id)
+        : undefined,
+    }
   );
 
   if (!document || document === undefined || document === null)
