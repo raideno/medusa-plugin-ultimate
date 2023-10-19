@@ -1,16 +1,15 @@
 import { useParams } from "react-router-dom";
 import { RouteProps } from "@medusajs/admin";
 
-import { ULTIMATE_ENTITIES_FRONTEND_PATH } from "../../../../config-values";
-
 import { UltimateEntityDocumentPageProvider } from "../../../../contexts/ultimate-entity-document-page";
 
-import UltiamteEntityPageGoBackButton from "../../../../components/ultimate-entity-page-go-back-button";
+import UltiamteEntityPageGoBackButton from "../../../../components/layout/ultimate-entity-page-go-back-button";
 
 import UltimateEntityDocumentForm from "./components/ultimate-entity-document-form";
 import UltimateEntityDocumentHeader from "./components/ultimate-entity-document-header";
 import UltimateEntityDocumentControlsBar from "./components/ultimate-entity-document-controls-bar";
 import UltimateEntityDocumentInfos from "./components/ultimate-entity-document-infos";
+import getPagePathname from "../../../../utils/get-page-pathname";
 
 const UltimateEntityDocumentPage = ({ notify }: RouteProps) => {
   const { ultimateEntityId, ultimateEntityDocumentId } = useParams();
@@ -23,7 +22,7 @@ const UltimateEntityDocumentPage = ({ notify }: RouteProps) => {
       <div className="relative">
         <UltiamteEntityPageGoBackButton
           children={"Go back."}
-          href={ULTIMATE_ENTITIES_FRONTEND_PATH + "/" + ultimateEntityId}
+          href={getPagePathname.entityDocuments(ultimateEntityId)}
         />
 
         <UltimateEntityDocumentHeader />

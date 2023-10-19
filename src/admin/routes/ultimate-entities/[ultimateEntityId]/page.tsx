@@ -1,21 +1,18 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { RouteProps } from "@medusajs/admin";
-import { Heading, Text, Button } from "@medusajs/ui";
-
-import { ULTIMATE_ENTITIES_FRONTEND_PATH } from "../../../config-values";
-
-import useUltimateEntity from "../../../hooks/ultimate-entities/use-ultimate-entity";
-
-import ErrorLayout from "../../../components/error-layout";
-import UltimateEntityPageHeader from "../../../components/ultimate-entity-page-header";
-import CreateUltimateEntityDocumentButton from "./components/create-ultimate-entity-document-button";
-import UltiamteEntityPageGoBackButton from "../../../components/ultimate-entity-page-go-back-button";
-import UltimateEntityDocumentsPageDocuments from "./components/ultimate-entity-documents-page-documents";
-
-import Skeleton from "../../../components/skeleton";
+import { Button } from "@medusajs/ui";
 
 import useEntityName from "../../../hooks/use-entity-name";
+import useUltimateEntity from "../../../hooks/ultimate-entities/use-ultimate-entity";
+
+import ErrorLayout from "../../../components/layout/error-layout";
+import Skeleton from "../../../components/layout/skeleton";
+import UltimateEntityPageHeader from "../../../components/layout/ultimate-entity-page-header";
+import UltiamteEntityPageGoBackButton from "../../../components/layout/ultimate-entity-page-go-back-button";
+import UltimateEntityDocumentsPageDocuments from "./components/ultimate-entity-documents-page-documents";
+import CreateUltimateEntityDocumentButton from "../../../components/create-ultimate-entity-document-button/create-ultimate-entity-document-button";
+import getPagePathname from "../../../utils/get-page-pathname";
 
 const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
   const { ultimateEntityId } = useParams();
@@ -51,7 +48,7 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
     <div>
       <UltiamteEntityPageGoBackButton
         children="Go back to ultimate entities."
-        href={`${ULTIMATE_ENTITIES_FRONTEND_PATH}`}
+        href={getPagePathname.entities()}
       />
       <UltimateEntityPageHeader
         title={`${useEntityName(entity)} Documents`}
@@ -59,7 +56,11 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
         description={`${useEntityName(entity)} ultimate entity documents.`}
       />
       <div className="mb-xsmall w-full flex flex-row items-center justify-end">
-        <CreateUltimateEntityDocumentButton entity={entity} fields={fields} />
+        <CreateUltimateEntityDocumentButton entity={entity} fields={fields}>
+          <Button variant="secondary" type="reset">
+            Create Document
+          </Button>
+        </CreateUltimateEntityDocumentButton>
       </div>
       <div className="flex flex-col gap-y-xsmall">
         <UltimateEntityDocumentsPageDocuments entity={entity} />

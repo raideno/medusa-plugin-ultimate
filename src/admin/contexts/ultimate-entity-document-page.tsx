@@ -1,22 +1,16 @@
 "use client";
 
-import React, {
-  createContext,
-  useEffect,
-  useCallback,
-  useContext,
-  useState,
-} from "react";
+import React, { createContext, useEffect, useContext, useState } from "react";
 import { UltimateEntityModel } from "../../types/ultimate-entity-model";
 import updateUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/update-ultimate-entity-document";
 import { useNavigate } from "react-router-dom";
 import { usePrompt } from "@medusajs/ui";
 import deleteUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/delete-ultimate-entity-document";
-import { ULTIMATE_ENTITIES_FRONTEND_PATH } from "../config-values";
 import { UltimateEntity } from "../../types/ultimate-entity";
 import { UltimateEntityField } from "../../types/ultimate-entity-field";
 import getUltimateEntity from "../functions/ultimate-entities/get-ultimate-entity";
 import getUltimateEntitiyDocument from "../functions/ultimate-entities-documents/get-ultimate-entitiy-document";
+import getPagePathname from "../utils/get-page-pathname";
 
 interface UltimateEntityDocumentPageContext {
   // after saving update it to te saved verion
@@ -184,7 +178,7 @@ export const UltimateEntityDocumentPageProvider = ({
       if (confirmed) {
         await deleteUltimateEntityDocument(entity.id, ultimateEntityDocumentId);
         // notify.success("Successfully Deleted.", "You are being redirected..");
-        navigate(`${ULTIMATE_ENTITIES_FRONTEND_PATH}/${entity.id}`);
+        navigate(getPagePathname.entityDocuments(entity.id));
         setHaveBeenDeleted(true);
       }
     } catch (error) {

@@ -141,10 +141,12 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
   })
   ```
 
-  | Param       | Type     | Details                     |
-  | ----------- | -------- | --------------------------- |
-  | name        | `string` | Will be displayed on the ui |
-  | description | `string` | Will be displayed on the ui |
+  | Param       | Type      | Details                                               |
+  | ----------- | --------- | ----------------------------------------------------- |
+  | name        | `string`  | Will be displayed on the ui                           |
+  | description | `string`  | Will be displayed on the ui                           |
+  | group       | `string`  | Used to organize the ultimate entities UI into groups |
+  | hidden      | `boolean` | If set to true, entity will not appear on the sidebar |
 
 - **`UltimateEntityField()`:**
 
@@ -186,6 +188,7 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
     IMAGE = "IMAGE",
     SELECT = "SELECT",
     ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
+    MANY_TO_ONE_RELATION_SELECT = "MANY_TO_ONE_RELATION_SELECT",
     UNKNOWN = "UNKNOWN",
     STRING_ARRAY = "STRING_ARRAY",
     DATE = "DATE",
@@ -274,3 +277,10 @@ the entity id will be <u>**blog_post**</u>
     [];
   }
   ```
+
+## Examples
+
+- [Blog Posts](/examples/blog-posts-example/README.md)
+- [Blog Posts With Categories](/examples/blog-posts-with-categories-example/README.md)
+- [Extend Product / BuiltIn Entities](/examples/extend-product-entity-example/README.md)
+- [Product Brand](/examples/product-brand-example/README.md)

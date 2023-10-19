@@ -2,11 +2,10 @@ import { FormEvent } from "react";
 
 import { useUltimateEntityDocumentPage } from "../../../../../contexts/ultimate-entity-document-page";
 
-import UltimateEntityFormField from "./ultimate-entity-document-form-field";
-import UltimateEntityFormFieldSkeleton from "./ultimate-entity-document-form-field-skeleton";
-
-import ErrorLayout from "../../../../../components/error-layout";
-import LoadingSkeletonsWrapper from "../../../../../components/loading-skeletons-wrapper";
+import ErrorLayout from "../../../../../components/layout/error-layout";
+import LoadingSkeletonsWrapper from "../../../../../components/layout/loading-skeletons-wrapper";
+import UltimateEntitiyFieldSkeleton from "../../../../../components/ultimate-entity-field/ultimate-entity-field-skeleton";
+import UltimateEntityField from "../../../../../components/ultimate-entity-field/ultimate-entity-field";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
@@ -50,7 +49,7 @@ const UltimateEntityDocumentForm = ({}: UltimateEntityDocumentFormProps) => {
           iterations={fields ? fields.length : 12}
           keyPrefix="ultimate-entity-document-form-field-"
         >
-          <UltimateEntityFormFieldSkeleton />
+          <UltimateEntitiyFieldSkeleton />
         </LoadingSkeletonsWrapper>
       </div>
     );
@@ -63,12 +62,12 @@ const UltimateEntityDocumentForm = ({}: UltimateEntityDocumentFormProps) => {
         .filter((field) => !EXCLUDED_FIELDS_IDS.includes(field.id))
         .map((field) => {
           return (
-            <UltimateEntityFormField
-              handleValueChange={handleValueChange}
-              document={document}
-              defaultDocument={defaultDocument}
+            <UltimateEntityField
               key={field.id}
               field={field}
+              document={document}
+              defaultDocument={defaultDocument}
+              handleValueChange={handleValueChange}
             />
           );
         })}

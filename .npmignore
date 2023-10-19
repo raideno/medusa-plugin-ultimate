@@ -14,6 +14,7 @@ build
 .cache
 .yarn
 uploads
+examples
 
 # These are files that are included in a
 # Medusa project and can be removed from a

@@ -46,7 +46,6 @@
     "@medusajs/ui": "^2.2.0"
   },
   "dependencies": {
-    "@uiw/react-md-editor": "^3.24.1",
     "@medusajs/admin": "^7.1.1",
     "@medusajs/cache-inmemory": "^1.8.8",
     "@medusajs/cache-redis": "^1.8.8",
@@ -57,6 +56,7 @@
     "@medusajs/medusa": "^1.16.0",
     "@medusajs/ui": "^2.2.0",
     "@tanstack/react-query": "4.22.0",
+    "@uiw/react-md-editor": "^3.24.1",
     "babel-preset-medusa-package": "^1.1.13",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -68,6 +68,7 @@
     "medusa-payment-manual": "^1.0.24",
     "medusa-payment-stripe": "^6.0.4",
     "prism-react-renderer": "^2.0.4",
+    "react-color": "^2.19.3",
     "react-router-dom": "^6.16.0",
     "swr": "^2.2.4",
     "typeorm": "^0.3.16"

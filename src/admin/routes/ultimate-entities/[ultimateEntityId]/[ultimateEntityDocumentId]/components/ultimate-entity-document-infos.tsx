@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { Badge, Text } from "@medusajs/ui";
-import ErrorLayout from "../../../../../components/error-layout";
+import ErrorLayout from "../../../../../components/layout/error-layout";
 import { useUltimateEntityDocumentPage } from "../../../../../contexts/ultimate-entity-document-page";
-import formatTime from "../../../../../utils/formatTime";
-import formatDate from "../../../../../utils/formatDate";
-import Skeleton from "../../../../../components/skeleton";
+import formatTime from "../../../../../utils/format-time";
+import formatDate from "../../../../../utils/format-date";
+import Skeleton from "../../../../../components/layout/skeleton";
 import useDocumentName from "../../../../../hooks/use-document-name";
 
 const UltimateEntityDocumentInfos = () => {

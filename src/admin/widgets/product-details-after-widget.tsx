@@ -1,15 +1,18 @@
 import { useState, useEffect, FormEvent } from "react";
-import { Button, Container, Heading, Text } from "@medusajs/ui";
+
+import { useMedusa } from "medusa-react";
+import { Button, Heading, Text } from "@medusajs/ui";
 import { ProductDetailsWidgetProps, WidgetConfig } from "@medusajs/admin";
-import { useAdminProduct, useMedusa } from "medusa-react";
 
 import useUltimateEntity from "../hooks/ultimate-entities/use-ultimate-entity";
-import UltimateEntityFormField from "../routes/ultimate-entities/[ultimateEntityId]/[ultimateEntityDocumentId]/components/ultimate-entity-document-form-field";
+
 import { UltimateEntityModel } from "../../types/ultimate-entity-model";
+
 import updateUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/update-ultimate-entity-document";
-import useUltimateEntityDocument from "../hooks/ultimate-entities-documents/use-ultimate-entity-document";
-import ErrorLayout from "../components/error-layout";
-import Skeleton from "../components/skeleton";
+
+import Skeleton from "../components/layout/skeleton";
+import ErrorLayout from "../components/layout/error-layout";
+import UltimateEntityField from "../components/ultimate-entity-field/ultimate-entity-field";
 
 export enum UltimateEntityFieldTypes {
   STRING = "STRING",
@@ -18,15 +21,12 @@ export enum UltimateEntityFieldTypes {
   IMAGE = "IMAGE",
   SELECT = "SELECT",
   ONE_TO_MANY_RELATION_SELECT = "ONE_TO_MANY_RELATION_SELECT",
+  MANY_TO_ONE_RELATION_SELECT = "MANY_TO_ONE_RELATION_SELECT",
+  UNKNOWN = "UNKNOWN",
   STRING_ARRAY = "STRING_ARRAY",
   DATE = "DATE",
   MARKDOWN = "MARKDOWN",
   COLOR = "COLOR",
-  UNKNOWN = "UNKNOWN",
-
-  // COLOR_PICKER = "COLOR_PICKER",
-  // TIME = "TIME",
-  // DATE_AND_TIME = "DATE_AND_TIME",
 }
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
@@ -195,7 +195,7 @@ const ProductDetailsBeforeWidget = ({
             .filter((field) => field.type !== UltimateEntityFieldTypes.UNKNOWN)
             .map((field) => {
               return (
-                <UltimateEntityFormField
+                <UltimateEntityField
                   document={document}
                   handleValueChange={handleValueChange}
                   key={field.id}

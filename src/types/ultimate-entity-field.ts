@@ -7,6 +7,7 @@ export enum UltimateEntityFieldComponents {
   CHECBKOX = "CHECBKOX",
   RADIO_GROUP = "RADIO_GROUP",
   SELECT = "SELECT",
+  MULTI_SELECT = "MULTI_SELECT",
   IMAGE_INPUT = "IMAGE_INPUT",
   MULTI_STRING_INPUT = "MULTI_STRING_INPUT",
   DATE_INPUT = "DATE_INPUT",
@@ -16,6 +17,7 @@ export enum UltimateEntityFieldComponents {
 
 // TODO: transform components into enum
 export type UltimateEntityFieldTypeMap = {
+  [UltimateEntityFieldTypes.MANY_TO_ONE_RELATION_SELECT]: UltimateEntityFieldComponents.MULTI_SELECT;
   [UltimateEntityFieldTypes.COLOR]: UltimateEntityFieldComponents.COLOR_INPUT;
   [UltimateEntityFieldTypes.STRING]: UltimateEntityFieldComponents.INPUT;
   [UltimateEntityFieldTypes.TEXT]: UltimateEntityFieldComponents.TEXT_AREA;
@@ -45,6 +47,7 @@ export type UltimateEntityFieldDefaultValueMap = {
   [UltimateEntityFieldTypes.STRING_ARRAY]: string[];
   [UltimateEntityFieldTypes.DATE]: Date;
   [UltimateEntityFieldTypes.ONE_TO_MANY_RELATION_SELECT]: string;
+  [UltimateEntityFieldTypes.MANY_TO_ONE_RELATION_SELECT]: string[];
   [UltimateEntityFieldTypes.MARKDOWN]: string;
   [UltimateEntityFieldTypes.UNKNOWN]: any;
 };
@@ -71,6 +74,7 @@ export type UltimateFieldWithType<T extends UltimateEntityFieldTypes> = {
    * target relation must be an ultimate entity too
    * note: in future, even non ultimate entities gonna be able to use it
    */
+  isRelation?: boolean;
   relationEntityId?: string;
   /**
    * only for select components
@@ -79,6 +83,7 @@ export type UltimateFieldWithType<T extends UltimateEntityFieldTypes> = {
 };
 
 export type UltimateEntityField =
+  | UltimateFieldWithType<UltimateEntityFieldTypes.MANY_TO_ONE_RELATION_SELECT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.STRING>
   | UltimateFieldWithType<UltimateEntityFieldTypes.COLOR>
   | UltimateFieldWithType<UltimateEntityFieldTypes.TEXT>

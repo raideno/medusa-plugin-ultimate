@@ -1,10 +1,11 @@
 import { UltimateEntity } from "../../../../../types/ultimate-entity";
-import ErrorLayout from "../../../../components/error-layout";
-import LoadingSkeletonsWrapper from "../../../../components/loading-skeletons-wrapper";
+import ErrorLayout from "../../../../components/layout/error-layout";
+import LoadingSkeletonsWrapper from "../../../../components/layout/loading-skeletons-wrapper";
+import UltimateEntityDocumentCard, {
+  UltimateEntityDocumentEditPages,
+} from "../../../../components/ultimate-entity-document-card/ultimate-entity-document-card";
+import UltimateEntityDocumentCardSkeleton from "../../../../components/ultimate-entity-document-card/ultimate-entity-document-card-skeleton";
 import useUltimateEntityDocuments from "../../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
-import useUltimateEntity from "../../../../hooks/ultimate-entities/use-ultimate-entity";
-import UltimateEntityDocumentCard from "./ultimate-entity-document-card";
-import UltimateEntityDocumentSkeletonCard from "./ultimate-entity-document-skeleton-card";
 
 interface UltimateEntityDocumentsPageDocumentsProps {
   entity: UltimateEntity;
@@ -21,7 +22,7 @@ const UltimateEntityDocumentsPageDocuments = ({
         iterations={12}
         keyPrefix={"ultimate-entity-documents-page-documents-skeleton-"}
       >
-        <UltimateEntityDocumentSkeletonCard />
+        <UltimateEntityDocumentCardSkeleton />
       </LoadingSkeletonsWrapper>
     );
 
@@ -36,6 +37,7 @@ const UltimateEntityDocumentsPageDocuments = ({
       {documents.map((document) => {
         return (
           <UltimateEntityDocumentCard
+            editPage={UltimateEntityDocumentEditPages.EXTERNAL}
             entity={entity}
             document={document}
             key={entity.id + "---" + document.id}

@@ -1,8 +1,8 @@
 import { Badge, Heading, Text } from "@medusajs/ui";
 
 import { useUltimateEntityDocumentPage } from "../../../../../contexts/ultimate-entity-document-page";
-import Skeleton from "../../../../../components/skeleton";
-import ErrorLayout from "../../../../../components/error-layout";
+import Skeleton from "../../../../../components/layout/skeleton";
+import ErrorLayout from "../../../../../components/layout/error-layout";
 import useEntityName from "../../../../../hooks/use-entity-name";
 
 const UltimateEntityDocumentHeader = () => {

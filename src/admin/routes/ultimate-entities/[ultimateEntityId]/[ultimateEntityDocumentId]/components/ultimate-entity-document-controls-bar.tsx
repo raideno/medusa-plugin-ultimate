@@ -1,7 +1,7 @@
 import { Button, IconButton } from "@medusajs/ui";
 import { useUltimateEntityDocumentPage } from "../../../../../contexts/ultimate-entity-document-page";
 import { Trash } from "@medusajs/icons";
-import Skeleton from "../../../../../components/skeleton";
+import Skeleton from "../../../../../components/layout/skeleton";
 
 const UltimateEntityDocumentControlsBar = () => {
   const {
