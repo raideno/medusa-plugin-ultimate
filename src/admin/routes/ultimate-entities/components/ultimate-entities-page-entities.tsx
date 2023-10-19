@@ -1,6 +1,8 @@
-import { groupBy } from "lodash";
 import { Heading } from "@medusajs/ui";
 import { Link } from "react-router-dom";
+
+import { UltimateEntity } from "../../../../types/ultimate-entity";
+import { UltimateEntityField } from "../../../../types/ultimate-entity-field";
 
 import useUltimateEntities from "../../../hooks/ultimate-entities/use-ultimate-entities";
 
@@ -28,37 +30,71 @@ const UltimateEntitiesPageEntitites = () => {
 
   const entities = data.entities;
 
-  const groups = Object.keys(groupBy(entities, "group")).map(
-    (key, _, groups) => [key, groups[key]]
-  );
+  const groups: {
+    name: string;
+    entities: { fields: UltimateEntityField[]; entity: UltimateEntity }[];
+  }[] = [
+    {
+      name: "default",
+      entities: [],
+    },
+  ];
+
+  entities.forEach(({ entity, fields }) => {
+    if (entity.group) {
+      const group = groups.find((group) => group.name === entity.group);
+      if (group) {
+        // group exist, push only
+        group.entities.push({
+          entity,
+          fields,
+        });
+      } else {
+        // create the gruop and push
+        groups.push({
+          name: entity.group,
+          entities: [
+            {
+              entity,
+              fields,
+            },
+          ],
+        });
+      }
+    } else {
+      groups[0].entities.push({ entity, fields });
+    }
+  });
 
   return (
     <>
-      {groups.map(([groupName, groupEntities], groupIndex) => {
-        return (
-          <div className="flex flex-col gap-2">
-            <Heading className="font-sans font-medium h2-core inter-2xlarge-semibold mb-xsmall">
-              {groupName}
-            </Heading>
-            {groupEntities
-              .filter(({ entity, fields }) => !entity.hidden)
-              .map(({ entity, fields }) => {
-                return (
-                  // TODO: have those links in the configuration file
-                  <Link
-                    key={entity.id}
-                    to={getPagePathname.entityDocuments(entity.id)}
-                  >
-                    <UltimateEntityCard entity={entity} />
-                  </Link>
-                );
-              })}
-            {groupIndex !== groups.length - 1 && (
-              <div className="w-full h-[1px] border border-border rounded" />
-            )}
-          </div>
-        );
-      })}
+      {groups.map(
+        ({ name: groupName, entities: groupEntities }, groupIndex) => {
+          return (
+            <div className="flex flex-col gap-2">
+              <Heading className="font-sans font-medium h2-core inter-2xlarge-semibold mb-xsmall">
+                {groupName}
+              </Heading>
+              {groupEntities
+                .filter(({ entity, fields }) => !entity.hidden)
+                .map(({ entity, fields }) => {
+                  return (
+                    // TODO: have those links in the configuration file
+                    <Link
+                      key={entity.id}
+                      to={getPagePathname.entityDocuments(entity.id)}
+                    >
+                      <UltimateEntityCard entity={entity} />
+                    </Link>
+                  );
+                })}
+              {groupIndex !== groups.length - 1 && (
+                <div className="w-full h-[1px] border border-border rounded" />
+              )}
+            </div>
+          );
+        }
+      )}
     </>
   );
 };
