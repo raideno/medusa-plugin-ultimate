@@ -10,6 +10,8 @@ export default async (
   ultimateEntityId: string,
   ultimateEntityDocumentId: string
 ): Promise<GetUltimateEntityDocumentResponse> => {
+  const includeUltimateRelations = true;
+
   const response = await fetch(
     BACKEND_URL +
       ULTIMATE_ENTITIES_BACKEND_PATH +
@@ -18,7 +20,8 @@ export default async (
       "/" +
       "documents" +
       "/" +
-      ultimateEntityDocumentId,
+      ultimateEntityDocumentId +
+      `?relations=${includeUltimateRelations}`,
     {
       method: "GET",
       credentials: "include",
