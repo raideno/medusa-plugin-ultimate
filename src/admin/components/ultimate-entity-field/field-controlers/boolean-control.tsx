@@ -79,16 +79,17 @@ const BooleanControl = ({
       );
       break;
 
-    case UltimateEntityFieldComponents.CHECBKOX:
-      return (
-        <Checkbox
-          checked={value}
-          onCheckedChange={handleValueChange}
-          defaultChecked={defaultValue}
-          //   {...props}
-        />
-      );
-      break;
+    // case UltimateEntityFieldComponents.CHECBKOX:
+    //   return (
+    //     <Checkbox
+    //       className="border border-border"
+    //       checked={value}
+    //       onCheckedChange={handleValueChange}
+    //       defaultChecked={defaultValue}
+    //       //   {...props}
+    //     />
+    //   );
+    //   break;
   }
 };
 

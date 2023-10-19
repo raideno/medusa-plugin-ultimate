@@ -46,6 +46,7 @@ const UltimateEntityField = ({
           defaultValue={defaultDocument[field.id]}
           value={document[field.id]}
           onValueChange={handleValueChange.bind(null, field.id)}
+          placeholder={field.name || field.id}
         />
       );
       break;
@@ -66,6 +67,7 @@ const UltimateEntityField = ({
           defaultValue={defaultDocument[field.id]}
           value={document[field.id]}
           onValueChange={handleValueChange.bind(null, field.id)}
+          placeholder={field.name || field.id}
         />
       );
       break;
@@ -121,7 +123,7 @@ const UltimateEntityField = ({
 
     case UltimateEntityFieldTypes.UNKNOWN:
     default:
-      return <div>input</div>;
+      return <div>unknown-field-typr</div>;
       break;
   }
 };

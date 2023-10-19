@@ -71,6 +71,19 @@ const ManyToOneRelationSelectControl = ({
 
   return (
     <div className="grid grid-cols-[auto_1fr] gap-2">
+      <CreateUltimateEntityDocumentButton
+        entity={entity}
+        fields={fields}
+        relations={relations}
+        onCreationCancel={() => undefined}
+        onCreationComplete={handleCreateEntityAndAssign}
+      >
+        <Tooltip content="Create a new document.">
+          <Badge className="flex flex-col items-center justify-center aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
+            <Plus />
+          </Badge>
+        </Tooltip>
+      </CreateUltimateEntityDocumentButton>
       <Select
         value={value}
         onValueChange={handleValueChange}
@@ -96,19 +109,6 @@ const ManyToOneRelationSelectControl = ({
           })}
         </Select.Content>
       </Select>
-      <CreateUltimateEntityDocumentButton
-        entity={entity}
-        fields={fields}
-        relations={relations}
-        onCreationCancel={() => undefined}
-        onCreationComplete={handleCreateEntityAndAssign}
-      >
-        <Tooltip content="Create a new document.">
-          <Badge className="aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
-            <Plus />
-          </Badge>
-        </Tooltip>
-      </CreateUltimateEntityDocumentButton>
     </div>
   );
 };

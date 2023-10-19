@@ -89,10 +89,7 @@ const ManyToManyRelationSelectControl = ({
   const { entity, fields, relations } = entityData.entity;
 
   return (
-    // UltimateEntityDocumentsDrawerSelect
     <div className="flex flex-col gap-3">
-      <div>list of documents (edit-icon, delete-icon, remove-icon)</div>
-
       <div className="flex flex-col gap-2">
         {value.map((documentId) => {
           return (
@@ -112,44 +109,44 @@ const ManyToManyRelationSelectControl = ({
           );
         })}
       </div>
-      <div>select from existing button (select)</div>
-      <Select onValueChange={addDocument}>
-        <Select.Trigger
-          placeholder={DEFAULT_MANY_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
-        >
-          <Select.Value
+      <div className="grid grid-cols-[auto_1fr] gap-2">
+        <Tooltip content="Create a new document.">
+          <CreateUltimateEntityDocumentButton
+            entity={entity}
+            fields={fields}
+            relations={relations}
+            onCreationCancel={() => undefined}
+            onCreationComplete={handleCreateEntityAndAssign}
+          >
+            <Badge className="hover:opacity-75 active:pacity-50 cursor-pointer">
+              <Plus />
+            </Badge>
+          </CreateUltimateEntityDocumentButton>
+        </Tooltip>
+        <Select onValueChange={addDocument}>
+          <Select.Trigger
             placeholder={DEFAULT_MANY_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
-          />
-        </Select.Trigger>
-        <Select.Content className="z-[999]">
-          {/* TODO: filter, don't display the documents that are already selected */}
-          {/* TODO: filter, put a tag on the ones used (owned) by other documents */}
-          {documents.map((document, documentIndex) => {
-            return (
-              <Select.Item
-                value={document.id}
-                key={"select-one-to-many-relation-item-" + documentIndex}
-              >
-                {useDocumentName(document)}
-              </Select.Item>
-            );
-          })}
-        </Select.Content>
-      </Select>
-      <div>create button (select)</div>
-      <Tooltip content="Create a new document.">
-        <CreateUltimateEntityDocumentButton
-          entity={entity}
-          fields={fields}
-          relations={relations}
-          onCreationCancel={() => undefined}
-          onCreationComplete={handleCreateEntityAndAssign}
-        >
-          <Badge className="hover:opacity-75 active:pacity-50 cursor-pointer">
-            <Plus />
-          </Badge>
-        </CreateUltimateEntityDocumentButton>
-      </Tooltip>
+          >
+            <Select.Value
+              placeholder={DEFAULT_MANY_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
+            />
+          </Select.Trigger>
+          <Select.Content className="z-[999]">
+            {/* TODO: filter, don't display the documents that are already selected */}
+            {/* TODO: filter, put a tag on the ones used (owned) by other documents */}
+            {documents.map((document, documentIndex) => {
+              return (
+                <Select.Item
+                  value={document.id}
+                  key={"select-one-to-many-relation-item-" + documentIndex}
+                >
+                  {useDocumentName(document)}
+                </Select.Item>
+              );
+            })}
+          </Select.Content>
+        </Select>
+      </div>
     </div>
   );
 };
