@@ -53,8 +53,6 @@ export default class UltimateEntityDocumentsService extends TransactionBaseServi
         ultimateEntityId
       );
 
-    console.log("[config]:", config);
-
     const query = buildQuery(selector || {}, config);
 
     return ultimateEntityRepository.findAndCount(query);

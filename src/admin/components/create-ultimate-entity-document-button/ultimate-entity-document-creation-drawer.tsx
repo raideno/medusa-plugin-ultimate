@@ -75,7 +75,6 @@ const UltimateEntityDocumentCreationDrawer = ({
       setIsDrawerOpen(false);
     } catch (error) {
       // TODO: put a toast or something to prevent the user
-      console.log("Error creating the document.");
     } finally {
       setIsSubmitLoading(false);
     }

@@ -113,7 +113,6 @@ export const UltimateEntityDocumentPageProvider = ({
         setEntity(entity);
       } catch (error) {
         setError(true);
-        console.log("[error]:", error);
         /**
          * if there is an error here, redirect to previous all page
          */

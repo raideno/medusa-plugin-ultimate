@@ -21,7 +21,6 @@ const ColorControl = ({
   ...props
 }: ColorControlProps) => {
   function handleValueChange(color: any) {
-    console.log("[color]:", color);
     onValueChange(color.hex);
   }
 
@@ -31,12 +30,17 @@ const ColorControl = ({
     <div className="w-full">
       <div
         onClick={toggle}
-        className="cursor-pointer hover:opacity-75 active:opacity-50 w-full h-full border border-border rounded bg-white"
+        className="cursor-pointer bg-white p-2 hover:opacity-75 active:opacity-50 w-full h-full border border-border rounded bg-white"
         style={{
           backgroundColor: value,
         }}
       >
-        <Text className="inter-base-regular text-grey-50">Click to Edit</Text>
+        <div
+          className="w-full h-10 rounded border border-border"
+          style={{
+            backgroundColor: value,
+          }}
+        />
       </div>
       {state && (
         <div className="absolute z-2">

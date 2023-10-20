@@ -165,8 +165,6 @@ export default async (req: Request, res: Response): Promise<void> => {
     }
   );
 
-  console.log(ultimateEntityKeysFilter, defaultKeysFilter);
-
   const [documents, documentsCount] =
     await ultimateEntityDocumentsService.listAndCount(
       ultimateEntityId,

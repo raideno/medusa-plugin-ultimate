@@ -54,14 +54,12 @@ const ManyToManyRelationSelectControl = ({
     const newValue = cloneDeep(value);
     const documentIndex = newValue.findIndex((docId) => docId === documentId);
     if (documentIndex !== -1) newValue.splice(documentIndex, 1);
-    console.log("[old-new]", value, newValue);
     onValueChange(newValue);
   }
 
   function addDocument(documentId: string) {
     const newValue = cloneDeep(value);
     newValue.push(documentId);
-    console.log("[old-new]", value, newValue);
     onValueChange(newValue);
   }
 
@@ -99,7 +97,6 @@ const ManyToManyRelationSelectControl = ({
           const doc = documents.find((doc) => doc.id === documentId);
 
           if (!doc || doc === undefined || doc === null) {
-            console.log("[invalid-doc]:", documentId, documents);
             return null;
           }
 
