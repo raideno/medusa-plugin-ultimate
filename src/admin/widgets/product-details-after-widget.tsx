@@ -132,14 +132,22 @@ const ProductDetailsAfterWidget = ({
         }
       });
 
-      const {
-        document: { id: documentId },
-      } = await updateUltimateEntityDocument(entity.id, product.id, {
+      // const {
+      //   document: { id: documentId },
+      // } = await updateUltimateEntityDocument(entity.id, product.id, {
+      //   ...body,
+      //   id: undefined,
+      //   created_at: undefined,
+      //   updated_at: undefined,
+      // });
+
+      await medusa.client.admin.products.update(product.id, {
         ...body,
         id: undefined,
         created_at: undefined,
         updated_at: undefined,
       });
+
       notify.success("Update succeeded.", "Everything have been updated.");
     } catch (error) {
       notify.error(

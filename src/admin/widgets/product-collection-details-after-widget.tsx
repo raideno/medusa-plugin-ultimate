@@ -138,9 +138,15 @@ const ProductCollectionDetailsAfterWidget = ({
         }
       });
 
-      const {
-        document: { id: documentId },
-      } = await updateUltimateEntityDocument(entity.id, productCollection.id, {
+      // const {
+      //   document: { id: documentId },
+      // } = await updateUltimateEntityDocument(entity.id, productCollection.id, {
+      //   ...body,
+      //   id: undefined,
+      //   created_at: undefined,
+      //   updated_at: undefined,
+      // });
+      await medusa.client.admin.collections.update(productCollection.id, {
         ...body,
         id: undefined,
         created_at: undefined,
