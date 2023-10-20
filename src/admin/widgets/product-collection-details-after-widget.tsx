@@ -2,7 +2,11 @@ import { useState, useEffect, FormEvent } from "react";
 
 import { useMedusa } from "medusa-react";
 import { Button, Heading, Text } from "@medusajs/ui";
-import { ProductDetailsWidgetProps, WidgetConfig } from "@medusajs/admin";
+import {
+  ProductCollectionDetailsWidgetProps,
+  ProductDetailsWidgetProps,
+  WidgetConfig,
+} from "@medusajs/admin";
 
 import useUltimateEntity from "../hooks/ultimate-entities/use-ultimate-entity";
 
@@ -36,13 +40,13 @@ const DEFUALT_DOCUMENT = {
   updated_at: new Date(Date.now()),
 };
 
-const ProductDetailsAfterWidget = ({
-  product,
+const ProductCollectionDetailsAfterWidget = ({
+  productCollection,
   notify,
-}: ProductDetailsWidgetProps) => {
+}: ProductCollectionDetailsWidgetProps) => {
   const medusa = useMedusa();
 
-  const { data, isLoading, error } = useUltimateEntity("product");
+  const { data, isLoading, error } = useUltimateEntity("product_collection");
 
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isCancelationLoading, setIsCancelationLoading] =
@@ -62,23 +66,25 @@ const ProductDetailsAfterWidget = ({
         setIsDocumentLoading(true);
         // setDocument(data.document);
 
-        medusa.client.admin.products
+        medusa.client.admin.collections
           .list({
-            id: product.id,
-            fields: fields
-              .filter(
-                (field) => field.type !== UltimateEntityFieldTypes.UNKNOWN
-              )
-              .map((field) => field.id)
-              .join(","),
+            handle: productCollection.handle,
+            limit: 1,
+            offset: 0,
+            // fields: fields
+            //   .filter(
+            //     (field) => field.type !== UltimateEntityFieldTypes.UNKNOWN
+            //   )
+            //   .map((field) => field.id)
+            //   .join(","),
           })
-          .then(({ products, count }) => {
-            if (products.length === 0) {
+          .then(({ collections, count }) => {
+            if (collections.length === 0) {
               // say error
               setIsDocumentError(true);
               return;
             } else {
-              setDocument(products[0] as any);
+              setDocument(collections[0] as any);
             }
           })
           .catch(() => {})
@@ -134,7 +140,7 @@ const ProductDetailsAfterWidget = ({
 
       const {
         document: { id: documentId },
-      } = await updateUltimateEntityDocument(entity.id, product.id, {
+      } = await updateUltimateEntityDocument(entity.id, productCollection.id, {
         ...body,
         id: undefined,
         created_at: undefined,
@@ -157,7 +163,7 @@ const ProductDetailsAfterWidget = ({
     setIsCancelationLoading(true);
 
     try {
-      setDocument(product);
+      setDocument(productCollection);
     } catch (error) {
     } finally {
       setIsCancelationLoading(false);
@@ -253,7 +259,7 @@ const ProductDetailsAfterWidget = ({
 };
 
 export const config: WidgetConfig = {
-  zone: "product.details.after",
+  zone: "product_collection.details.after",
 };
 
-export default ProductDetailsAfterWidget;
+export default ProductCollectionDetailsAfterWidget;
