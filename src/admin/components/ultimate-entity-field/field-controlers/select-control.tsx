@@ -38,7 +38,7 @@ const SelectControl = ({
       <Select.Trigger>
         <Select.Value placeholder={DEFAULT_SELECT_CONTROL_PLACEHOLDER} />
       </Select.Trigger>
-      <Select.Content>
+      <Select.Content className="z-[999]">
         {options.map((option, optionIndex) => {
           return (
             <Select.Item
