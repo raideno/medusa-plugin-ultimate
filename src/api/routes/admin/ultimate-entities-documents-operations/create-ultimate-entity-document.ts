@@ -115,7 +115,13 @@ export default async (req: Request, res: Response): Promise<void> => {
   });
 
   bodyRelationsValidation.relations.forEach((allowedBodyRelation) => {
-    document[allowedBodyRelation] = req.body[allowedBodyRelation];
+    if (Array.isArray(req.body[allowedBodyRelation]))
+      document[allowedBodyRelation] = req.body[allowedBodyRelation].map(
+        (id) => ({ id })
+      );
+    else {
+      document[allowedBodyRelation] = { id: req.body[allowedBodyRelation] };
+    }
   });
 
   EXCLUDED_KEYS.forEach((excludedKey) => {

@@ -107,7 +107,13 @@ export default async (req: Request, res: Response): Promise<void> => {
   });
 
   bodyRelationsValidation.relations.forEach((allowedBodyRelation) => {
-    newDocument[allowedBodyRelation] = req.body[allowedBodyRelation];
+    if (Array.isArray(req.body[allowedBodyRelation]))
+      newDocument[allowedBodyRelation] = req.body[allowedBodyRelation].map(
+        (id) => ({ id })
+      );
+    else {
+      newDocument[allowedBodyRelation] = { id: req.body[allowedBodyRelation] };
+    }
   });
 
   EXCLUDED_KEYS.forEach((excludedKey) => {
@@ -123,6 +129,8 @@ export default async (req: Request, res: Response): Promise<void> => {
       undefined,
       validationErrors
     );
+
+  // TODO: do separate updates, one for the fields and another one for the relations
 
   const newSavedDocument = await ultimateEntityDocumentsService.update(
     ultimateEntityId,
