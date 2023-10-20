@@ -1,7 +1,7 @@
 import { SketchPicker } from "react-color";
-import { InputHTMLAttributes, ChangeEvent, useState } from "react";
+import { InputHTMLAttributes } from "react";
 
-import { Badge, Input, Text, useToggleState } from "@medusajs/ui";
+import { Text, useToggleState } from "@medusajs/ui";
 
 import { ControlProps } from ".";
 
@@ -21,7 +21,11 @@ const ColorControl = ({
   ...props
 }: ColorControlProps) => {
   function handleValueChange(color: any) {
-    onValueChange(color.hex);
+    try {
+      if (color) onValueChange(color.hex);
+    } catch {
+      // TODO: add error prevention
+    }
   }
 
   const { state, open, close, toggle } = useToggleState();
@@ -31,16 +35,19 @@ const ColorControl = ({
       <div
         onClick={toggle}
         className="cursor-pointer bg-white p-2 hover:opacity-75 active:opacity-50 w-full h-full border border-border rounded bg-white"
-        style={{
-          backgroundColor: value,
-        }}
       >
         <div
-          className="w-full h-10 rounded border border-border"
+          className="flex flex-row items-center justify-center w-full h-10 rounded border border-border"
           style={{
             backgroundColor: value,
           }}
-        />
+        >
+          {(!value || value === null || value === undefined) && (
+            <Text className="font-normal font-sans txt-medium text-grey-50">
+              Select a color.
+            </Text>
+          )}
+        </div>
       </div>
       {state && (
         <div className="absolute z-2">
@@ -48,7 +55,10 @@ const ColorControl = ({
             className="fixed top-0 right-0 bottom-0 left-0"
             onClick={close}
           />
-          <SketchPicker color={value} onChange={handleValueChange} />
+          <SketchPicker
+            color={value || "#FFFFFF"}
+            onChange={handleValueChange}
+          />
         </div>
       )}
     </div>
