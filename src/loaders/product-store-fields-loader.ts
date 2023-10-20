@@ -6,7 +6,7 @@ import UltimateEntityService from "../services/ultimate-entity";
 
 export default async function (
   container: AwilixContainer,
-  logger: Logger,
+
   config: ConfigModule
 ) {
   const ultimateEntityService = container.resolve<UltimateEntityService>(
@@ -31,7 +31,7 @@ export default async function (
     (ultimateEntityField) => ultimateEntityField.id
   );
 
-  logger.log(
+  console.log(
     "[medusa-plugin-ultimate](store-product-fields):",
     fields.join(", ")
   );
@@ -45,5 +45,5 @@ export default async function (
     ...fields,
   ];
 
-  logger.log("[medusa-plugin-ultimate](store-product-fields):", "completed");
+  console.log("[medusa-plugin-ultimate](store-product-fields):", "completed");
 }

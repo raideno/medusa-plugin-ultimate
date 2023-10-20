@@ -6,7 +6,7 @@ import UltimateEntityService from "../services/ultimate-entity";
 
 export default async function (
   container: AwilixContainer,
-  logger: Logger,
+
   config: ConfigModule
 ) {
   const ultimateEntityService = container.resolve<UltimateEntityService>(
@@ -31,7 +31,7 @@ export default async function (
     (ultimateEntityRelation) => ultimateEntityRelation.id
   );
 
-  logger.log(
+  console.log(
     "[medusa-plugin-ultimate](admin-product-collection-relations):",
     relations.join(", ")
   );
@@ -41,7 +41,7 @@ export default async function (
     ...relations,
   ];
 
-  logger.log(
+  console.log(
     "[medusa-plugin-ultimate](admin-product-collection-relations):",
     "completed"
   );
