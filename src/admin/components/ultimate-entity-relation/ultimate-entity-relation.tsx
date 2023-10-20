@@ -48,6 +48,19 @@ const UltimateEntityRelation = ({
   const defaultValue = getValue(defaultDocument[relation.id]);
   const value = getValue(document[relation.id]);
 
+  function onValueChange(newValue: string | string[]) {
+    if (Array.isArray(newValue)) {
+      handleValueChange(
+        relation.id,
+        newValue.map((id) => ({ id }))
+      );
+    } else {
+      handleValueChange(relation.id, {
+        id: newValue,
+      });
+    }
+  }
+
   switch (relation.type) {
     case UltimateEntityRelationTypes.ONE_TO_ONE_RELATION_SELECT:
       return (
@@ -56,7 +69,7 @@ const UltimateEntityRelation = ({
           // TODO: remove the any
           defaultValue={defaultValue}
           value={value}
-          onValueChange={handleValueChange.bind(null, relation.id)}
+          onValueChange={onValueChange}
         />
       );
       break;
@@ -68,7 +81,7 @@ const UltimateEntityRelation = ({
           // TODO: remove the any
           defaultValue={defaultValue || []}
           value={value || []}
-          onValueChange={handleValueChange.bind(null, relation.id)}
+          onValueChange={onValueChange}
         />
       );
       break;
@@ -80,7 +93,7 @@ const UltimateEntityRelation = ({
           // TODO: remove the any
           defaultValue={defaultValue}
           value={value}
-          onValueChange={handleValueChange.bind(null, relation.id)}
+          onValueChange={onValueChange}
         />
       );
       break;
@@ -92,7 +105,7 @@ const UltimateEntityRelation = ({
           // TODO: remove the any
           defaultValue={defaultValue || []}
           value={value || []}
-          onValueChange={handleValueChange.bind(null, relation.id)}
+          onValueChange={onValueChange}
         />
       );
       break;
