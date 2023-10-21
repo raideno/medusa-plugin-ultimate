@@ -1,54 +1,42 @@
 // src/models/product.ts
 
-import { ManyToOne, Entity } from "typeorm";
+import { Column, Entity } from "typeorm";
 
 import { Product as MedusaProduct } from "@medusajs/medusa";
 
 import {
   UltimateEntity,
-  UltimateEntityRelation,
-  UltimateEntityRelationTypes,
+  UltimateEntityField,
+  UltimateEntityFieldTypes,
 } from "medusa-plugin-ultimate/dist/index";
-
-import ProductBrand from "./product-brand";
 
 @Entity()
 @UltimateEntity({
   hidden: true,
 })
 export class Product extends MedusaProduct {
-  @UltimateEntityRelation({
-    relationEntityId: "brand",
-    type: UltimateEntityRelationTypes.MANY_TO_ONE_RELATION_SELECT,
+  @UltimateEntityField({
+    type: UltimateEntityFieldTypes.MARKDOWN,
   })
-  @ManyToOne(() => ProductBrand, (productBrand) => productBrand.products, {
-    nullable: true,
-    cascade: true,
-    eager: true,
-  })
-  @JoinColumn({
-    name: "brand_id",
-    referencedColumnName: "id",
-  })
-  brand?: ProductBrand | null;
+  @Column({ type: "varchar", nullable: true })
+  rich_description?: string | null;
 }
 
-import { IsOptional, IsObject } from "class-validator";
-
+import { IsString, IsOptional } from "class-validator";
 import { registerOverriddenValidators } from "@medusajs/medusa";
 import { AdminPostProductsReq as MedusaAdminPostProductsReq } from "@medusajs/medusa/dist/api/routes/admin/products/create-product";
 import { AdminPostProductsProductReq as MedusaAdminPostProductsProductReq } from "@medusajs/medusa/dist/api/routes/admin/products/update-product";
 
 class AdminPostProductsReq extends MedusaAdminPostProductsReq {
   @IsOptional()
-  @IsObject()
-  brand?: string | null;
+  @IsString()
+  rich_description?: string | null;
 }
 
 class AdminPostProductsProductReq extends MedusaAdminPostProductsProductReq {
   @IsOptional()
-  @IsObject()
-  brand?: string | null;
+  @IsString()
+  rich_description?: string | null;
 }
 
 registerOverriddenValidators(AdminPostProductsReq);

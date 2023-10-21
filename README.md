@@ -59,8 +59,9 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
 
   Use our custom decorators:
 
-  - `@UltimateEntity({})` on your class to create a ui for it.
-  - `@UltimateEntityField({})` on your class fields.
+  - `@UltimateEntity({})` on your entity class to create a ui for it.
+  - `@UltimateEntityField({})` on your entity fields.
+  - `@UltimateEntityRelation({})` on your entity relations.
 
   ```ts
   // src/models/person.ts
@@ -314,5 +315,5 @@ the entity id will be <u>**blog_post**</u>
 
 - [Blog Posts](/examples/blog-posts-example/README.md)
 - [Blog Posts With Categories](/examples/blog-posts-with-categories-example/README.md)
-- [Extend Product / BuiltIn Entities](/examples/extend-product-entity-example/README.md)
+- [Product Rich Description](/examples/extend-product-entity-example/README.md)
 - [Product Brand](/examples/product-brand-example/README.md)

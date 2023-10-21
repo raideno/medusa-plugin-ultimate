@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { RouteProps } from "@medusajs/admin";
 import { Button } from "@medusajs/ui";
@@ -13,8 +13,11 @@ import UltiamteEntityPageGoBackButton from "../../../components/layout/ultimate-
 import UltimateEntityDocumentsPageDocuments from "./components/ultimate-entity-documents-page-documents";
 import CreateUltimateEntityDocumentButton from "../../../components/create-ultimate-entity-document-button/create-ultimate-entity-document-button";
 import getPagePathname from "../../../utils/get-page-pathname";
+import { UltimateEntityDocument } from "../../../../types/ultimate-entity-document";
 
 const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
+  const navigate = useNavigate();
+
   const { ultimateEntityId } = useParams();
 
   const {
@@ -22,6 +25,12 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
     isLoading: isUltimateEntityDataLoading,
     error: isUltimateEntityDataError,
   } = useUltimateEntity(ultimateEntityId);
+
+  async function handleDocumentCreationComplete(
+    document: UltimateEntityDocument
+  ) {
+    navigate(getPagePathname.entityDocument(ultimateEntityId, document.id));
+  }
 
   if (isUltimateEntityDataLoading)
     return (
@@ -61,6 +70,7 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
           entity={entity}
           fields={fields}
           relations={relations}
+          onCreationComplete={handleDocumentCreationComplete}
         >
           <Button variant="secondary" type="reset">
             Create Document

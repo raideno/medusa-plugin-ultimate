@@ -11,6 +11,7 @@ import useDocumentName from "../../hooks/use-document-name";
 
 import deleteUltimateEntityDocument from "../../functions/ultimate-entities-documents-operations/delete-ultimate-entity-document";
 import getPagePathname from "../../utils/get-page-pathname";
+import UpdateUltimateEntityDocumentButton from "../update-ultimate-entity-document-button/update-ultimate-entity-document-button";
 
 export enum UltimateEntityDocumentEditPages {
   EXTERNAL = "EXTERNAL",
@@ -80,14 +81,40 @@ const UltimateEntityDocumentCard = ({
       <div className="w-full flex flex-row items-center justify-between">
         <Badge>{useDocumentName(document)}</Badge>
         <div className="flex flex-row items-center gap-2">
-          <IconButton
-            onClick={handleEditButtonClick}
-            disabled={haveBeenDeleted || isBeingDeleted}
-            isLoading={isBeingEdited}
-            variant="transparent"
-          >
-            <Pencil />
-          </IconButton>
+          {(() => {
+            switch (editPage) {
+              case UltimateEntityDocumentEditPages.DRAWER:
+                return (
+                  <UpdateUltimateEntityDocumentButton
+                    documentId={document.id}
+                    ultimateEntityId={entity.id}
+                    onUpdateCancel={() => null}
+                    onUpdateComplete={() => null}
+                  >
+                    <IconButton
+                      disabled={haveBeenDeleted || isBeingDeleted}
+                      variant="transparent"
+                    >
+                      <Pencil />
+                    </IconButton>
+                  </UpdateUltimateEntityDocumentButton>
+                );
+                break;
+              default:
+              case UltimateEntityDocumentEditPages.EXTERNAL:
+                return (
+                  <IconButton
+                    onClick={handleEditButtonClick}
+                    disabled={haveBeenDeleted || isBeingDeleted}
+                    isLoading={isBeingEdited}
+                    variant="transparent"
+                  >
+                    <Pencil />
+                  </IconButton>
+                );
+                break;
+            }
+          })()}
           <IconButton
             onClick={handleDeleteButtonClick}
             disabled={haveBeenDeleted || isBeingEdited}
