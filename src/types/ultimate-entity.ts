@@ -4,4 +4,5 @@ export interface UltimateEntity {
   group?: string;
   hidden?: boolean;
   description?: string;
+  isBuiltInEntity?: boolean;
 }

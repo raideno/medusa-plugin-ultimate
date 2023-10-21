@@ -12,6 +12,7 @@ import {
 
 @Entity()
 @UltimateEntity({
+  isBuiltInEntity: true,
   hidden: true,
 })
 export class Product extends MedusaProduct {

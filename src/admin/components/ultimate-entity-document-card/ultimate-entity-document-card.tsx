@@ -80,51 +80,55 @@ const UltimateEntityDocumentCard = ({
     <Container onClick={onClick} className={clx(className)}>
       <div className="w-full flex flex-row items-center justify-between">
         <Badge>{useDocumentName(document)}</Badge>
-        <div className="flex flex-row items-center gap-2">
-          {(() => {
-            switch (editPage) {
-              case UltimateEntityDocumentEditPages.DRAWER:
-                return (
-                  <UpdateUltimateEntityDocumentButton
-                    documentId={document.id}
-                    ultimateEntityId={entity.id}
-                    onUpdateCancel={() => null}
-                    onUpdateComplete={() => null}
-                  >
+        {!entity.isBuiltInEntity ? (
+          <div className="flex flex-row items-center gap-2">
+            {(() => {
+              switch (editPage) {
+                case UltimateEntityDocumentEditPages.DRAWER:
+                  return (
+                    <UpdateUltimateEntityDocumentButton
+                      documentId={document.id}
+                      ultimateEntityId={entity.id}
+                      onUpdateCancel={() => null}
+                      onUpdateComplete={() => null}
+                    >
+                      <IconButton
+                        disabled={haveBeenDeleted || isBeingDeleted}
+                        variant="transparent"
+                      >
+                        <Pencil />
+                      </IconButton>
+                    </UpdateUltimateEntityDocumentButton>
+                  );
+                  break;
+                default:
+                case UltimateEntityDocumentEditPages.EXTERNAL:
+                  return (
                     <IconButton
+                      onClick={handleEditButtonClick}
                       disabled={haveBeenDeleted || isBeingDeleted}
+                      isLoading={isBeingEdited}
                       variant="transparent"
                     >
                       <Pencil />
                     </IconButton>
-                  </UpdateUltimateEntityDocumentButton>
-                );
-                break;
-              default:
-              case UltimateEntityDocumentEditPages.EXTERNAL:
-                return (
-                  <IconButton
-                    onClick={handleEditButtonClick}
-                    disabled={haveBeenDeleted || isBeingDeleted}
-                    isLoading={isBeingEdited}
-                    variant="transparent"
-                  >
-                    <Pencil />
-                  </IconButton>
-                );
-                break;
-            }
-          })()}
-          <IconButton
-            onClick={handleDeleteButtonClick}
-            disabled={haveBeenDeleted || isBeingEdited}
-            isLoading={isBeingDeleted}
-            variant="transparent"
-          >
-            {/* TODO: replace with a spinner when is being deleted */}
-            <Trash />
-          </IconButton>
-        </div>
+                  );
+                  break;
+              }
+            })()}
+            <IconButton
+              onClick={handleDeleteButtonClick}
+              disabled={haveBeenDeleted || isBeingEdited}
+              isLoading={isBeingDeleted}
+              variant="transparent"
+            >
+              {/* TODO: replace with a spinner when is being deleted */}
+              <Trash />
+            </IconButton>
+          </div>
+        ) : (
+          <div />
+        )}
       </div>
     </Container>
   );

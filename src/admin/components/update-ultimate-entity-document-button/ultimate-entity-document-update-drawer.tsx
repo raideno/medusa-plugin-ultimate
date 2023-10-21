@@ -50,13 +50,27 @@ const UltimateEntityDocumentUpdateDrawer = ({
     useState<boolean>(false);
 
   useEffect(() => {
-    if (!ultimateEntityDocumentResponse.isLoading)
+    console.log("USE EFFECT STAGE 0");
+    if (!ultimateEntityDocumentResponse.isLoading) {
+      console.log("USE EFFECT STAGE 1");
+
       if (
         !ultimateEntityDocumentResponse.error &&
         ultimateEntityDocumentResponse.data
-      )
-        setDocument(ultimateEntityDocumentResponse.data.document);
-  }, [ultimateEntityDocumentResponse]);
+      ) {
+        console.log("USE EFFECT STAGE 2");
+
+        {
+          console.log("USE EFFECT FINAL STAGE");
+
+          setDocument(ultimateEntityDocumentResponse.data.document);
+        }
+      }
+    }
+  }, [
+    ultimateEntityDocumentResponse.isLoading,
+    ultimateEntityDocumentResponse.data,
+  ]);
 
   async function handleCancelButtonClick() {
     await handleCancel();
@@ -66,6 +80,8 @@ const UltimateEntityDocumentUpdateDrawer = ({
   }
 
   async function handleSubmit(event?: FormEvent<HTMLFormElement>) {
+    console.log("SUBMITING");
+
     if (event) event.preventDefault();
 
     if (isSubmitLoading || isCancelationLoading) return;
@@ -97,6 +113,8 @@ const UltimateEntityDocumentUpdateDrawer = ({
   async function handleCancel() {
     if (isSubmitLoading || isCancelationLoading) return;
 
+    console.log("CANCELING");
+
     setIsCancelationLoading(true);
     try {
       setDocument(ultimateEntityDocumentResponse.data.document);
@@ -111,14 +129,15 @@ const UltimateEntityDocumentUpdateDrawer = ({
   async function handleValueChange(key: string, value: any) {
     const newDocument = JSON.parse(JSON.stringify(document)) as typeof document;
     newDocument[key] = value;
+    console.log("CHANGING-VALUE");
     setDocument(newDocument);
   }
 
   function handleDrawerOpenChange(isOpen: boolean) {
     if (isSubmitLoading || isCancelationLoading) return;
 
-    if (isOpen) open();
-    else close();
+    if (isOpen) openDrawer();
+    else closeDrawer();
   }
 
   if (
@@ -130,7 +149,7 @@ const UltimateEntityDocumentUpdateDrawer = ({
   if (
     !ultimateEntityResponse.data ||
     ultimateEntityResponse.error ||
-    ultimateEntityDocumentResponse.data ||
+    !ultimateEntityDocumentResponse.data ||
     ultimateEntityDocumentResponse.error
   )
     return <ErrorLayout />;
@@ -141,12 +160,15 @@ const UltimateEntityDocumentUpdateDrawer = ({
   return (
     <Drawer open={isDrawerOpen} onOpenChange={handleDrawerOpenChange}>
       <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>
-      <Drawer.Content>
+      <Drawer.Content className="z-[99]">
         <Drawer.Header>
           <Drawer.Title>Update Document</Drawer.Title>
         </Drawer.Header>
         <Drawer.Body className="h-full max-h-full overflow-y-auto">
-          <form>
+          <form
+            onSubmit={handleSubmit}
+            className="h-full max-h-full overflow-y-auto w-full flex flex-col gap-2"
+          >
             {fields
               .filter((field) => !EXCLUDED_FIELDS_IDS.includes(field.id))
               .map((field) => {

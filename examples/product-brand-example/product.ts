@@ -15,6 +15,7 @@ import ProductBrand from "./product-brand";
 @Entity()
 @UltimateEntity({
   hidden: true,
+  isBuiltInEntity: true,
 })
 export class Product extends MedusaProduct {
   @UltimateEntityRelation({
