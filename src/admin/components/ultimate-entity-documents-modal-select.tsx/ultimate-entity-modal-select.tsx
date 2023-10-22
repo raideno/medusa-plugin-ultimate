@@ -108,14 +108,14 @@ const UltimateEntityModalSelect = ({
   return (
     <FocusModal open={isModalOpen} onOpenChange={handleModalOpenChange}>
       <FocusModal.Trigger asChild>{trigger}</FocusModal.Trigger>
-      <FocusModal.Content className="z-90">
+      <FocusModal.Content className="z-[199]">
         <FocusModal.Header>
           <Button variant="secondary" onClick={handleCancelSelection}>
             Cancel
           </Button>
         </FocusModal.Header>
-        <FocusModal.Body className="flex flex-col items-center py-16">
-          <div className="h-full overflow-y-scroll flex w-full max-w-lg flex-col gap-y-8">
+        <FocusModal.Body className="flex flex-col items-center py-16 h-full overflow-y-auto">
+          <div className="h-full overflow-y-auto flex w-full max-w-lg flex-col gap-y-8">
             <div className="flex flex-col gap-y-1">
               <Heading>Select a document of type {ultimateEntityId}</Heading>
               <Text className="text-ui-fg-subtle">
@@ -140,7 +140,8 @@ const UltimateEntityModalSelect = ({
                 After creating it'll automatically be selected.
               </Label>
             </div>
-
+            {/*  */}
+            {/* TODO: add a search-bar (search by id | name | title | description | select field to search by) */}
             <div className="h-full flex flex-col gap-2">
               {documents
                 .filter((document) => !hiddenDocumentsIds.includes(document.id))

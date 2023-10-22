@@ -115,14 +115,20 @@ export default async (req: Request, res: Response): Promise<void> => {
   });
 
   bodyRelationsValidation.relations.forEach((allowedBodyRelation) => {
-    if (Array.isArray(req.body[allowedBodyRelation]))
-      document[allowedBodyRelation] = req.body[allowedBodyRelation].map(
-        (id) => ({ id })
-      );
-    else {
-      document[allowedBodyRelation] = { id: req.body[allowedBodyRelation] };
-    }
+    document[allowedBodyRelation.id] = req.body[allowedBodyRelation.id];
   });
+
+  // bodyRelationsValidation.relations.forEach((allowedBodyRelation) => {
+  //   if (Array.isArray(req.body[allowedBodyRelation.id]))
+  //     document[allowedBodyRelation.id] = req.body[allowedBodyRelation.id].map(
+  //       (id) => ({ id })
+  //     );
+  //   else {
+  //     document[allowedBodyRelation.id] = {
+  //       id: req.body[allowedBodyRelation.id],
+  //     };
+  //   }
+  // });
 
   EXCLUDED_KEYS.forEach((excludedKey) => {
     delete document[excludedKey];

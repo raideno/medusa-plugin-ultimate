@@ -98,13 +98,13 @@ const ManyToOneRelationSelectControl = ({
               <Badge>Selected: {value}</Badge>
               <div className="flex flex-row items-center gap-2">
                 <Badge className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75">
-                  <ChevronUpDown width={12} height={12} />
+                  <ChevronUpDown className="scale-80" />
                 </Badge>
                 <Badge
                   onClick={handleSelectDelete}
                   className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75"
                 >
-                  <XMark width={12} height={12} />
+                  <XMark className="scale-80" />
                 </Badge>
               </div>
             </>
@@ -112,7 +112,7 @@ const ManyToOneRelationSelectControl = ({
             <>
               <Badge className="cursor-pointer">Click to select.</Badge>
               <Badge className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75">
-                <ChevronUpDown width={12} height={12} />
+                <ChevronUpDown className="scale-80" />
               </Badge>
             </>
           )}

@@ -44,6 +44,9 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
        resolve: "medusa-plugin-ultimate",
        options: {
          enableUI: true,
+         backendUrl: undefined,
+         ultimateEntitiesAdminEndpointPath: undefined,
+         ultimateEntitiesStoreEndpointPath: undefined,
        },
      },
    ];
@@ -260,7 +263,7 @@ the entity id will be <u>**blog_post**</u>
   | --------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
   | `<field>` | `string \| string[]` | Any of your document field to filter on, example: title=brand-name-1,brand-name-2: will return all documents with one of this titles |
   | limit     | `number`             | The number of products to skip when retrieving the documents                                                                         |
-  | offset    | `number`             | Will be displayed on the ui                                                                                                          |
+  | offset    | `number`             | How much rows to skip.                                                                                                               |
   | order     | `string \| string[]` | A document field(s) to sort-order the retrieved documents by.                                                                        |
   | q         | `string`             | Used to search on documents fields specified in the @UltimateEntity decorator                                                        |
 

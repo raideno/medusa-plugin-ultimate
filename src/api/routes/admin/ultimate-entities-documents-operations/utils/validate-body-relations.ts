@@ -1,6 +1,7 @@
 import { partition } from "lodash";
 
 import { UltimateEntityObject } from "../../../../../types/ultimate-entity-object";
+import { UltimateEntityRelation } from "../../../../../types/ultimate-entity-relation";
 
 const EXCLUDED_KEYS = ["id", "created_at", "updated_at"];
 
@@ -10,7 +11,7 @@ export default async (
 ): Promise<{
   errors: { message: string; details: string }[];
   error: boolean;
-  relations: string[];
+  relations: UltimateEntityRelation[];
 }> => {
   // should receive a body with only allowed keys (relations / relations)
   // return the body relations (separate from relation)
@@ -40,6 +41,10 @@ export default async (
   return {
     error: false,
     errors: [],
-    relations: allowedDocumentKeys,
+    relations: allowedDocumentKeys.map((allowedDocumentKeys) =>
+      ultimateEntity.relations.find(
+        (relation) => relation.id === allowedDocumentKeys
+      )
+    ),
   };
 };

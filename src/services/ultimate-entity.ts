@@ -79,6 +79,31 @@ export default class UltimateEntityService extends TransactionBaseService {
     return genericEntityRepo;
   }
 
+  getUltimateEntityRelationInverseRelationName(
+    ultimateEntityId: string,
+    relationName: string
+  ) {
+    /**
+     * get the ultimate etntiy metadata
+     */
+    const [ultimateEntityMetadata, _] =
+      this.getUltimateEntityMetadataAndTargetFromUltimateEntityId(
+        ultimateEntityId
+      );
+
+    const relation = ultimateEntityMetadata.relations.find(
+      (relation) => relation.propertyName === relationName
+    );
+
+    // IMPORTANT for one-to-many there is always a reverse relation
+    // IMPORTANT for many-to-many it's always
+    // IMPORTANT for one-to-one not always
+    // IMPORTANT for many-to-one not always
+    // this will be used for many-to-many and many-to-one so it's fine
+
+    return relation.inverseRelation.propertyName;
+  }
+
   listUltimateEntityRelations(
     entityMetadata: EntityMetadata,
     entityTarget: EntityTarget<UltimateEntityModel>

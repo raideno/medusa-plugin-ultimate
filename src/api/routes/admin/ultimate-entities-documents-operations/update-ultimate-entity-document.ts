@@ -19,6 +19,7 @@ import { UpdateUltimateEntityDocumentResponse } from "../../../../types/api/upda
 import validateBodyKeys from "./utils/validate-body-keys";
 import validateBodyFields from "./utils/validate-body-fields";
 import validateBodyRelations from "./utils/validate-body-relations";
+import { UltimateEntityRelationTypes } from "../../../../types/ultimate-entity-relation-types";
 
 const EXCLUDED_KEYS = ["id", "created_at", "updated_at"];
 
@@ -102,23 +103,109 @@ export default async (req: Request, res: Response): Promise<void> => {
 
   const newDocument = cloneDeep(document);
 
+  bodyRelationsValidation.relations.forEach((allowedBodyRelation) => {
+    newDocument[allowedBodyRelation.id] = undefined;
+    delete newDocument[allowedBodyRelation.id];
+  });
+
   bodyFieldsValidation.fields.forEach((allowedBodyField) => {
     newDocument[allowedBodyField] = req.body[allowedBodyField];
   });
 
+  /**
+   * will be updated separately
+   * * check the type of the relation first
+   * * * if it's one-to-one or many-to-one it'll be updated allong with the other fields
+   * * * if it's a many-to-many or a one-to-many it'll be updated differently
+   */
   bodyRelationsValidation.relations.forEach((allowedBodyRelation) => {
-    newDocument[allowedBodyRelation] = req.body[allowedBodyRelation];
+    if (
+      allowedBodyRelation.type ===
+        UltimateEntityRelationTypes.MANY_TO_ONE_RELATION_SELECT ||
+      allowedBodyRelation.type ===
+        UltimateEntityRelationTypes.ONE_TO_ONE_RELATION_SELECT
+    )
+      newDocument[allowedBodyRelation.id as string] =
+        req.body[allowedBodyRelation.id];
   });
 
-  // bodyRelationsValidation.relations.forEach((allowedBodyRelation) => {
-  //   if (Array.isArray(req.body[allowedBodyRelation]))
-  //     newDocument[allowedBodyRelation] = req.body[allowedBodyRelation].map(
-  //       (id) => ({ id })
-  //     );
-  //   else {
-  //     newDocument[allowedBodyRelation] = { id: req.body[allowedBodyRelation] };
-  //   }
-  // });
+  for (let i = 0; i < bodyRelationsValidation.relations.length; i++) {
+    const allowedBodyRelation = bodyRelationsValidation.relations[i];
+    if (
+      allowedBodyRelation.type ===
+      UltimateEntityRelationTypes.ONE_TO_MANY_RELATION_SELECT
+    ) {
+      const variable = req.body[allowedBodyRelation.id as string] as {
+        id: string;
+      }[];
+      // child relation id
+      // body[allowedBodyRelation.id] should be an array of this type [{ id: string }]
+      /**
+       * we gonna all the relations of the actual entity and set them to null first
+       */
+      const inverseEntityRelationName =
+        ultimateEntityService.getUltimateEntityRelationInverseRelationName(
+          ultimateEntityId,
+          allowedBodyRelation.id
+        );
+
+      // console.log("[inverse-entity-relation-name]:", inverseEntityRelationName);
+      // console.log(
+      //   "[allowedBodyRelation.relationEntityId]:",
+      //   allowedBodyRelation.relationEntityId
+      // );
+      // console.log("[allowedBodyRelation.id]:", allowedBodyRelation.id);
+
+      // we list the inverse documents that have relations
+      const [relatedTargetEntityRelations] =
+        await ultimateEntityDocumentsService.listAndCount(
+          allowedBodyRelation.relationEntityId,
+          {
+            [inverseEntityRelationName]: { id: document.id },
+          }
+        );
+
+      // console.log(
+      //   "[relatedTargetEntityRelations]:",
+      //   relatedTargetEntityRelations
+      // );
+
+      // we set them to null to delete them
+      for (let i = 0; i < relatedTargetEntityRelations.length; i++) {
+        await ultimateEntityDocumentsService.update(
+          allowedBodyRelation.relationEntityId,
+          relatedTargetEntityRelations[i].id,
+          {
+            // all of them to null except the selected ones to document.id
+            // [inverseEntityRelationName]: { id: null },
+            [inverseEntityRelationName]: null,
+          }
+        );
+      }
+
+      // console.log("[variable]:", variable);
+
+      // set
+      for (let i = 0; i < variable.length; i++) {
+        const updated = await ultimateEntityDocumentsService.update(
+          allowedBodyRelation.relationEntityId,
+          variable[i].id,
+          {
+            [inverseEntityRelationName]: document,
+          }
+        );
+        // console.log("[updated]:", updated);
+      }
+    }
+
+    // many-to-many
+    if (
+      allowedBodyRelation.type ===
+      UltimateEntityRelationTypes.MANY_TO_MANY_RELATION_SELECT
+    ) {
+      // TODO: implement
+    }
+  }
 
   EXCLUDED_KEYS.forEach((excludedKey) => {
     delete newDocument[excludedKey];
