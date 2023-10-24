@@ -1,4 +1,4 @@
-import { Button, Drawer } from "@medusajs/ui";
+import { Button, Drawer, Heading } from "@medusajs/ui";
 import { useNavigate } from "react-router-dom";
 import { FormEvent, ChangeEvent, useState } from "react";
 
@@ -11,6 +11,7 @@ import UltimateEntityField from "../ultimate-entity-field/ultimate-entity-field"
 import UltimateEntityFieldContainer from "../ultimate-entity-field/ultimate-entity-field-container";
 import { UltimateEntityRelation } from "../../../types/ultimate-entity-relation";
 import UltimateEntityRelationContainer from "../ultimate-entity-relation/ultimate-entity-relation-container";
+import groupBy from "../../utils/group-by";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
@@ -105,6 +106,19 @@ const UltimateEntityDocumentCreationDrawer = ({
     setIsDrawerOpen(open);
   }
 
+  const everything = [
+    ...fields
+      .filter((field) => !EXCLUDED_FIELDS_IDS.includes(field.id))
+      .map((field) => ({ ...field, field: true, relation: false })),
+    ...relations.map((relation) => ({
+      ...relation,
+      relation: true,
+      field: false,
+    })),
+  ];
+
+  const groups = groupBy(everything, ["group"], "default-group");
+
   return (
     <Drawer open={isDrawerOpen} onOpenChange={handleDrawerOpenChange}>
       <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>
@@ -117,30 +131,76 @@ const UltimateEntityDocumentCreationDrawer = ({
             className="h-full max-h-full overflow-y-auto w-full flex flex-col gap-2"
             onSubmit={handleSubmit}
           >
-            {fields
-              .filter((field) => !EXCLUDED_FIELDS_IDS.includes(field.id))
-              .map((field) => {
+            {groups[0].items.map((fieldOrRelation) => {
+              if (fieldOrRelation.field) {
+                const field = fieldOrRelation as UltimateEntityField;
                 return (
                   <UltimateEntityFieldContainer
+                    key={field.id}
                     field={field}
                     document={document}
-                    handleValueChange={handleValueChange}
-                    key={field.id}
                     defaultDocument={DEFUALT_DOCUMENT}
+                    handleValueChange={handleValueChange}
                   />
                 );
-              })}
-            {relations.map((relation) => {
-              return (
-                <UltimateEntityRelationContainer
-                  key={relation.id}
-                  relation={relation}
-                  document={document}
-                  handleValueChange={handleValueChange}
-                  defaultDocument={DEFUALT_DOCUMENT}
-                />
-              );
+              }
+              if (fieldOrRelation.relation) {
+                const relation = fieldOrRelation as UltimateEntityRelation;
+                return (
+                  <UltimateEntityRelationContainer
+                    key={relation.id}
+                    relation={relation}
+                    document={document}
+                    defaultDocument={DEFUALT_DOCUMENT}
+                    handleValueChange={handleValueChange}
+                  />
+                );
+              }
             })}
+            {groups
+              .splice(1)
+              .map(({ name: groupName, items: groupFieldsOrRelations }) => {
+                return (
+                  <div
+                    key={`fields-group-${groupName}`}
+                    className="p-2 flex flex-col gap-2 border border-border rounded bg-white"
+                  >
+                    <Heading className="font-sans font-medium h3-core inter-2xlarge-semibold mb-xsmall">
+                      {groupName}
+                    </Heading>
+                    <div className="flex flex-col gap-2">
+                      {groupFieldsOrRelations.map((groupFieldsOrRelation) => {
+                        if (groupFieldsOrRelation.field) {
+                          const field =
+                            groupFieldsOrRelation as UltimateEntityField;
+                          return (
+                            <UltimateEntityFieldContainer
+                              key={field.id}
+                              field={field}
+                              document={document}
+                              defaultDocument={DEFUALT_DOCUMENT}
+                              handleValueChange={handleValueChange}
+                            />
+                          );
+                        }
+                        if (groupFieldsOrRelation.relation) {
+                          const relation =
+                            groupFieldsOrRelation as UltimateEntityRelation;
+                          return (
+                            <UltimateEntityRelationContainer
+                              key={relation.id}
+                              relation={relation}
+                              document={document}
+                              defaultDocument={DEFUALT_DOCUMENT}
+                              handleValueChange={handleValueChange}
+                            />
+                          );
+                        }
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
           </form>
         </Drawer.Body>
         <Drawer.Footer>

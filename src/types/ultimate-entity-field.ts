@@ -63,6 +63,8 @@ export type UltimateFieldWithType<T extends UltimateEntityFieldTypes> = {
   note?: string;
   name?: string;
   description?: string;
+
+  group?: string;
   /**
    * only for select components
    */

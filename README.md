@@ -139,20 +139,22 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
 - **`UltimateEntity()`:**
 
   ```ts
-  UltimateEntityField({
+  UltimateEntity({
     name: "Name displayed on the entity page.",
     description: "Description displayed on the entity page",
     hidden: false,
     group: "Store",
+    isBuiltInEntity: false;
   });
   ```
 
-  | Param       | Type      | Details                                               |
-  | ----------- | --------- | ----------------------------------------------------- |
-  | name        | `string`  | Will be displayed on the ui                           |
-  | description | `string`  | Will be displayed on the ui                           |
-  | group       | `string`  | Used to organize the ultimate entities UI into groups |
-  | hidden      | `boolean` | If set to true, entity will not appear on the sidebar |
+  | Param           | Type      | Details                                                                                                                         |
+  | --------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------- |
+  | name            | `string`  | Will be displayed on the ui                                                                                                     |
+  | description     | `string`  | Will be displayed on the ui                                                                                                     |
+  | group           | `string`  | Used to organize the ultimate entities UI into groups                                                                           |
+  | hidden          | `boolean` | If set to true, entity will not appear on the sidebar                                                                           |
+  | isBuiltInEntity | `boolean` | Must be set to true if the entity is a medusa built-in entity (ex: Product, Product-Collection, ...) otherwise it'll cause bugs |
 
 - **`UltimateEntityField()`:**
 
@@ -175,15 +177,15 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
   });
   ```
 
-  | Param           | Type                                 | Details                                                                                 |
-  | --------------- | ------------------------------------ | --------------------------------------------------------------------------------------- |
-  | type (required) | `UltimateEntityFieldTypes`           | Field type, important to display the correct field                                      |
-  | defaultValue    | `any`                                | Will be used if no value is provided on creation of a document from the admin dashboard |
-  | variant         | `UltimateEntityFieldComponents`      | UI Component used for that field                                                        |
-  | note            | `string`                             | Text do display when UI field is hovered                                                |
-  | name            | `string`                             | Will be displayed on the UI field as a label                                            |
-  | description     | `string`                             | Will be displayed on the UI field, on the bottom                                        |
-  | options         | `{ label: string, value: string }[]` | Required if the field type is a SELECT `UltimateEntityFieldTypes.SELECT`                |
+  | Param           | Type                                 | Details                                                                  |
+  | --------------- | ------------------------------------ | ------------------------------------------------------------------------ |
+  | type (required) | `UltimateEntityFieldTypes`           | Field type, important to display the correct field                       |
+  | name            | `string`                             | Will be displayed on the UI field as a label                             |
+  | description     | `string`                             | Will be displayed on the UI field, on the bottom                         |
+  | variant         | `UltimateEntityFieldComponents`      | UI Component used for that field                                         |
+  | note            | `string`                             | Text do display when UI field is hovered                                 |
+  | group           | `string`                             | Fields of the same group will appear under the same section in the ui    |
+  | options         | `{ label: string, value: string }[]` | Required if the field type is a SELECT `UltimateEntityFieldTypes.SELECT` |
 
 - **`UltimateEntityFieldTypes`:**
 
@@ -214,13 +216,14 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
   });
   ```
 
-  | Param                       | Type                          | Details                                          |
-  | --------------------------- | ----------------------------- | ------------------------------------------------ |
-  | type (required)             | `UltimateEntityRelationTypes` | Relation type, important to determine the ui     |
-  | relationEntityId (required) | `string`                      | The target relation entity id                    |
-  | note                        | `string`                      | Text do display when UI field is hovered         |
-  | name                        | `string`                      | Will be displayed on the UI field as a label     |
-  | description                 | `string`                      | Will be displayed on the UI field, on the bottom |
+  | Param                       | Type                          | Details                                                               |
+  | --------------------------- | ----------------------------- | --------------------------------------------------------------------- |
+  | type (required)             | `UltimateEntityRelationTypes` | Relation type, important to determine the ui                          |
+  | relationEntityId (required) | `string`                      | The target relation entity id                                         |
+  | note                        | `string`                      | Text do display when UI field is hovered                              |
+  | group                       | `string`                      | Fields of the same group will appear under the same section in the ui |
+  | name                        | `string`                      | Will be displayed on the UI field as a label                          |
+  | description                 | `string`                      | Will be displayed on the UI field, on the bottom                      |
 
 - **`UltimateEntityRelationTypes`:**
   ```ts

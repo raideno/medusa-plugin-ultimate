@@ -1,6 +1,6 @@
 import { FormEvent, useState, useEffect } from "react";
 
-import { Button, Drawer, useToggleState } from "@medusajs/ui";
+import { Button, Drawer, Heading, useToggleState } from "@medusajs/ui";
 
 import ErrorLayout from "../layout/error-layout";
 
@@ -11,6 +11,9 @@ import useUltimateEntityDocument from "../../hooks/ultimate-entities-documents/u
 import UltimateEntityFieldContainer from "../ultimate-entity-field/ultimate-entity-field-container";
 import UltimateEntityRelationContainer from "../ultimate-entity-relation/ultimate-entity-relation-container";
 import updateUltimateEntityDocument from "../../functions/ultimate-entities-documents-operations/update-ultimate-entity-document";
+import groupBy from "../../utils/group-by";
+import { UltimateEntityField } from "../../../types/ultimate-entity-field";
+import { UltimateEntityRelation } from "../../../types/ultimate-entity-relation";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
@@ -157,6 +160,19 @@ const UltimateEntityDocumentUpdateDrawer = ({
   const { entity, fields, relations } = ultimateEntityResponse.data.entity;
   const documentData = ultimateEntityDocumentResponse.data.document;
 
+  const everything = [
+    ...fields
+      .filter((field) => !EXCLUDED_FIELDS_IDS.includes(field.id))
+      .map((field) => ({ ...field, field: true, relation: false })),
+    ...relations.map((relation) => ({
+      ...relation,
+      relation: true,
+      field: false,
+    })),
+  ];
+
+  const groups = groupBy(everything, ["group"], "default-group");
+
   return (
     <Drawer open={isDrawerOpen} onOpenChange={handleDrawerOpenChange}>
       <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>
@@ -169,30 +185,76 @@ const UltimateEntityDocumentUpdateDrawer = ({
             onSubmit={handleSubmit}
             className="h-full max-h-full overflow-y-auto w-full flex flex-col gap-2"
           >
-            {fields
-              .filter((field) => !EXCLUDED_FIELDS_IDS.includes(field.id))
-              .map((field) => {
+            {groups[0].items.map((fieldOrRelation) => {
+              if (fieldOrRelation.field) {
+                const field = fieldOrRelation as UltimateEntityField;
                 return (
                   <UltimateEntityFieldContainer
+                    key={field.id}
                     field={field}
                     document={document}
-                    handleValueChange={handleValueChange}
-                    key={field.id}
                     defaultDocument={documentData}
+                    handleValueChange={handleValueChange}
                   />
                 );
-              })}
-            {relations.map((relation) => {
-              return (
-                <UltimateEntityRelationContainer
-                  key={relation.id}
-                  relation={relation}
-                  document={document}
-                  handleValueChange={handleValueChange}
-                  defaultDocument={documentData}
-                />
-              );
+              }
+              if (fieldOrRelation.relation) {
+                const relation = fieldOrRelation as UltimateEntityRelation;
+                return (
+                  <UltimateEntityRelationContainer
+                    key={relation.id}
+                    relation={relation}
+                    document={document}
+                    defaultDocument={documentData}
+                    handleValueChange={handleValueChange}
+                  />
+                );
+              }
             })}
+            {groups
+              .splice(1)
+              .map(({ name: groupName, items: groupFieldsOrRelations }) => {
+                return (
+                  <div
+                    key={`fields-group-${groupName}`}
+                    className="p-2 flex flex-col gap-2 border border-border rounded bg-white"
+                  >
+                    <Heading className="font-sans font-medium h3-core inter-2xlarge-semibold mb-xsmall">
+                      {groupName}
+                    </Heading>
+                    <div className="flex flex-col gap-2">
+                      {groupFieldsOrRelations.map((groupFieldsOrRelation) => {
+                        if (groupFieldsOrRelation.field) {
+                          const field =
+                            groupFieldsOrRelation as UltimateEntityField;
+                          return (
+                            <UltimateEntityFieldContainer
+                              key={field.id}
+                              field={field}
+                              document={document}
+                              defaultDocument={documentData}
+                              handleValueChange={handleValueChange}
+                            />
+                          );
+                        }
+                        if (groupFieldsOrRelation.relation) {
+                          const relation =
+                            groupFieldsOrRelation as UltimateEntityRelation;
+                          return (
+                            <UltimateEntityRelationContainer
+                              key={relation.id}
+                              relation={relation}
+                              document={document}
+                              defaultDocument={documentData}
+                              handleValueChange={handleValueChange}
+                            />
+                          );
+                        }
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
           </form>
         </Drawer.Body>
         <Drawer.Footer>
