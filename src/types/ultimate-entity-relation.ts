@@ -13,7 +13,7 @@ export type UltimateRelationWithType<T extends UltimateEntityRelationTypes> = {
   type: T;
   relationEntityId: string;
 
-  group: string;
+  group?: string;
 
   note?: string;
   name?: string;
