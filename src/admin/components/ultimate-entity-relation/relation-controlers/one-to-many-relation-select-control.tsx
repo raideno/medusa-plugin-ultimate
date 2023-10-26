@@ -1,5 +1,5 @@
 import { cloneDeep } from "lodash";
-import { Plus, XMark } from "@medusajs/icons";
+import { ChevronUpDown, Plus, XMark } from "@medusajs/icons";
 import { Badge, IconButton, Select, Tooltip } from "@medusajs/ui";
 
 import { UltimateEntityModel } from "../../../../types/ultimate-entity-model";
@@ -18,6 +18,7 @@ import UltimateEntityDocumentCard, {
 } from "../../ultimate-entity-document-card/ultimate-entity-document-card";
 import { UltimateEntityRelation } from "../../../../types/ultimate-entity-relation";
 import { UltimateEntity } from "../../../../types/ultimate-entity";
+import UltimateEntityModalSelect from "../../ultimate-entity-documents-modal-select.tsx/ultimate-entity-modal-select";
 
 type HTMLElementType = HTMLSelectElement;
 
@@ -144,29 +145,31 @@ const OneToManyRelationSelectControl = ({
             </Badge>
           </Tooltip>
         </CreateUltimateEntityDocumentButton>
-        <Select onValueChange={addDocument}>
-          <Select.Trigger
-            placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
-          >
-            <Select.Value
-              placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
-            />
-          </Select.Trigger>
-          <Select.Content className="z-[999]">
-            {/* TODO: filter, don't display the documents that are already selected */}
-            {/* TODO: filter, put a tag on the ones used (owned) by other documents */}
-            {documents.map((document, documentIndex) => {
-              return (
-                <Select.Item
-                  value={document.id}
-                  key={"select-one-to-many-relation-item-" + documentIndex}
-                >
-                  {useDocumentName(document)}
-                </Select.Item>
-              );
-            })}
-          </Select.Content>
-        </Select>
+        {/* --- */}
+        {/* TODO: filter, don't display the documents that are already selected */}
+        {/* TODO: filter, put a tag on the ones used (owned) by other documents */}
+        <UltimateEntityModalSelect
+          ultimateEntityId={relationEntityId}
+          disabledDocumentsId={[...value.map((docId) => docId)]}
+          hiddenDocumentsIds={[]}
+          onSelectCancel={() => null}
+          onSelectComplete={(document) => addDocument(document.id)}
+          // onSelectComplete={handleSelectionChange}
+          documentCreationDefaultValues={{
+            [ultimateEntityRelation.relationEntityPropertyName]: {
+              id: ultimateEntityDocument.id,
+            },
+          }}
+        >
+          <div className="w-full h-10 border border-border rounded flex flex-row items-center justify-between p-2">
+            <>
+              <Badge className="cursor-pointer">Click to select.</Badge>
+              <Badge className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75">
+                <ChevronUpDown className="scale-80" />
+              </Badge>
+            </>
+          </div>
+        </UltimateEntityModalSelect>
       </div>
     </div>
   );
