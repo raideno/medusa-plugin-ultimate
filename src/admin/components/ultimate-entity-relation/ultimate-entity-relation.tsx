@@ -6,8 +6,10 @@ import OneToOneyControl from "./relation-controlers/one-to-one-relation-select-c
 import ManyToOneControl from "./relation-controlers/many-to-one-relation-select-control";
 import OneToManyControl from "./relation-controlers/one-to-many-relation-select-control";
 import ManyToManyControl from "./relation-controlers/many-to-many-relation-select-control";
+import { UltimateEntity } from "../../../types/ultimate-entity";
 
 interface UltimateEntityRelationProps {
+  entity: UltimateEntity;
   relation: UltimateEntityRelation;
   document: UltimateEntityModel;
   defaultDocument: UltimateEntityModel;
@@ -37,6 +39,7 @@ const getValue = (relation: any) => {
 };
 
 const UltimateEntityRelation = ({
+  entity,
   relation,
   document,
   defaultDocument,
@@ -65,6 +68,10 @@ const UltimateEntityRelation = ({
     case UltimateEntityRelationTypes.ONE_TO_ONE_RELATION_SELECT:
       return (
         <OneToOneyControl
+          ultimateEntity={entity}
+          ultimateEntityDocument={document}
+          ultimateEntityRelation={relation}
+          // ----
           relationEntityId={relation.relationEntityId}
           // TODO: remove the any
           defaultValue={defaultValue}
@@ -74,21 +81,25 @@ const UltimateEntityRelation = ({
       );
       break;
 
-    case UltimateEntityRelationTypes.MANY_TO_MANY_RELATION_SELECT:
-      return (
-        <ManyToManyControl
-          relationEntityId={relation.relationEntityId}
-          // TODO: remove the any
-          defaultValue={defaultValue || []}
-          value={value || []}
-          onValueChange={onValueChange}
-        />
-      );
-      break;
+    // case UltimateEntityRelationTypes.MANY_TO_MANY_RELATION_SELECT:
+    //   return (
+    //     <ManyToManyControl
+    //       relationEntityId={relation.relationEntityId}
+    //       // TODO: remove the any
+    //       defaultValue={defaultValue || []}
+    //       value={value || []}
+    //       onValueChange={onValueChange}
+    //     />
+    //   );
+    //   break;
 
     case UltimateEntityRelationTypes.MANY_TO_ONE_RELATION_SELECT:
       return (
         <ManyToOneControl
+          ultimateEntity={entity}
+          ultimateEntityDocument={document}
+          ultimateEntityRelation={relation}
+          // ----
           relationEntityId={relation.relationEntityId}
           // TODO: remove the any
           defaultValue={defaultValue}
@@ -101,6 +112,10 @@ const UltimateEntityRelation = ({
     case UltimateEntityRelationTypes.ONE_TO_MANY_RELATION_SELECT:
       return (
         <OneToManyControl
+          ultimateEntity={entity}
+          ultimateEntityDocument={document}
+          ultimateEntityRelation={relation}
+          // ----
           relationEntityId={relation.relationEntityId}
           // TODO: remove the any
           defaultValue={defaultValue || []}

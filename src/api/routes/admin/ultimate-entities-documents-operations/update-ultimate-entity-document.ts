@@ -198,13 +198,13 @@ export default async (req: Request, res: Response): Promise<void> => {
       }
     }
 
-    // many-to-many
-    if (
-      allowedBodyRelation.type ===
-      UltimateEntityRelationTypes.MANY_TO_MANY_RELATION_SELECT
-    ) {
-      // TODO: implement
-    }
+    // // many-to-many
+    // if (
+    //   allowedBodyRelation.type ===
+    //   UltimateEntityRelationTypes.MANY_TO_MANY_RELATION_SELECT
+    // ) {
+    //   // TODO: implement
+    // }
   }
 
   EXCLUDED_KEYS.forEach((excludedKey) => {

@@ -202,6 +202,7 @@ const UltimateEntityDocumentUpdateDrawer = ({
                 const relation = fieldOrRelation as UltimateEntityRelation;
                 return (
                   <UltimateEntityRelationContainer
+                    entity={entity}
                     key={relation.id}
                     relation={relation}
                     document={document}
@@ -219,7 +220,7 @@ const UltimateEntityDocumentUpdateDrawer = ({
                     key={`fields-group-${groupName}`}
                     className="p-2 flex flex-col gap-2 border border-border rounded bg-white"
                   >
-                    <Heading className="font-sans font-medium h3-core inter-2xlarge-semibold mb-xsmall">
+                    <Heading className="inter-large-semibold gap-x-base text-grey-40 flex">
                       {groupName}
                     </Heading>
                     <div className="flex flex-col gap-2">
@@ -242,6 +243,7 @@ const UltimateEntityDocumentUpdateDrawer = ({
                             groupFieldsOrRelation as UltimateEntityRelation;
                           return (
                             <UltimateEntityRelationContainer
+                              entity={entity}
                               key={relation.id}
                               relation={relation}
                               document={document}

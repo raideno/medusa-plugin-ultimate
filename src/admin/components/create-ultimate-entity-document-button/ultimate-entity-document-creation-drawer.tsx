@@ -1,5 +1,4 @@
 import { Button, Drawer, Heading } from "@medusajs/ui";
-import { useNavigate } from "react-router-dom";
 import { FormEvent, ChangeEvent, useState } from "react";
 
 import { UltimateEntity } from "../../../types/ultimate-entity";
@@ -15,12 +14,6 @@ import groupBy from "../../utils/group-by";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
-const DEFUALT_DOCUMENT: UltimateEntityModel = {
-  id: undefined,
-  created_at: undefined,
-  updated_at: undefined,
-};
-
 interface UltimateEntityDocumentCreationDrawerProps {
   children: React.ReactNode;
   entity: UltimateEntity;
@@ -28,6 +21,7 @@ interface UltimateEntityDocumentCreationDrawerProps {
   relations: UltimateEntityRelation[];
   onCreationComplete?: (document: UltimateEntityModel) => Promise<void>;
   onCreationCancel?: () => void;
+  defaultValues?: { [key: string]: any };
 }
 
 const UltimateEntityDocumentCreationDrawer = ({
@@ -37,8 +31,14 @@ const UltimateEntityDocumentCreationDrawer = ({
   children: trigger,
   onCreationCancel,
   onCreationComplete,
+  defaultValues,
 }: UltimateEntityDocumentCreationDrawerProps) => {
-  const navigate = useNavigate();
+  const DEFUALT_DOCUMENT: UltimateEntityModel = {
+    id: undefined,
+    created_at: undefined,
+    updated_at: undefined,
+    ...defaultValues,
+  };
 
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
@@ -148,6 +148,7 @@ const UltimateEntityDocumentCreationDrawer = ({
                 const relation = fieldOrRelation as UltimateEntityRelation;
                 return (
                   <UltimateEntityRelationContainer
+                    entity={entity}
                     key={relation.id}
                     relation={relation}
                     document={document}
@@ -165,7 +166,7 @@ const UltimateEntityDocumentCreationDrawer = ({
                     key={`fields-group-${groupName}`}
                     className="p-2 flex flex-col gap-2 border border-border rounded bg-white"
                   >
-                    <Heading className="font-sans font-medium h3-core inter-2xlarge-semibold mb-xsmall">
+                    <Heading className="inter-large-semibold gap-x-base text-grey-40 flex">
                       {groupName}
                     </Heading>
                     <div className="flex flex-col gap-2">
@@ -188,6 +189,7 @@ const UltimateEntityDocumentCreationDrawer = ({
                             groupFieldsOrRelation as UltimateEntityRelation;
                           return (
                             <UltimateEntityRelationContainer
+                              entity={entity}
                               key={relation.id}
                               relation={relation}
                               document={document}

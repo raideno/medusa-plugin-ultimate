@@ -3,8 +3,10 @@ import { Text } from "@medusajs/ui";
 import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
 
 import UltimateEntityRelation from "./ultimate-entity-relation";
+import { UltimateEntity } from "../../../types/ultimate-entity";
 
 interface UltimateEntityRelationContainerProps {
+  entity: UltimateEntity;
   relation: UltimateEntityRelation;
   document: UltimateEntityModel;
   defaultDocument?: UltimateEntityModel;
@@ -16,6 +18,7 @@ const UltimateEntityRelationContainer = ({
   handleValueChange,
   defaultDocument,
   relation,
+  entity,
 }: UltimateEntityRelationContainerProps) => {
   return (
     <div className="w-full p-4 rounded bg-white border border-border">
@@ -23,6 +26,7 @@ const UltimateEntityRelationContainer = ({
         {relation.name || relation.id}
       </Text>
       <UltimateEntityRelation
+        entity={entity}
         relation={relation}
         document={document}
         defaultDocument={defaultDocument}

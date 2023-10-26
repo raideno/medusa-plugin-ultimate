@@ -16,6 +16,8 @@ import { ControlProps } from ".";
 import UltimateEntityDocumentCard, {
   UltimateEntityDocumentEditPages,
 } from "../../ultimate-entity-document-card/ultimate-entity-document-card";
+import { UltimateEntityRelation } from "../../../../types/ultimate-entity-relation";
+import { UltimateEntity } from "../../../../types/ultimate-entity";
 
 type HTMLElementType = HTMLSelectElement;
 
@@ -26,6 +28,10 @@ interface OneToManyRelationSelectControlProps
     >,
     ControlProps<string[]> {
   relationEntityId: string;
+  ultimateEntity: UltimateEntity;
+  ultimateEntityRelation: UltimateEntityRelation;
+
+  ultimateEntityDocument: UltimateEntityModel;
 }
 
 const DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER = "Select a relation.";
@@ -35,6 +41,11 @@ const OneToManyRelationSelectControl = ({
   defaultValue,
   onValueChange,
   relationEntityId,
+
+  ultimateEntityRelation,
+  ultimateEntity,
+  ultimateEntityDocument,
+
   ...props
 }: OneToManyRelationSelectControlProps) => {
   const { data, isLoading, error, mutate } =
@@ -121,6 +132,11 @@ const OneToManyRelationSelectControl = ({
           relations={relations}
           onCreationCancel={() => undefined}
           onCreationComplete={handleCreateEntityAndAssign}
+          defaultValues={{
+            [ultimateEntityRelation.relationEntityPropertyName]: {
+              id: ultimateEntityDocument.id,
+            },
+          }}
         >
           <Tooltip asChild content="Create a new document.">
             <Badge className="min-h-[calc(4px*10)] h-[calc(4px*10)] max-h-[calc(4px*10)] min-w-[calc(4px*10)] w-[calc(4px*10)] max-w-[calc(4px*10)] flex flex-col items-center justify-center aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">

@@ -14,6 +14,8 @@ import ErrorLayout from "../../layout/error-layout";
 import { ControlProps } from ".";
 import UltimateEntityModalSelect from "../../ultimate-entity-documents-modal-select.tsx/ultimate-entity-modal-select";
 import { UltimateEntityDocument } from "../../../../types/ultimate-entity-document";
+import { UltimateEntity } from "../../../../types/ultimate-entity";
+import { UltimateEntityRelation } from "../../../../types/ultimate-entity-relation";
 
 type HTMLElementType = HTMLSelectElement;
 
@@ -24,6 +26,10 @@ interface OneToOneRelationSelectControlProps
     >,
     ControlProps<string> {
   relationEntityId: string;
+
+  ultimateEntity: UltimateEntity;
+  ultimateEntityRelation: UltimateEntityRelation;
+  ultimateEntityDocument: UltimateEntityModel;
 }
 
 const DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER = "Select an document.";
@@ -33,6 +39,11 @@ const OneToOneRelationSelectControl = ({
   defaultValue,
   onValueChange,
   relationEntityId,
+
+  ultimateEntity,
+  ultimateEntityDocument,
+  ultimateEntityRelation,
+
   ...props
 }: OneToOneRelationSelectControlProps) => {
   // const { data, isLoading, error, mutate } =
@@ -98,6 +109,11 @@ const OneToOneRelationSelectControl = ({
         hiddenDocumentsIds={[]}
         onSelectCancel={() => null}
         onSelectComplete={handleSelectionChange}
+        documentCreationDefaultValues={{
+          [ultimateEntityRelation.relationEntityPropertyName]: {
+            id: ultimateEntityDocument.id,
+          },
+        }}
       >
         <div className="w-full h-10 border border-border rounded flex flex-row items-center justify-between p-2">
           {value ? (
@@ -127,50 +143,6 @@ const OneToOneRelationSelectControl = ({
       </UltimateEntityModalSelect>
     </div>
   );
-
-  // return (
-  //   <div className="grid grid-cols-[auto_1fr] items-center gap-2">
-  //     <CreateUltimateEntityDocumentButton
-  //       entity={entity}
-  //       fields={fields}
-  //       relations={relations}
-  //       onCreationCancel={() => undefined}
-  //       onCreationComplete={handleCreateEntityAndAssign}
-  //     >
-  //       <Tooltip asChild content="Create a new document.">
-  //         <Badge className="min-h-[calc(4px*10)] h-[calc(4px*10)] max-h-[calc(4px*10)] min-w-[calc(4px*10)] w-[calc(4px*10)] max-w-[calc(4px*10)] flex flex-col items-center justify-center aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
-  //           <Plus />
-  //         </Badge>
-  //       </Tooltip>
-  //     </CreateUltimateEntityDocumentButton>
-  //     <Select
-  //       value={value}
-  //       onValueChange={handleValueChange}
-  //       defaultValue={defaultValue}
-  //     >
-  //       <Select.Trigger
-  //         className="w-full"
-  //         placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
-  //       >
-  //         <Select.Value
-  //           placeholder={DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER}
-  //         />
-  //       </Select.Trigger>
-  //       <Select.Content className="z-[999]">
-  //         {documents.map((document, documentIndex) => {
-  //           return (
-  //             <Select.Item
-  //               value={document.id}
-  //               key={"select-one-to-many-relation-item-" + documentIndex}
-  //             >
-  //               {useDocumentName(document)}
-  //             </Select.Item>
-  //           );
-  //         })}
-  //       </Select.Content>
-  //     </Select>
-  //   </div>
-  // );
 };
 
 export default OneToOneRelationSelectControl;

@@ -232,6 +232,7 @@ const ProductCollectionDetailsAfterWidget = ({
             .map((relation) => {
               return (
                 <UltimateEntityRelationContainer
+                  entity={entity}
                   document={document}
                   handleValueChange={handleValueChange}
                   key={relation.id}

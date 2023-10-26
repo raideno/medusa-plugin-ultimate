@@ -33,6 +33,8 @@ interface UltimateEntityModalSelectProps {
   }: {
     document: UltimateEntityDocument;
   }) => string | React.ReactNode;
+
+  documentCreationDefaultValues: any;
 }
 
 const UltimateEntityModalSelect = ({
@@ -43,6 +45,7 @@ const UltimateEntityModalSelect = ({
   onSelectCancel,
   onSelectComplete,
   tooltipContent,
+  documentCreationDefaultValues,
 }: UltimateEntityModalSelectProps) => {
   const ultimateEntityDocumentsResponse =
     useUltimateEntityDocuments(ultimateEntityId);
@@ -131,6 +134,7 @@ const UltimateEntityModalSelect = ({
                 relations={relations}
                 onCreationCancel={handleDocumentCreationCancel}
                 onCreationComplete={handleDocumentCreationComplete}
+                defaultValues={documentCreationDefaultValues}
               >
                 <Button variant="primary" className="w-full">
                   Create a document of type {ultimateEntityId}
