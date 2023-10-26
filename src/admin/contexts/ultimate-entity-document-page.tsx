@@ -133,12 +133,25 @@ export const UltimateEntityDocumentPageProvider = ({
 
     setIsSubmitLoading(true);
 
+    const bodyData = JSON.parse(JSON.stringify(document));
+
+    Object.keys(bodyData).forEach((key) => {
+      if (
+        ![...relations.map((r) => r.id), ...fields.map((f) => f.id)].includes(
+          key
+        )
+      ) {
+        bodyData[key] = undefined;
+        delete bodyData[key];
+      }
+    });
+
     try {
       const { document: newDocument } = await updateUltimateEntityDocument(
         ultimateEntityId,
         ultimateEntityDocumentId,
         {
-          ...document,
+          ...bodyData,
           id: undefined,
           created_at: undefined,
           updated_at: undefined,
@@ -146,7 +159,7 @@ export const UltimateEntityDocumentPageProvider = ({
       );
 
       // TODO: recheck to see which one we should keep
-      setDefaultDocument(document);
+      setDefaultDocument(newDocument);
       // setDefaultDocument(newDocument);
       // notify.success(
       //   "Updated document.",

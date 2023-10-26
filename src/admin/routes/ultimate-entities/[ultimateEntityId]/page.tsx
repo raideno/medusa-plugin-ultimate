@@ -66,16 +66,18 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
         description={`${useEntityName(entity)} ultimate entity documents.`}
       />
       <div className="mb-xsmall w-full flex flex-row items-center justify-end">
-        <CreateUltimateEntityDocumentButton
-          entity={entity}
-          fields={fields}
-          relations={relations}
-          onCreationComplete={handleDocumentCreationComplete}
-        >
-          <Button variant="secondary" type="reset">
-            Create Document
-          </Button>
-        </CreateUltimateEntityDocumentButton>
+        {!entity.isBuiltInEntity && (
+          <CreateUltimateEntityDocumentButton
+            entity={entity}
+            fields={fields}
+            relations={relations}
+            onCreationComplete={handleDocumentCreationComplete}
+          >
+            <Button variant="secondary" type="reset">
+              Create Document
+            </Button>
+          </CreateUltimateEntityDocumentButton>
+        )}
       </div>
       <div className="flex flex-col gap-y-xsmall">
         <UltimateEntityDocumentsPageDocuments entity={entity} />
