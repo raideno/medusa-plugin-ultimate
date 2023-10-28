@@ -9,4 +9,5 @@ export enum UltimateEntityFieldTypes {
   DATE = "DATE",
   MARKDOWN = "MARKDOWN",
   COLOR = "COLOR",
+  METADATA = "METADATA",
 }

@@ -1,6 +1,7 @@
 import { UltimateEntityFieldTypes } from "./ultimate-entity-field-types";
 
 export enum UltimateEntityFieldComponents {
+  TABLE = "TABLE",
   INPUT = "INPUT",
   TEXT_AREA = "TEXT_AREA",
   SWITCH = "SWITCH",
@@ -17,6 +18,7 @@ export enum UltimateEntityFieldComponents {
 
 // TODO: transform components into enum
 export type UltimateEntityFieldTypeMap = {
+  [UltimateEntityFieldTypes.METADATA]: UltimateEntityFieldComponents.TABLE;
   [UltimateEntityFieldTypes.COLOR]: UltimateEntityFieldComponents.COLOR_INPUT;
   [UltimateEntityFieldTypes.STRING]: UltimateEntityFieldComponents.INPUT;
   [UltimateEntityFieldTypes.TEXT]: UltimateEntityFieldComponents.TEXT_AREA;
@@ -34,6 +36,7 @@ export type UltimateEntityFieldTypeMap = {
 };
 
 export type UltimateEntityFieldDefaultValueMap = {
+  [UltimateEntityFieldTypes.METADATA]: { [id: string]: string[] };
   [UltimateEntityFieldTypes.STRING]: string;
   [UltimateEntityFieldTypes.TEXT]: string;
   [UltimateEntityFieldTypes.SELECT]: string;
@@ -69,11 +72,17 @@ export type UltimateFieldWithType<T extends UltimateEntityFieldTypes> = {
    * only for select components
    */
   options?: UltimateFieldOption[];
+
+  /**
+   * only for metadata / table
+   */
+  columns?: { name: string; placeholder?: string; defaultValue?: string }[];
 };
 
 export type UltimateEntityField =
   | UltimateFieldWithType<UltimateEntityFieldTypes.STRING>
   | UltimateFieldWithType<UltimateEntityFieldTypes.COLOR>
+  | UltimateFieldWithType<UltimateEntityFieldTypes.METADATA>
   | UltimateFieldWithType<UltimateEntityFieldTypes.TEXT>
   | UltimateFieldWithType<UltimateEntityFieldTypes.BOOLEAN>
   | UltimateFieldWithType<UltimateEntityFieldTypes.IMAGE>

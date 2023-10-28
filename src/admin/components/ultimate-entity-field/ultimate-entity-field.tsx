@@ -11,6 +11,8 @@ import StringControl from "./field-controlers/string-control";
 import BooleanControl from "./field-controlers/boolean-control";
 import MarkdownControl from "./field-controlers/markdown-control";
 import StringArrayControl from "./field-controlers/string-array-control";
+import Metadata from "./field-controlers/metadata-control/metadata";
+import MetadataControl from "./field-controlers/metadata-control";
 
 interface UltimateEntityFieldProps {
   field: UltimateEntityField;
@@ -115,6 +117,17 @@ const UltimateEntityField = ({
       return (
         <DateControl
           defaultValue={defaultDocument[field.id]}
+          value={document[field.id]}
+          onValueChange={handleValueChange.bind(null, field.id)}
+        />
+      );
+      break;
+
+    case UltimateEntityFieldTypes.METADATA:
+      return (
+        <MetadataControl
+          // defaultValue={defaultDocument[field.id]}
+          field={field}
           value={document[field.id]}
           onValueChange={handleValueChange.bind(null, field.id)}
         />
