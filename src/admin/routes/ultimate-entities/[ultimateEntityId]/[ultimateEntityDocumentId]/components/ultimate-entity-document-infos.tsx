@@ -28,7 +28,7 @@ const UltimateEntityDocumentInfos = () => {
     <div className="mb-xsmall p-4 flex flex-col gap-1 bg-white rounded border border-border">
       <div className="flex flex-row items-center gap-1">
         <Badge>{"ID"}</Badge>
-        <Badge>{useDocumentName(document)}</Badge>
+        <Badge>{document.id}</Badge>
       </div>
       <div className="flex flex-row items-baseline gap-1">
         <Text className="text-grey-50">{"Created at"}</Text>
