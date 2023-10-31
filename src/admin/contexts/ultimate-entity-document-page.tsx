@@ -1,20 +1,25 @@
 "use client";
 
-import { usePrompt } from "@medusajs/ui";
+import React from "react";
+
+import { usePrompt, useToast } from "@medusajs/ui";
+
 import { useNavigate } from "react-router-dom";
-import React, { createContext, useEffect, useContext, useState } from "react";
+import { createContext, useEffect, useContext, useState } from "react";
 
 import { UltimateEntity } from "../../types/ultimate-entity";
 import { UltimateEntityModel } from "../../types/ultimate-entity-model";
 import { UltimateEntityField } from "../../types/ultimate-entity-field";
-
 import { UltimateEntityRelation } from "../../types/ultimate-entity-relation";
+
 import getUltimateEntity from "../functions/ultimate-entities/get-ultimate-entity";
 import getUltimateEntitiyDocument from "../functions/ultimate-entities-documents/get-ultimate-entitiy-document";
 import updateUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/update-ultimate-entity-document";
 import deleteUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/delete-ultimate-entity-document";
 
 import getPagePathname from "../utils/get-page-pathname";
+import { mutateUltimateEntityDocuments } from "../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
+import { mutateUltimateEntityDocument } from "../hooks/ultimate-entities-documents/use-ultimate-entity-document";
 
 interface UltimateEntityDocumentPageContext {
   // after saving update it to te saved verion
@@ -65,6 +70,8 @@ export const UltimateEntityDocumentPageProvider = ({
 }: UltimateEntityDocumentPageProviderProps) => {
   const prompt = usePrompt();
   const navigate = useNavigate();
+
+  const { toast } = useToast();
 
   const [haveChangesBeenMade, setHaveChangesBeenMade] =
     useState<boolean>(false);
@@ -158,17 +165,42 @@ export const UltimateEntityDocumentPageProvider = ({
         }
       );
 
+      // TODO: mutate and update it on both documents and document
+      await mutateUltimateEntityDocuments(entity.id, async (oldData) => {
+        const documentIndex = oldData.documents.findIndex(
+          (d) => d.id === ultimateEntityDocumentId
+        );
+        oldData.documents[documentIndex] = newDocument;
+        return oldData;
+      });
+
+      await mutateUltimateEntityDocument(
+        ultimateEntityId,
+        ultimateEntityDocumentId,
+        async (oldData) => {
+          oldData.document = newDocument;
+          return oldData;
+        }
+      );
+
+      toast({
+        title: "Updated Completed!",
+        description: "Your document have been updated.",
+        variant: "success",
+      });
+
       // TODO: recheck to see which one we should keep
       setDefaultDocument(newDocument);
-      // setDefaultDocument(newDocument);
-      // notify.success(
-      //   "Updated document.",
-      //   "Your changes have been successfully synced."
-      // );
 
       setHaveChangesBeenMade(false);
     } catch (error) {
       try {
+        toast({
+          title: "Failed to update!",
+          description:
+            "Something went wrong, try again or open console to know more.",
+          variant: "error",
+        });
         // notify.error("Update failed.", JSON.stringify(error.response.data));
       } catch (error) {
         // notify.error("Update failed.", "Unknown reason.");
@@ -198,12 +230,34 @@ export const UltimateEntityDocumentPageProvider = ({
     try {
       if (confirmed) {
         await deleteUltimateEntityDocument(entity.id, ultimateEntityDocumentId);
-        // notify.success("Successfully Deleted.", "You are being redirected..");
+
+        // TODO: mutate and update it on both documents and document
+        await mutateUltimateEntityDocuments(entity.id, async (oldData) => {
+          const documentIndex = oldData.documents.findIndex(
+            (d) => d.id === ultimateEntityDocumentId
+          );
+          oldData.documents.splice(documentIndex, 1);
+          oldData.count = oldData.count - 1;
+          return oldData;
+        });
+
+        toast({
+          title: "Document have been Deleted!",
+          description: "You are being redirected now.",
+          variant: "success",
+        });
+
         navigate(getPagePathname.entityDocuments(entity.id));
+
         setHaveBeenDeleted(true);
       }
     } catch (error) {
-      // notify.error("Failed to delete.", "Something went wrong, try again.");
+      toast({
+        title: "Failed to Delete document.",
+        description:
+          "Something went wrong, try again or open console to know more.",
+        variant: "error",
+      });
       setHaveBeenDeleted(false);
     } finally {
       setIsBeingDeleted(false);

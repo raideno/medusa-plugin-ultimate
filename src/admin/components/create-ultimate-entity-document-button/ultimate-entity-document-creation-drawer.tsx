@@ -1,4 +1,4 @@
-import { Button, Drawer, Heading } from "@medusajs/ui";
+import { Button, Drawer, Heading, useToast } from "@medusajs/ui";
 import { FormEvent, ChangeEvent, useState } from "react";
 
 import { UltimateEntity } from "../../../types/ultimate-entity";
@@ -11,6 +11,8 @@ import UltimateEntityFieldContainer from "../ultimate-entity-field/ultimate-enti
 import { UltimateEntityRelation } from "../../../types/ultimate-entity-relation";
 import UltimateEntityRelationContainer from "../ultimate-entity-relation/ultimate-entity-relation-container";
 import groupBy from "../../utils/group-by";
+import { mutateUltimateEntityDocument } from "../../hooks/ultimate-entities-documents/use-ultimate-entity-document";
+import { mutateUltimateEntityDocuments } from "../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
@@ -40,6 +42,8 @@ const UltimateEntityDocumentCreationDrawer = ({
     ...defaultValues,
   };
 
+  const { toast } = useToast();
+
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isCancelationLoading, setIsCancelationLoading] =
@@ -61,7 +65,7 @@ const UltimateEntityDocumentCreationDrawer = ({
     setIsSubmitLoading(true);
 
     try {
-      const { document: createdDociment } = await createUltimateEntityDocument(
+      const { document: createdDocument } = await createUltimateEntityDocument(
         entity.id,
         {
           ...document,
@@ -71,11 +75,31 @@ const UltimateEntityDocumentCreationDrawer = ({
         }
       );
 
-      if (onCreationComplete) await onCreationComplete(createdDociment);
+      await mutateUltimateEntityDocument(
+        entity.id,
+        createdDocument.id,
+        async () => {
+          return {
+            document: createdDocument,
+          };
+        }
+      );
+
+      await mutateUltimateEntityDocuments(entity.id, async (oldData) => {
+        oldData.documents.push(createdDocument);
+        oldData.count = oldData.count + 1;
+        return oldData;
+      });
+
+      if (onCreationComplete) await onCreationComplete(createdDocument);
 
       setIsDrawerOpen(false);
     } catch (error) {
-      // TODO: put a toast or something to prevent the user
+      toast({
+        variant: "success",
+        title: "Document created.",
+        description: "Your document have been created with success!",
+      });
     } finally {
       setIsSubmitLoading(false);
     }

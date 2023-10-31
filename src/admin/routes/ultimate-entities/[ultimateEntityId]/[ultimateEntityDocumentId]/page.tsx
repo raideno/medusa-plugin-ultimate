@@ -10,32 +10,36 @@ import UltimateEntityDocumentHeader from "./components/ultimate-entity-document-
 import UltimateEntityDocumentControlsBar from "./components/ultimate-entity-document-controls-bar";
 import UltimateEntityDocumentInfos from "./components/ultimate-entity-document-infos";
 import getPagePathname from "../../../../utils/get-page-pathname";
+import { Toaster } from "@medusajs/ui";
 
 const UltimateEntityDocumentPage = ({ notify }: RouteProps) => {
   const { ultimateEntityId, ultimateEntityDocumentId } = useParams();
 
   return (
-    <UltimateEntityDocumentPageProvider
-      ultimateEntityId={ultimateEntityId}
-      ultimateEntityDocumentId={ultimateEntityDocumentId}
-    >
-      <div className="relative">
-        <UltiamteEntityPageGoBackButton
-          children={"Go back."}
-          href={getPagePathname.entityDocuments(ultimateEntityId)}
-        />
+    <>
+      <UltimateEntityDocumentPageProvider
+        ultimateEntityId={ultimateEntityId}
+        ultimateEntityDocumentId={ultimateEntityDocumentId}
+      >
+        <div className="relative">
+          <UltiamteEntityPageGoBackButton
+            children={"Go back."}
+            href={getPagePathname.entityDocuments(ultimateEntityId)}
+          />
 
-        <UltimateEntityDocumentHeader />
+          <UltimateEntityDocumentHeader />
 
-        <UltimateEntityDocumentInfos />
+          <UltimateEntityDocumentInfos />
 
-        <UltimateEntityDocumentForm />
+          <UltimateEntityDocumentForm />
 
-        <UltimateEntityDocumentControlsBar />
+          <UltimateEntityDocumentControlsBar />
 
-        <div className="h-20 w-full" />
-      </div>
-    </UltimateEntityDocumentPageProvider>
+          <div className="h-20 w-full" />
+        </div>
+      </UltimateEntityDocumentPageProvider>
+      <Toaster />
+    </>
   );
 };
 

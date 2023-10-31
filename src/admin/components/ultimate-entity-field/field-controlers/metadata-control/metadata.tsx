@@ -205,18 +205,20 @@ const Field: React.FC<FieldProps> = ({
         />
       </div>
       <div className="flex flex-row gap-x-xsmall flex-grow">
-        {Object.keys(field.columns).map((columnName) => {
-          const col = columns.find((c) => c.name === columnName)!;
-          return (
-            <InputField
-              placeholder={col.placeholder}
-              defaultValue={field.columns[columnName]}
-              onChange={(e) => {
-                updateColumnValue(columnName, e.currentTarget.value);
-              }}
-            />
-          );
-        })}
+        {Object.keys(field.columns)
+          .sort()
+          .map((columnName) => {
+            const col = columns.find((c) => c.name === columnName)!;
+            return (
+              <InputField
+                placeholder={col.placeholder}
+                defaultValue={field.columns[columnName]}
+                onChange={(e) => {
+                  updateColumnValue(columnName, e.currentTarget.value);
+                }}
+              />
+            );
+          })}
       </div>
       <Tooltip content="Delete row.">
         <Badge

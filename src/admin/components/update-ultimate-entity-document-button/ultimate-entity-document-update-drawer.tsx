@@ -7,13 +7,16 @@ import ErrorLayout from "../layout/error-layout";
 import { UltimateEntityDocument } from "../../../types/ultimate-entity-document";
 
 import useUltimateEntity from "../../hooks/ultimate-entities/use-ultimate-entity";
-import useUltimateEntityDocument from "../../hooks/ultimate-entities-documents/use-ultimate-entity-document";
+import useUltimateEntityDocument, {
+  mutateUltimateEntityDocument,
+} from "../../hooks/ultimate-entities-documents/use-ultimate-entity-document";
 import UltimateEntityFieldContainer from "../ultimate-entity-field/ultimate-entity-field-container";
 import UltimateEntityRelationContainer from "../ultimate-entity-relation/ultimate-entity-relation-container";
 import updateUltimateEntityDocument from "../../functions/ultimate-entities-documents-operations/update-ultimate-entity-document";
 import groupBy from "../../utils/group-by";
 import { UltimateEntityField } from "../../../types/ultimate-entity-field";
 import { UltimateEntityRelation } from "../../../types/ultimate-entity-relation";
+import { mutateUltimateEntityDocuments } from "../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
 
 const EXCLUDED_FIELDS_IDS = ["id", "created_at", "updated_at"];
 
@@ -102,7 +105,22 @@ const UltimateEntityDocumentUpdateDrawer = ({
         }
       );
 
-      ultimateEntityDocumentResponse.mutate({ document: updatedDocument });
+      await mutateUltimateEntityDocuments(entity.id, async (oldData) => {
+        const documentIndex = oldData.documents.findIndex(
+          (d) => d.id === updatedDocument.id
+        );
+        oldData.documents[documentIndex] = updatedDocument;
+        return oldData;
+      });
+
+      await mutateUltimateEntityDocument(
+        ultimateEntityId,
+        updatedDocument.id,
+        async (oldData) => {
+          oldData.document = updatedDocument;
+          return oldData;
+        }
+      );
 
       if (onUpdateComplete) onUpdateComplete(updatedDocument);
 

@@ -1,9 +1,27 @@
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import getUltimateEntitiyDocuments from "../../functions/ultimate-entities-documents/get-ultimate-entitiy-documents";
-import { GetUltimateEntityDocumentsResponse } from "../../../types/api/get-ultimate-entity-documents-response";
+
+export const useUltimateEntityDocumentsKey = (ultimateEntityId: string) =>
+  `/ultimate-entities/${ultimateEntityId}/documents/`;
+
+export type useUltimateEntityDocumentsReturnType = Awaited<
+  ReturnType<typeof getUltimateEntitiyDocuments>
+>;
 
 export default (ultimateEntityId: string) =>
-  useSWR<Awaited<ReturnType<typeof getUltimateEntitiyDocuments>>>(
-    `/ultimate-entities/${ultimateEntityId}/documents/`,
+  useSWR<useUltimateEntityDocumentsReturnType>(
+    useUltimateEntityDocumentsKey(ultimateEntityId),
     getUltimateEntitiyDocuments.bind(null, ultimateEntityId)
   );
+
+export const mutateUltimateEntityDocuments = (
+  ultimateEntityId: string,
+  data: (
+    oldData: useUltimateEntityDocumentsReturnType
+  ) => Promise<useUltimateEntityDocumentsReturnType>
+) => {
+  return mutate<useUltimateEntityDocumentsReturnType>(
+    useUltimateEntityDocumentsKey(ultimateEntityId),
+    data
+  );
+};
