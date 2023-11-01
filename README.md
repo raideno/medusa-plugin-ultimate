@@ -8,6 +8,76 @@ The Medusa Plugin Ultimate is a powerful tool that allows developers to easily a
 
 **Discord:** @raiden56 `ID:423897604330618883`
 
+## Usage
+
+### Installation
+
+```
+npm i medusa-plugin-ultimate
+```
+
+### Configuration
+
+this env variables are required on the admin: `MEDUSA_ADMIN_BACKEND_URL` or `BACKEND_URL`
+
+```ts
+// medusa-config.js
+
+const plugins = [
+  /** @type {import('medusa-plugin-ultimate').Options} */
+  {
+    resolve: "medusa-plugin-ultimate",
+    options: {
+      enableUI: true,
+      backendUrl: process.env.BACKEND_URL || "http://localhost:9000",
+    },
+  },
+];
+
+// ...
+```
+
+### Final Step
+
+Now create your entities and don't forget to add migrations for them, after that the UI will automatically be generated for your entitiy.
+
+```ts
+// example:
+// src/models
+
+import { BeforeInsert, Column, Entity } from "typeorm";
+
+import { BaseEntity } from "@medusajs/medusa";
+import { generateEntityId } from "@medusajs/utils";
+
+import {
+  UltimateEntity,
+  UltimateEntityField,
+  UltimateEntityFieldTypes,
+} from "medusa-plugin-ultimate/dist/index";
+
+@Entity()
+@UltimateEntity({})
+export class BlogPost extends BaseEntity {
+  @Column({ type: "varchar", nullable: false })
+  @UltimateEntityField({
+    type: UltimateEntityFieldTypes.STRING,
+  })
+  title: string;
+
+  @Column({ type: "varchar", nullable: true })
+  @UltimateEntityField({
+    type: UltimateEntityFieldTypes.MARKDOWN,
+  })
+  content: string;
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "blog-post");
+  }
+}
+```
+
 ## Documentation
 
 See [Documentation](https://medusa-plugin-ultimate.raideno.xyz).
