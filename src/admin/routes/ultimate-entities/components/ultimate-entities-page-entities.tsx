@@ -1,4 +1,4 @@
-import { Heading } from "@medusajs/ui";
+import { Heading, Text } from "@medusajs/ui";
 import { Link } from "react-router-dom";
 
 import useUltimateEntities from "../../../hooks/ultimate-entities/use-ultimate-entities";
@@ -29,6 +29,16 @@ const UltimateEntitiesPageEntitites = () => {
   const entities = data.entities;
 
   const groups = groupBy(entities, ["entity", "group"], "default-group");
+
+  if (groups.length === 1 && groups[0].items.length === 0)
+    return (
+      <div className="w-full py-8 flex flex-col items-center justify-center">
+        <Text className="font-normal font-sans txt-medium inter-base-regular text-grey-50">
+          You haven't created any ultimate entity yet :(
+        </Text>
+        {/* TODO: add a redirection to the doc */}
+      </div>
+    );
 
   return (
     <>

@@ -3,11 +3,12 @@
   "version": "0.2.10",
   "description": "Medusa Plugin Ultimate is a plugin made for medusa that give super powers to your entities.",
   "author": "Raiden",
-  "main": "./src/index.ts",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/raideno/medusa-plugin-ultimate"
   },
+  "homepage": "https://medusa-plugin-ultimate.raideno.xyz",
   "license": "MIT",
   "keywords": [
     "medusa",

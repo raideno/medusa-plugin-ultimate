@@ -15,6 +15,7 @@ build
 .yarn
 uploads
 examples
+assets
 
 # These are files that are included in a
 # Medusa project and can be removed from a
