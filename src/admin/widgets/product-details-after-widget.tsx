@@ -246,7 +246,7 @@ const ProductDetailsAfterWidget = ({
           isLoading={isCancelationLoading}
           variant="secondary"
         >
-          Cancel
+          Discard Changes
         </Button>
         <Button
           onClick={handleUpdateButtonClick}

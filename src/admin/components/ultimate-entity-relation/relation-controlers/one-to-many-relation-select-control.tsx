@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
-import { ChevronUpDown, Plus, XMark } from "@medusajs/icons";
-import { Badge, IconButton, Select, Tooltip } from "@medusajs/ui";
+import { ArrowUpRightOnBox, ChevronUpDown, Plus, XMark } from "@medusajs/icons";
+import { Badge, IconButton, Select, Text, Tooltip, clx } from "@medusajs/ui";
 
 import { UltimateEntityModel } from "../../../../types/ultimate-entity-model";
 
@@ -19,6 +19,9 @@ import UltimateEntityDocumentCard, {
 import { UltimateEntityRelation } from "../../../../types/ultimate-entity-relation";
 import { UltimateEntity } from "../../../../types/ultimate-entity";
 import UltimateEntityModalSelect from "../../ultimate-entity-documents-modal-select.tsx/ultimate-entity-modal-select";
+import useEntityName from "../../../hooks/use-entity-name";
+import { Link } from "react-router-dom";
+import getPagePathname from "../../../utils/get-page-pathname";
 
 type HTMLElementType = HTMLSelectElement;
 
@@ -110,18 +113,38 @@ const OneToManyRelationSelectControl = ({
           }
 
           return (
-            <div className="relative" key={documentId}>
-              <UltimateEntityDocumentCard
-                document={doc}
-                editPage={UltimateEntityDocumentEditPages.DRAWER}
-                entity={entity}
-              />
-              <Badge
-                onClick={removeDocument.bind(null, documentId)}
-                className="cursor-pointer aspect-square absolute top-0 right-0 hover:opacity-75 hover:scale-95 active:opacity-50"
-              >
-                <XMark />
-              </Badge>
+            <div
+              className={clx(
+                "w-full p-4 flex flex-row items-center justify-between gap-2 border border-border rounded"
+              )}
+            >
+              <Tooltip content={"Selected Document"}>
+                <div>
+                  <Badge>{documentId}</Badge>
+                </div>
+              </Tooltip>
+              <div className="flex flex-row items-center gap-2">
+                <Tooltip content="Remove from Selected.">
+                  <div
+                    onClick={removeDocument.bind(null, documentId)}
+                    className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75"
+                  >
+                    <XMark />
+                  </div>
+                </Tooltip>
+                <Tooltip content="Viiew Document Page">
+                  <Link
+                    target="_blank"
+                    to={getPagePathname.entityDocument(
+                      relationEntityId,
+                      documentId
+                    )}
+                    className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75"
+                  >
+                    <ArrowUpRightOnBox />
+                  </Link>
+                </Tooltip>
+              </div>
             </div>
           );
         })}
@@ -139,10 +162,10 @@ const OneToManyRelationSelectControl = ({
             },
           }}
         >
-          <Tooltip asChild content="Create a new document.">
-            <Badge className="min-h-[calc(4px*10)] h-[calc(4px*10)] max-h-[calc(4px*10)] min-w-[calc(4px*10)] w-[calc(4px*10)] max-w-[calc(4px*10)] flex flex-col items-center justify-center aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
+          <Tooltip content="Create a new document.">
+            <div className="rounded border border-border cursor-pointer bg-ui-bg-field shadow-buttons-neutral min-h-[calc(4px*10)] h-[calc(4px*10)] max-h-[calc(4px*10)] min-w-[calc(4px*10)] w-[calc(4px*10)] max-w-[calc(4px*10)] flex flex-col items-center justify-center aspect-square hover:opacity-75 active:pacity-50 cursor-pointer">
               <Plus />
-            </Badge>
+            </div>
           </Tooltip>
         </CreateUltimateEntityDocumentButton>
         {/* --- */}
@@ -160,13 +183,48 @@ const OneToManyRelationSelectControl = ({
               id: ultimateEntityDocument.id,
             },
           }}
+          getStatus={(document) => {
+            /**
+             * if it's already selected return that it's disabled with grey status and already selected text
+             * if it's already selected by another one return disabled with warnning status and already selected bt another one disclaimer
+             */
+            if (value.includes(document.id))
+              return {
+                type: "grey",
+                isDisabled: true,
+                text: "Already Selected.",
+              };
+
+            console.log(
+              "[CHECKING]:",
+              document,
+              ultimateEntityRelation.relationEntityPropertyName
+            );
+
+            if (document[ultimateEntityRelation.relationEntityPropertyName])
+              return {
+                type: "orange",
+                isDisabled: false,
+                text: "Selected By Another Instance.",
+              };
+
+            return {
+              isDisabled: false,
+              text: "Selectable.",
+              type: "green",
+            };
+          }}
         >
-          <div className="w-full h-10 border border-border rounded flex flex-row items-center justify-between p-2">
+          <div className="cursor-pointer bg-ui-bg-field shadow-buttons-neutral w-full h-10 border border-border rounded flex flex-row items-center justify-between p-2">
             <>
-              <Badge className="cursor-pointer">Click to select.</Badge>
-              <Badge className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75">
-                <ChevronUpDown className="scale-80" />
-              </Badge>
+              <Text className="font-normal font-sans txt-medium inter-base-regular text-grey-50 whitespace-pre-wrap">
+                Select from Existing {useEntityName({ id: relationEntityId })}
+              </Text>
+              <Tooltip content="Open Select">
+                <div className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75">
+                  <ChevronUpDown />
+                </div>
+              </Tooltip>
             </>
           </div>
         </UltimateEntityModalSelect>

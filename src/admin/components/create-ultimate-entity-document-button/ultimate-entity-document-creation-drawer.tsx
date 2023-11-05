@@ -24,6 +24,8 @@ interface UltimateEntityDocumentCreationDrawerProps {
   onCreationComplete?: (document: UltimateEntityModel) => Promise<void>;
   onCreationCancel?: () => void;
   defaultValues?: { [key: string]: any };
+  //
+  zIndex?: number;
 }
 
 const UltimateEntityDocumentCreationDrawer = ({
@@ -34,6 +36,7 @@ const UltimateEntityDocumentCreationDrawer = ({
   onCreationCancel,
   onCreationComplete,
   defaultValues,
+  zIndex,
 }: UltimateEntityDocumentCreationDrawerProps) => {
   const DEFUALT_DOCUMENT: UltimateEntityModel = {
     id: undefined,
@@ -146,7 +149,7 @@ const UltimateEntityDocumentCreationDrawer = ({
   return (
     <Drawer open={isDrawerOpen} onOpenChange={handleDrawerOpenChange}>
       <Drawer.Trigger asChild>{trigger}</Drawer.Trigger>
-      <Drawer.Content className="z-[99]">
+      <Drawer.Content className={`z-[${zIndex ? zIndex : 99}]`}>
         <Drawer.Header>
           <Drawer.Title>Create Document</Drawer.Title>
         </Drawer.Header>

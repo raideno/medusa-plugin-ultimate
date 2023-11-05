@@ -12,6 +12,8 @@ interface CreateUltimateEntityDocumentButtonProps {
   onCreationCancel?: () => void;
   children: React.ReactNode;
   defaultValues?: { [key: string]: any };
+  //
+  zIndex?: number;
 }
 
 const CreateUltimateEntityDocumentButton = ({
@@ -22,6 +24,7 @@ const CreateUltimateEntityDocumentButton = ({
   onCreationComplete,
   children,
   defaultValues,
+  zIndex,
 }: CreateUltimateEntityDocumentButtonProps) => {
   return (
     <UltimateEntityDocumentCreationDrawer

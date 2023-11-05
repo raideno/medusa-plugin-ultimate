@@ -14,6 +14,7 @@ import { Request, Response } from "express";
 import UltimateEntityService from "../../../../services/ultimate-entity";
 import UltimateEntityDocumentsService from "../../../../services/ultimate-entity-documents";
 import { DeleteUltimateEntityDocumentResponse } from "../../../../types/api/delete-ultimate-entity-document-response";
+import UltimateEntityDocumentsOrderingService from "../../../../services/ultimate-entity-documents-ordering";
 
 export default async (req: Request, res: Response): Promise<void> => {
   const ultimateEntityService: UltimateEntityService = req.scope.resolve(
@@ -21,6 +22,8 @@ export default async (req: Request, res: Response): Promise<void> => {
   );
   const ultimateEntityDocumentsService: UltimateEntityDocumentsService =
     req.scope.resolve("ultimateEntityDocumentsService");
+  const ultimateEntityDocumentsOrderingService: UltimateEntityDocumentsOrderingService =
+    req.scope.resolve("ultimateEntityDocumentsOrderingService");
 
   // /:ultimateEntityId/documents/:documentId
 
@@ -56,9 +59,10 @@ export default async (req: Request, res: Response): Promise<void> => {
       `Document of type ${ultimateEntityId} with id "${ultimateEntityDocumentId} don't exist.`
     );
 
-  /**
-   * delete the document
-   */
+  // Properly remove document ordering if there is any
+  if (ultimateEntity.entity.ordering && ultimateEntity.entity.ordering.enabled) {
+    await ultimateEntityDocumentsOrderingService.prepareDocumentForDelete(ultimateEntity.entity.id, document.id);
+  }
 
   await ultimateEntityDocumentsService.delete(
     ultimateEntityId,
@@ -67,5 +71,5 @@ export default async (req: Request, res: Response): Promise<void> => {
 
   let response: DeleteUltimateEntityDocumentResponse;
 
-  res.sendStatus(200);
+  res.status(200).json("OK");
 };

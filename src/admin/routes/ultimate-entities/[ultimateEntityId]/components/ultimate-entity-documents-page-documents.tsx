@@ -1,6 +1,10 @@
 import { orderBy } from "lodash";
 
+import { Text } from "@medusajs/ui";
+
 import { UltimateEntity } from "../../../../../types/ultimate-entity";
+
+import useUltimateEntityDocuments from "../../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
 
 import ErrorLayout from "../../../../components/layout/error-layout";
 import LoadingSkeletonsWrapper from "../../../../components/layout/loading-skeletons-wrapper";
@@ -9,8 +13,8 @@ import UltimateEntityDocumentCard, {
   UltimateEntityDocumentEditPages,
 } from "../../../../components/ultimate-entity-document-card/ultimate-entity-document-card";
 
-import useUltimateEntityDocuments from "../../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
-import { Text } from "@medusajs/ui";
+import UltimateEntityDocumentsPageOrderableDocuments from "./ultimate-entity-documents-page-orderable-documents";
+
 
 interface UltimateEntityDocumentsPageDocumentsProps {
   entity: UltimateEntity;
@@ -26,6 +30,7 @@ const UltimateEntityDocumentsPageDocuments = ({
   filter,
   sorting,
 }: UltimateEntityDocumentsPageDocumentsProps) => {
+
   const { data, isLoading, error } = useUltimateEntityDocuments(entity.id);
 
   if (isLoading)
@@ -63,22 +68,25 @@ const UltimateEntityDocumentsPageDocuments = ({
       </div>
     );
 
-  return (
-    <>
-      {orderBy(filteredDocuments, [sorting.field], [sorting.direction]).map(
-        (document) => {
-          return (
-            <UltimateEntityDocumentCard
-              entity={entity}
-              document={document}
-              key={entity.id + "-" + document.id}
-              editPage={UltimateEntityDocumentEditPages.EXTERNAL}
-            />
-          );
-        }
-      )}
-    </>
-  );
+  if (entity.ordering)
+    return <UltimateEntityDocumentsPageOrderableDocuments entity={entity} documents={documents} />
+  else
+    return (
+      <>
+        {orderBy(filteredDocuments, [sorting.field], [sorting.direction]).map(
+          (document) => {
+            return (
+              <UltimateEntityDocumentCard
+                entity={entity}
+                document={document}
+                key={entity.id + "-" + document.id}
+                editPage={UltimateEntityDocumentEditPages.EXTERNAL}
+              />
+            );
+          }
+        )}
+      </>
+    );
 };
 
 export default UltimateEntityDocumentsPageDocuments;

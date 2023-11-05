@@ -1,4 +1,4 @@
-import { Badge, Select, Tooltip } from "@medusajs/ui";
+import { Badge, Select, Text, Tooltip } from "@medusajs/ui";
 import { ControlProps } from ".";
 
 import useUltimateEntityDocuments from "../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
@@ -14,6 +14,7 @@ import UltimateEntityModalSelect from "../../ultimate-entity-documents-modal-sel
 import { UltimateEntityDocument } from "../../../../types/ultimate-entity-document";
 import { UltimateEntity } from "../../../../types/ultimate-entity";
 import { UltimateEntityRelation } from "../../../../types/ultimate-entity-relation";
+import useEntityName from "../../../hooks/use-entity-name";
 
 type HTMLElementType = HTMLSelectElement;
 
@@ -109,28 +110,36 @@ const ManyToOneRelationSelectControl = ({
           ],
         }}
       >
-        <div className="w-full h-10 border border-border rounded flex flex-row items-center justify-between p-2">
+        <div className="cursor-pointer bg-ui-bg-field shadow-buttons-neutral w-full h-10 border border-border rounded flex flex-row items-center justify-between p-2">
           {value ? (
             <>
-              <Badge>Selected: {value}</Badge>
+              <Badge>{value}</Badge>
               <div className="flex flex-row items-center gap-2">
-                <Badge className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75">
-                  <ChevronUpDown className="scale-80" />
-                </Badge>
-                <Badge
-                  onClick={handleSelectDelete}
-                  className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75"
-                >
-                  <XMark className="scale-80" />
-                </Badge>
+                <Tooltip content="Delete Selection">
+                  <div
+                    onClick={handleSelectDelete}
+                    className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75"
+                  >
+                    <XMark />
+                  </div>
+                </Tooltip>
+                <Tooltip content="Open Select">
+                  <div className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75">
+                    <ChevronUpDown />
+                  </div>
+                </Tooltip>
               </div>
             </>
           ) : (
             <>
-              <Badge className="cursor-pointer">Click to select.</Badge>
-              <Badge className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75">
-                <ChevronUpDown className="scale-80" />
-              </Badge>
+              <Text className="font-normal font-sans txt-medium inter-base-regular text-grey-50 whitespace-pre-wrap">
+                Select a {useEntityName({ id: relationEntityId })}
+              </Text>
+              <Tooltip content="Open Select">
+                <div className="aspect-square cursor-pointer hover:opacity-75 active:opacity-75">
+                  <ChevronUpDown />
+                </div>
+              </Tooltip>
             </>
           )}
         </div>

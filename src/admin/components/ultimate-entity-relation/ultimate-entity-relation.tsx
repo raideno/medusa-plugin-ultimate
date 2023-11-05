@@ -1,3 +1,4 @@
+import { UltimateEntity } from "../../../types/ultimate-entity";
 import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
 import { UltimateEntityRelation } from "../../../types/ultimate-entity-relation";
 import { UltimateEntityRelationTypes } from "../../../types/ultimate-entity-relation-types";
@@ -5,8 +6,6 @@ import { UltimateEntityRelationTypes } from "../../../types/ultimate-entity-rela
 import OneToOneyControl from "./relation-controlers/one-to-one-relation-select-control";
 import ManyToOneControl from "./relation-controlers/many-to-one-relation-select-control";
 import OneToManyControl from "./relation-controlers/one-to-many-relation-select-control";
-import ManyToManyControl from "./relation-controlers/many-to-many-relation-select-control";
-import { UltimateEntity } from "../../../types/ultimate-entity";
 
 interface UltimateEntityRelationProps {
   entity: UltimateEntity;
@@ -52,7 +51,9 @@ const UltimateEntityRelation = ({
   const value = getValue(document[relation.id]);
 
   function onValueChange(newValue: string | string[]) {
-    if (Array.isArray(newValue)) {
+    if (!newValue || newValue === null) {
+      handleValueChange(relation.id, newValue);
+    } else if (Array.isArray(newValue)) {
       handleValueChange(
         relation.id,
         newValue.map((id) => ({ id }))

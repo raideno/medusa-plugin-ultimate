@@ -247,10 +247,10 @@ export default class UltimateEntityService extends TransactionBaseService {
     return entities;
   }
 
-  retrieveUltimateEntity(id: string): UltimateEntityObject | undefined {
+  retrieveUltimateEntity(ultimateEntityIdd: string): UltimateEntityObject | null {
     const ultimateEntities = this.listUltimateEntities();
     const ultimateEntity = ultimateEntities.find(
-      (ultimateEntity) => ultimateEntity.entity.id === id
+      (ultimateEntity) => ultimateEntity.entity.id === ultimateEntityIdd
     );
     return ultimateEntity;
   }

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
+  DotsSix,
   Pencil,
   Spinner,
   SquareTwoStack,
@@ -49,6 +50,8 @@ interface UltimateEntityDocumentCardProps {
   editPage: UltimateEntityDocumentEditPages;
   onClick?: () => void;
   className?: string;
+  id?: string;
+  draggable?: boolean
 }
 
 const UltimateEntityDocumentCard = ({
@@ -57,6 +60,8 @@ const UltimateEntityDocumentCard = ({
   editPage,
   onClick,
   className,
+  draggable,
+  id,
 }: UltimateEntityDocumentCardProps) => {
   const prompt = usePrompt();
   const navigate = useNavigate();
@@ -87,6 +92,8 @@ const UltimateEntityDocumentCard = ({
       return;
 
     setIsBeingDuplicated(true);
+
+    // const data = JSON.parse(JSON.stringify(document)) as typeof document;
 
     try {
       const { document: duplicatedDocument } =
@@ -172,9 +179,12 @@ const UltimateEntityDocumentCard = ({
   if (haveBeenDeleted) return null;
 
   return (
-    <Container onClick={onClick} className={clx(className)}>
+    <Container id={id} onClick={onClick} className={clx(className)}>
       <div className="w-full flex flex-row items-center justify-between">
-        <Badge>{useDocumentName(document)}</Badge>
+        <div className="flex flex-row items-center justify-center gap-2">
+          {draggable && <DotsSix className="cursor-grab	active:cursor-grabbing" />}
+          <Badge>{useDocumentName(document)}</Badge>
+        </div>
         {!entity.isBuiltInEntity ? (
           <div className="flex flex-row items-center gap-2">
             {(() => {

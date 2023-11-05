@@ -1,25 +1,18 @@
-import { partition, cloneDeep } from "lodash";
+import { cloneDeep } from "lodash";
+import { validate } from "class-validator";
+import { Request, Response } from "express";
+
 import { MedusaError } from "@medusajs/utils";
 
-import { validate } from "class-validator";
-import { plainToInstance } from "class-transformer";
-
-import { UltimateEntity } from "../../../../types/ultimate-entity";
-import { UltimateEntityField } from "../../../../types/ultimate-entity-field";
-
-/**
- * validate the body-data
- * - pass
- */
-
-import { Request, Response } from "express";
 import UltimateEntityService from "../../../../services/ultimate-entity";
 import UltimateEntityDocumentsService from "../../../../services/ultimate-entity-documents";
+
+import { UltimateEntityRelationTypes } from "../../../../types/ultimate-entity-relation-types";
 import { UpdateUltimateEntityDocumentResponse } from "../../../../types/api/update-ultimate-entity-document-response";
+
 import validateBodyKeys from "./utils/validate-body-keys";
 import validateBodyFields from "./utils/validate-body-fields";
 import validateBodyRelations from "./utils/validate-body-relations";
-import { UltimateEntityRelationTypes } from "../../../../types/ultimate-entity-relation-types";
 
 const EXCLUDED_KEYS = ["id", "created_at", "updated_at"];
 
@@ -121,9 +114,9 @@ export default async (req: Request, res: Response): Promise<void> => {
   bodyRelationsValidation.relations.forEach((allowedBodyRelation) => {
     if (
       allowedBodyRelation.type ===
-        UltimateEntityRelationTypes.MANY_TO_ONE_RELATION_SELECT ||
+      UltimateEntityRelationTypes.MANY_TO_ONE_RELATION_SELECT ||
       allowedBodyRelation.type ===
-        UltimateEntityRelationTypes.ONE_TO_ONE_RELATION_SELECT
+      UltimateEntityRelationTypes.ONE_TO_ONE_RELATION_SELECT
     )
       newDocument[allowedBodyRelation.id as string] =
         req.body[allowedBodyRelation.id];

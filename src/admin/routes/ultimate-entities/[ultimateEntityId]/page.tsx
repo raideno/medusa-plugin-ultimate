@@ -148,11 +148,13 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
             <div />
           )}
         </div>
+
         <UltimateEntityPageHeader
           title={`${useEntityName(entity)} Documents`}
           // TODO: make a helper unction that'll automatically get the ultimate entity name and capitalize it
           description={`${useEntityName(entity)} ultimate entity documents.`}
         />
+
         <div className="mb-xsmall w-full flex flex-row items-center justify-between">
           <div className="flex flex-row items-center gap-2">
             <Select
@@ -196,6 +198,7 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
               placeholder={`Search By ${filter.key}`}
             />
           </div>
+
           <div className="flex flex-row items-center gap-2">
             <Select
               size="small"
@@ -269,6 +272,7 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
             </RadioGroup>
           </div>
         </div>
+
         <div className="flex flex-col gap-y-xsmall">
           <UltimateEntityDocumentsPageDocuments
             filter={filter}

@@ -1,4 +1,5 @@
-import useSWR, { mutate } from "swr";
+import useSWR, { MutatorOptions, mutate } from "swr";
+
 import getUltimateEntitiyDocuments from "../../functions/ultimate-entities-documents/get-ultimate-entitiy-documents";
 
 export const useUltimateEntityDocumentsKey = (ultimateEntityId: string) =>
@@ -18,10 +19,12 @@ export const mutateUltimateEntityDocuments = (
   ultimateEntityId: string,
   data: (
     oldData: useUltimateEntityDocumentsReturnType
-  ) => Promise<useUltimateEntityDocumentsReturnType>
+  ) => Promise<useUltimateEntityDocumentsReturnType>,
+  options?: boolean | MutatorOptions<useUltimateEntityDocumentsReturnType, useUltimateEntityDocumentsReturnType>
 ) => {
   return mutate<useUltimateEntityDocumentsReturnType>(
     useUltimateEntityDocumentsKey(ultimateEntityId),
-    data
+    data,
+    options
   );
 };

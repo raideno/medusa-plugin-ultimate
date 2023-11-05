@@ -1,11 +1,6 @@
-import { partition, cloneDeep } from "lodash";
 import { MedusaError } from "@medusajs/utils";
 
 import { validate } from "class-validator";
-import { plainToInstance, instanceToPlain } from "class-transformer";
-
-import { UltimateEntity } from "../../../../types/ultimate-entity";
-import { UltimateEntityField } from "../../../../types/ultimate-entity-field";
 
 /**
  * validate the body-data
@@ -19,6 +14,7 @@ import { CreateUltimateEntityDocumentResponse } from "../../../../types/api/crea
 import validateBodyKeys from "./utils/validate-body-keys";
 import validateBodyFields from "./utils/validate-body-fields";
 import validateBodyRelations from "./utils/validate-body-relations";
+import UltimateEntityDocumentsOrderingService from "../../../../services/ultimate-entity-documents-ordering";
 
 const EXCLUDED_KEYS = ["id", "created_at", "updated_at"];
 
@@ -28,6 +24,8 @@ export default async (req: Request, res: Response): Promise<void> => {
   );
   const ultimateEntityDocumentsService: UltimateEntityDocumentsService =
     req.scope.resolve("ultimateEntityDocumentsService");
+  const ultimateEntityDocumentsOrderingService: UltimateEntityDocumentsOrderingService =
+    req.scope.resolve("ultimateEntityDocumentsOrderingService");
 
   // /:ultimateEntityId/documents/:documentId
 
@@ -51,11 +49,17 @@ export default async (req: Request, res: Response): Promise<void> => {
       `Ultimate entity with id "${ultimateEntityId} don't exist.`
     );
 
+  // if it's an ordered entity put the position field to undefined in order to pass validateBodyKeys, validateBodyFields, validateBodyRelations
+  if (ultimateEntity.entity.ordering && ultimateEntity.entity.ordering.enabled) {
+    req.body[ultimateEntity.entity.ordering.positionPropertyName] = undefined;
+    delete req.body[ultimateEntity.entity.ordering.positionPropertyName];
+  }
+
   const bodyKeysValidation = await validateBodyKeys(req.body, ultimateEntity);
   if (bodyKeysValidation.error)
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Body Keys Validation Errors`,
+      `Body Keys Validation Errors: ${bodyKeysValidation.errors.map((err) => err.message)}`,
       undefined
     );
 
@@ -66,7 +70,7 @@ export default async (req: Request, res: Response): Promise<void> => {
   if (bodyFieldsValidation.error)
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Body Fields Validation Errors`,
+      `Body Fields Validation Errors: ${bodyFieldsValidation.errors.map((err) => err.message)}`,
       undefined
     );
 
@@ -77,7 +81,7 @@ export default async (req: Request, res: Response): Promise<void> => {
   if (bodyRelationsValidation.error)
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Body Relations Validation Errors`,
+      `Body Relations Validation Errors: ${bodyRelationsValidation.errors.map((err) => err.message)}`,
       undefined
     );
 
@@ -142,6 +146,11 @@ export default async (req: Request, res: Response): Promise<void> => {
       `Validation errors`,
       undefined
     );
+
+  if (ultimateEntity.entity.ordering && ultimateEntity.entity.ordering.enabled) {
+    const nextPosition = await ultimateEntityDocumentsOrderingService.getNextPosition(ultimateEntity.entity.id);
+    document[ultimateEntity.entity.ordering.positionPropertyName] = nextPosition;
+  }
 
   const newSavedDocument = await ultimateEntityDocumentsService.create(
     ultimateEntityId,
