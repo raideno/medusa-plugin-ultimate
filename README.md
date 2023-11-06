@@ -4,6 +4,10 @@
 
 The Medusa Plugin Ultimate is a powerful tool that allows developers to easily add a user interface to entities marked with a decorator. With this plugin, you can seamlessly create, edit, view, and delete documents associated with these entities, and expose them through a specific route for your store.
 
+## Documentation
+
+See [Documentation](https://medusa-plugin-ultimate.raideno.xyz).
+
 ## Contact
 
 **Discord:** @raiden56 `ID:423897604330618883`
