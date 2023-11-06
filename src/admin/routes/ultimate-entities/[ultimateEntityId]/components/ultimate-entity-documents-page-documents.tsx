@@ -1,92 +1,55 @@
-import { orderBy } from "lodash";
-
 import { Text } from "@medusajs/ui";
-
 import { UltimateEntity } from "../../../../../types/ultimate-entity";
-
-import useUltimateEntityDocuments from "../../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
 
 import ErrorLayout from "../../../../components/layout/error-layout";
 import LoadingSkeletonsWrapper from "../../../../components/layout/loading-skeletons-wrapper";
+import { useUltimateEntityDocumentsPage } from "../../../../contexts/ultimate-entity-documents-page"
 import UltimateEntityDocumentCardSkeleton from "../../../../components/ultimate-entity-document-card/ultimate-entity-document-card-skeleton";
-import UltimateEntityDocumentCard, {
-  UltimateEntityDocumentEditPages,
-} from "../../../../components/ultimate-entity-document-card/ultimate-entity-document-card";
 
-import UltimateEntityDocumentsPageOrderableDocuments from "./ultimate-entity-documents-page-orderable-documents";
-
+import UltimateEntityDocumentsPageDocumentsList from "./ultimate-entity-documents-page-documents-list";
+import UltimateEntityDocumentsPageOrderableDocuments from "./ultimate-entity-documents-page-documents-orderable";
 
 interface UltimateEntityDocumentsPageDocumentsProps {
-  entity: UltimateEntity;
-  filter?: { key: string; value?: string | undefined };
-  sorting: {
-    field: string;
-    direction: "asc" | "desc";
-  };
+    entity: UltimateEntity;
 }
 
 const UltimateEntityDocumentsPageDocuments = ({
-  entity,
-  filter,
-  sorting,
+    entity
 }: UltimateEntityDocumentsPageDocumentsProps) => {
+    const { isLoading, error, documents, filter, sorting } = useUltimateEntityDocumentsPage();
 
-  const { data, isLoading, error } = useUltimateEntityDocuments(entity.id);
+    if (isLoading)
+        return (
+            <LoadingSkeletonsWrapper
+                iterations={12}
+                keyPrefix={"ultimate-entity-documents-page-documents-skeleton-"}
+            >
+                <UltimateEntityDocumentCardSkeleton />
+            </LoadingSkeletonsWrapper>
+        );
 
-  if (isLoading)
-    return (
-      <LoadingSkeletonsWrapper
-        iterations={12}
-        keyPrefix={"ultimate-entity-documents-page-documents-skeleton-"}
-      >
-        <UltimateEntityDocumentCardSkeleton />
-      </LoadingSkeletonsWrapper>
-    );
+    if (error || !documents || documents === undefined) {
+        return <ErrorLayout />;
+    }
 
-  if (error || !data || data === undefined) {
-    return <ErrorLayout />;
-  }
+    if (documents.length === 0)
+        return (
+            <div className="w-full py-8 flex flex-col items-center justify-center">
+                <Text className="font-normal font-sans txt-medium inter-base-regular text-grey-50">
+                    You haven't created any document yet :(
+                </Text>
+            </div>
+        );
 
-  const documents = data.documents;
-
-  // blogPost_01HCMRCEVBQ6HKBYZJKGQRSPSF
-
-  const filteredDocuments = documents.filter((document) => {
-    if (!filter || !filter.value || filter.value.trim() === "") return true;
+    if (entity.ordering && entity.ordering.enabled && filter.value.trim() === "")
+        return <UltimateEntityDocumentsPageOrderableDocuments entity={entity} documents={documents} />
     else
-      return (document[filter.key] as string)
-        .toLocaleLowerCase()
-        .includes(filter.value.toLocaleLowerCase());
-  });
+        return <UltimateEntityDocumentsPageDocumentsList
+            entity={entity}
+            filter={filter}
+            documents={documents}
+            sorting={sorting}
+        />
+}
 
-  if (filteredDocuments.length === 0)
-    return (
-      <div className="w-full py-8 flex flex-col items-center justify-center">
-        <Text className="font-normal font-sans txt-medium inter-base-regular text-grey-50">
-          No document match for filter :(
-        </Text>
-      </div>
-    );
-
-  if (entity.ordering)
-    return <UltimateEntityDocumentsPageOrderableDocuments entity={entity} documents={documents} />
-  else
-    return (
-      <>
-        {orderBy(filteredDocuments, [sorting.field], [sorting.direction]).map(
-          (document) => {
-            return (
-              <UltimateEntityDocumentCard
-                entity={entity}
-                document={document}
-                key={entity.id + "-" + document.id}
-                editPage={UltimateEntityDocumentEditPages.EXTERNAL}
-              />
-            );
-          }
-        )}
-      </>
-    );
-};
-
-export default UltimateEntityDocumentsPageDocuments;
+export default UltimateEntityDocumentsPageDocuments

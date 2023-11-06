@@ -7,15 +7,15 @@ import { Button, CodeBlock, Text, usePrompt, useToast } from "@medusajs/ui";
 
 
 import { UltimateEntity } from "../../../../../types/ultimate-entity";
-import { UltimateEntityModel } from "../../../../../types/ultimate-entity-model";
 import { UltimateEntityDocument } from "../../../../../types/ultimate-entity-document";
 
 import resetUltimateEntityDocumentsOrdering from "../../../../functions/ultimate-entites-documents-ordering/reset-ultimate-entity-documents-ordering";
 import updateUltimateEntityDocumentOrderingPositions from "../../../../functions/ultimate-entites-documents-ordering/update-ultimate-entity-document-ordering-positions";
 
+import { useUltimateEntityDocumentsPage } from "../../../../contexts/ultimate-entity-documents-page";
+
 import { mutateUltimateEntityDocument } from "../../../../hooks/ultimate-entities-documents/use-ultimate-entity-document";
 import { mutateUltimateEntityDocuments } from "../../../../hooks/ultimate-entities-documents/use-ultimate-entity-documents";
-
 import useIsUltimateEntityDocumentsOrderingValid from "../../../../hooks/ultimate-entities-documents-ordering/use-is-ultimate-entity-documents-ordering-valid";
 
 import Skeleton from "../../../../components/layout/skeleton";
@@ -23,19 +23,21 @@ import UltimateEntityDocumentCard, {
     UltimateEntityDocumentEditPages,
 } from "../../../../components/ultimate-entity-document-card/ultimate-entity-document-card";
 
-interface UltimateEntityDocumentsPageOrderableDocumentsProps {
+interface UltimateEntityDocumentsPageDocumentsOrderableProps {
     entity: UltimateEntity;
     documents: UltimateEntityDocument[];
 }
 
-const UltimateEntityDocumentsPageOrderableDocuments = ({
+const UltimateEntityDocumentsPageDocumentsOrderable = ({
     entity,
     documents: documents_,
-}: UltimateEntityDocumentsPageOrderableDocumentsProps) => {
+}: UltimateEntityDocumentsPageDocumentsOrderableProps) => {
 
     const prompt = usePrompt();
 
     const { toast } = useToast();
+
+    const { areDocumentsBeingReordered, setAreDocumentsBeingReordered } = useUltimateEntityDocumentsPage();
 
     const { data, isLoading, error, mutate: mutateOrderingValidityCheck } = useIsUltimateEntityDocumentsOrderingValid(entity.id);
 
@@ -44,7 +46,7 @@ const UltimateEntityDocumentsPageOrderableDocuments = ({
     const [isOrderingBeingReseted, setIsOrderingBeingReseted] = useState<boolean>(false);
     const [isDocumentPositionBeingUpdated, setIsDocumentPositionBeingUpdated] = useState<boolean>(false);
 
-    async function onDocumentsOrderingChange(newDocuments: UltimateEntityModel[]) {
+    async function onDocumentsOrderingChange(newDocuments: UltimateEntityDocument[]) {
         if (isDocumentPositionBeingUpdated || isOrderingBeingReseted)
             return;
 
@@ -92,6 +94,7 @@ const UltimateEntityDocumentsPageOrderableDocuments = ({
             return;
 
         setIsDocumentPositionBeingUpdated(true);
+        setAreDocumentsBeingReordered(true);
 
         try {
             const result = await updateUltimateEntityDocumentOrderingPositions(entity.id, documentId, newPosition);
@@ -110,6 +113,7 @@ const UltimateEntityDocumentsPageOrderableDocuments = ({
             });
         } finally {
             setIsDocumentPositionBeingUpdated(false);
+            setAreDocumentsBeingReordered(false);
         }
     }
 
@@ -246,4 +250,4 @@ const UltimateEntityDocumentsPageOrderableDocuments = ({
     )
 }
 
-export default UltimateEntityDocumentsPageOrderableDocuments;
+export default UltimateEntityDocumentsPageDocumentsOrderable;

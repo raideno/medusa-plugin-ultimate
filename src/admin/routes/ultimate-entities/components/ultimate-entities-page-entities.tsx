@@ -1,15 +1,14 @@
-import { Heading, Text } from "@medusajs/ui";
-import { Link } from "react-router-dom";
+import { Button, Text } from "@medusajs/ui";
 
 import useUltimateEntities from "../../../hooks/ultimate-entities/use-ultimate-entities";
 
 import groupBy from "../../../utils/group-by";
-import getPagePathname from "../../../utils/get-page-pathname";
 
 import ErrorLayout from "../../../components/layout/error-layout";
-import UltimateEntityCard from "../../../components/ultimate-entity-card/ultimate-entity-card";
 import LoadingSkeletonsWrapper from "../../../components/layout/loading-skeletons-wrapper";
 import UltimateEntityCardSkeleton from "../../../components/ultimate-entity-card/ultimate-entity-card-skeleton";
+
+import UltimateEntitiesPageEntitiesGroup from "./ultimate-entities-page-entities-group";
 
 const UltimateEntitiesPageEntitites = () => {
   const { data, isLoading, error } = useUltimateEntities();
@@ -28,7 +27,7 @@ const UltimateEntitiesPageEntitites = () => {
 
   const entities = data.entities;
 
-  const groups = groupBy(entities, ["entity", "group"], "default-group");
+  const groups = groupBy(entities, ["entity", "group"], "Entities");
 
   if (groups.length === 1 && groups[0].items.length === 0)
     return (
@@ -36,35 +35,27 @@ const UltimateEntitiesPageEntitites = () => {
         <Text className="font-normal font-sans txt-medium inter-base-regular text-grey-50">
           You haven't created any ultimate entity yet :(
         </Text>
-        {/* TODO: add a redirection to the doc */}
+        <a href="https://medusa-plugin-ultimate.raideno.xyz" target="_blank">
+          <Button variant="primary">Need Help ? Visit Plugin Documentation.</Button>
+        </a>
       </div>
     );
 
   return (
     <>
-      {groups.map(({ name: groupName, items: groupEntities }, groupIndex) => {
+      {groups.map(({ name, items: entities }, groupIndex) => {
         return (
-          <div className="flex flex-col gap-2">
-            <Heading className="font-sans font-medium h2-core inter-2xlarge-semibold mb-xsmall">
-              {groupName}
-            </Heading>
-            {groupEntities
-              .filter(({ entity }) => !entity.hidden)
-              .map(({ entity }) => {
-                return (
-                  // TODO: have those links in the configuration file
-                  <Link
-                    key={entity.id}
-                    to={getPagePathname.entityDocuments(entity.id)}
-                  >
-                    <UltimateEntityCard entity={entity} />
-                  </Link>
-                );
-              })}
+          <>
+            <UltimateEntitiesPageEntitiesGroup
+              key={"entities-group-" + name}
+              name={name}
+              entities={entities.map(({ entity }) => entity)}
+              areGroupEntitiesShownByDefault={groupIndex === 0}
+            />
             {groupIndex !== groups.length - 1 && (
-              <div className="w-full h-[1px] mt-xlarge border border-border rounded" />
+              <div className="w-full h-[1px] mb-xsmall mt-xsmall border border-border rounded" />
             )}
-          </div>
+          </>
         );
       })}
     </>

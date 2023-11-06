@@ -1,14 +1,14 @@
 import UltimateEntityDocumentCreationDrawer from "./ultimate-entity-document-creation-drawer";
 import { UltimateEntity } from "../../../types/ultimate-entity";
 import { UltimateEntityField } from "../../../types/ultimate-entity-field";
-import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../../types/ultimate-entity-document";
 import { UltimateEntityRelation } from "../../../types/ultimate-entity-relation";
 
 interface CreateUltimateEntityDocumentButtonProps {
   entity: UltimateEntity;
   fields: UltimateEntityField[];
   relations: UltimateEntityRelation[];
-  onCreationComplete?: (document: UltimateEntityModel) => Promise<void>;
+  onCreationComplete?: (document: UltimateEntityDocument) => Promise<void>;
   onCreationCancel?: () => void;
   children: React.ReactNode;
   defaultValues?: { [key: string]: any };

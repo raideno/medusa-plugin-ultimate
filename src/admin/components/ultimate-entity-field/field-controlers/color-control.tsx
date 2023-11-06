@@ -9,10 +9,10 @@ type HTMLElementType = HTMLInputElement;
 
 interface ColorControlProps
   extends Omit<
-      InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "size" | "onChange"
-    >,
-    ControlProps<string> {}
+    InputHTMLAttributes<HTMLElementType>,
+    "value" | "defaultValue" | "size" | "onChange"
+  >,
+  ControlProps<string> { }
 
 const ColorControl = ({
   value,

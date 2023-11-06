@@ -6,10 +6,10 @@ type HTMLElementType = HTMLTextAreaElement;
 
 interface TextControlProps
   extends Omit<
-      React.InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "onChange"
-    >,
-    ControlProps<string> {}
+    React.InputHTMLAttributes<HTMLElementType>,
+    "value" | "defaultValue" | "onChange"
+  >,
+  ControlProps<string> { }
 
 const TextControl = ({
   value,

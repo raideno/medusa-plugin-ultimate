@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { createContext, useEffect, useContext, useState } from "react";
 
 import { UltimateEntity } from "../../types/ultimate-entity";
-import { UltimateEntityModel } from "../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../types/ultimate-entity-document";
 import { UltimateEntityField } from "../../types/ultimate-entity-field";
 import { UltimateEntityRelation } from "../../types/ultimate-entity-relation";
 
@@ -23,16 +23,16 @@ import { mutateUltimateEntityDocument } from "../hooks/ultimate-entities-documen
 
 interface UltimateEntityDocumentPageContext {
   // after saving update it to te saved verion
-  document?: UltimateEntityModel | undefined;
+  document?: UltimateEntityDocument | undefined;
 
-  defaultDocument?: UltimateEntityModel | undefined;
+  defaultDocument?: UltimateEntityDocument | undefined;
   entity?: UltimateEntity | undefined;
   fields?: UltimateEntityField[] | undefined;
   relations?: UltimateEntityRelation[] | undefined;
 
-  //  submit: (data: UltimateEntityModel) => Promise<void>
-  //  cancel: (data: UltimateEntityModel) => Promise<void>
-  //  delete: (data: UltimateEntityModel) => Promise<void>
+  //  submit: (data: UltimateEntityDocument) => Promise<void>
+  //  cancel: (data: UltimateEntityDocument) => Promise<void>
+  //  delete: (data: UltimateEntityDocument) => Promise<void>
 
   submit: () => Promise<void>;
   cancel: () => Promise<void>;
@@ -87,10 +87,10 @@ export const UltimateEntityDocumentPageProvider = ({
     UltimateEntityRelation[] | undefined
   >(undefined);
   const [defaultDocument, setDefaultDocument] = useState<
-    UltimateEntityModel | undefined
+    UltimateEntityDocument | undefined
   >(undefined);
 
-  const [document, setDocument] = useState<UltimateEntityModel | undefined>(
+  const [document, setDocument] = useState<UltimateEntityDocument | undefined>(
     undefined
   );
 

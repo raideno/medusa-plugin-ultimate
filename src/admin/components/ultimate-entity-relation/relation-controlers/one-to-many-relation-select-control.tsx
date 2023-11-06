@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash";
 import { ArrowUpRightOnBox, ChevronUpDown, Plus, XMark } from "@medusajs/icons";
 import { Badge, IconButton, Select, Text, Tooltip, clx } from "@medusajs/ui";
 
-import { UltimateEntityModel } from "../../../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../../../types/ultimate-entity-document";
 
 import useDocumentName from "../../../hooks/use-document-name";
 import useUltimateEntity from "../../../hooks/ultimate-entities/use-ultimate-entity";
@@ -27,15 +27,15 @@ type HTMLElementType = HTMLSelectElement;
 
 interface OneToManyRelationSelectControlProps
   extends Omit<
-      React.InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "size" | "onChange"
-    >,
-    ControlProps<string[]> {
+    React.InputHTMLAttributes<HTMLElementType>,
+    "value" | "defaultValue" | "size" | "onChange"
+  >,
+  ControlProps<string[]> {
   relationEntityId: string;
   ultimateEntity: UltimateEntity;
   ultimateEntityRelation: UltimateEntityRelation;
 
-  ultimateEntityDocument: UltimateEntityModel;
+  ultimateEntityDocument: UltimateEntityDocument;
 }
 
 const DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER = "Select a relation.";
@@ -74,7 +74,7 @@ const OneToManyRelationSelectControl = ({
     onValueChange(newValue);
   }
 
-  async function handleCreateEntityAndAssign(document: UltimateEntityModel) {
+  async function handleCreateEntityAndAssign(document: UltimateEntityDocument) {
     addDocument(document.id);
     await mutate({
       ...data,

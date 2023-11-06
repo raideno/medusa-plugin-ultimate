@@ -2,7 +2,7 @@ import { Button, Drawer, Heading, useToast } from "@medusajs/ui";
 import { FormEvent, ChangeEvent, useState } from "react";
 
 import { UltimateEntity } from "../../../types/ultimate-entity";
-import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../../types/ultimate-entity-document";
 
 import createUltimateEntityDocument from "../../functions/ultimate-entities-documents-operations/create-ultimate-entity-document";
 
@@ -21,7 +21,7 @@ interface UltimateEntityDocumentCreationDrawerProps {
   entity: UltimateEntity;
   fields: UltimateEntityField[];
   relations: UltimateEntityRelation[];
-  onCreationComplete?: (document: UltimateEntityModel) => Promise<void>;
+  onCreationComplete?: (document: UltimateEntityDocument) => Promise<void>;
   onCreationCancel?: () => void;
   defaultValues?: { [key: string]: any };
   //
@@ -38,7 +38,7 @@ const UltimateEntityDocumentCreationDrawer = ({
   defaultValues,
   zIndex,
 }: UltimateEntityDocumentCreationDrawerProps) => {
-  const DEFUALT_DOCUMENT: UltimateEntityModel = {
+  const DEFUALT_DOCUMENT: UltimateEntityDocument = {
     id: undefined,
     created_at: undefined,
     updated_at: undefined,
@@ -52,7 +52,7 @@ const UltimateEntityDocumentCreationDrawer = ({
   const [isCancelationLoading, setIsCancelationLoading] =
     useState<boolean>(false);
 
-  const [document, setDocument] = useState<UltimateEntityModel | undefined>(
+  const [document, setDocument] = useState<UltimateEntityDocument | undefined>(
     DEFUALT_DOCUMENT
   );
 

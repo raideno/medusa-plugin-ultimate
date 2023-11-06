@@ -1,5 +1,5 @@
-import { UltimateEntityModel } from "../ultimate-entity-model";
+import { UltimateEntityDocument } from "../ultimate-entity-document";
 
 export interface GetUltimateEntityDocumentResponse {
-  document: UltimateEntityModel;
+  document: UltimateEntityDocument;
 }

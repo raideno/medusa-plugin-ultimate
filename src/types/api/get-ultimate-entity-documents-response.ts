@@ -1,6 +1,6 @@
-import { UltimateEntityModel } from "../ultimate-entity-model";
+import { UltimateEntityDocument } from "../ultimate-entity-document";
 
 export interface GetUltimateEntityDocumentsResponse {
-  documents: UltimateEntityModel[];
+  documents: UltimateEntityDocument[];
   count: number;
 }

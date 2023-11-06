@@ -1,7 +1,3 @@
-/**
- *
- */
-
 import { UltimateEntityRelation } from "../types/ultimate-entity-relation";
 
 export const ULTIMATE_ENTITY_RELATION_METADATA_KEY_NAME =

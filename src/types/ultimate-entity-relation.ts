@@ -12,7 +12,8 @@ export type UltimateRelationWithType<T extends UltimateEntityRelationTypes> = {
   type: T;
 
   relationEntityId: string;
-  relationEntityPropertyName: string;
+
+  relationEntityPropertyName?: string | undefined;
 
   group?: string;
 

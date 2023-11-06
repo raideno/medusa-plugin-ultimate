@@ -10,7 +10,7 @@ import {
 import { IEventBusService } from "@medusajs/types";
 
 import UltimateEntityService from "./ultimate-entity";
-import { UltimateEntityModel } from "../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../types/ultimate-entity-document";
 
 export default class UltimateEntityDocumentsService extends TransactionBaseService {
   static LIFE_TIME = Lifetime.SCOPED;
@@ -41,13 +41,13 @@ export default class UltimateEntityDocumentsService extends TransactionBaseServi
 
   async listAndCount(
     ultimateEntityId: string,
-    selector?: Selector<UltimateEntityModel>,
-    config: FindConfig<UltimateEntityModel> = {
+    selector?: Selector<UltimateEntityDocument>,
+    config: FindConfig<UltimateEntityDocument> = {
       skip: 0,
       take: 20,
       relations: [],
     }
-  ): Promise<[UltimateEntityModel[], number]> {
+  ): Promise<[UltimateEntityDocument[], number]> {
     const ultimateEntityRepository =
       this.ultimateEntityService_.getUltimateEntityRepositoryFromUltimateEntityId(
         ultimateEntityId
@@ -61,8 +61,8 @@ export default class UltimateEntityDocumentsService extends TransactionBaseServi
   async retrieve(
     ultimateEntityId: string,
     ultimateEntityDocumentId: string,
-    config?: FindConfig<UltimateEntityModel>
-  ): Promise<UltimateEntityModel | null | undefined> {
+    config?: FindConfig<UltimateEntityDocument>
+  ): Promise<UltimateEntityDocument | null | undefined> {
     const ultimateEntityRepository =
       this.ultimateEntityService_.getUltimateEntityRepositoryFromUltimateEntityId(
         ultimateEntityId
@@ -101,8 +101,8 @@ export default class UltimateEntityDocumentsService extends TransactionBaseServi
 
   async create(
     ultimateEntityId: string,
-    data: Omit<UltimateEntityModel, "id" | "created_at" | "updated_at">
-  ): Promise<UltimateEntityModel> {
+    data: Omit<UltimateEntityDocument, "id" | "created_at" | "updated_at">
+  ): Promise<UltimateEntityDocument> {
     return this.atomicPhase_(async (manager) => {
       const ultimateEntityRepository =
         this.ultimateEntityService_.getUltimateEntityRepositoryFromUltimateEntityId(
@@ -127,8 +127,8 @@ export default class UltimateEntityDocumentsService extends TransactionBaseServi
   async update(
     ultimateEntityId: string,
     ultimateEntityDocumentId: string,
-    data: Omit<Partial<UltimateEntityModel>, "id">
-  ): Promise<UltimateEntityModel> {
+    data: Omit<Partial<UltimateEntityDocument>, "id">
+  ): Promise<UltimateEntityDocument> {
     return await this.atomicPhase_(async (manager) => {
       const ultimateEntityRepository =
         this.ultimateEntityService_.getUltimateEntityRepositoryFromUltimateEntityId(

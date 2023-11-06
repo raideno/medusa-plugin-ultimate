@@ -9,10 +9,10 @@ type HTMLElementType = HTMLInputElement;
 
 interface StringArrayControlProps
   extends Omit<
-      React.InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "size" | "onChange"
-    >,
-    ControlProps<string[]> {}
+    React.InputHTMLAttributes<HTMLElementType>,
+    "value" | "defaultValue" | "size" | "onChange"
+  >,
+  ControlProps<string[]> { }
 
 const StringArrayControl = ({
   value,

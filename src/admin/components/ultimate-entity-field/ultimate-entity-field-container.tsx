@@ -1,13 +1,13 @@
 import { Text } from "@medusajs/ui";
 
-import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../../types/ultimate-entity-document";
 
 import UltimateEntityField from "./ultimate-entity-field";
 
 interface UltimateEntityFieldContainerProps {
   field: UltimateEntityField;
-  document: UltimateEntityModel;
-  defaultDocument?: UltimateEntityModel;
+  document: UltimateEntityDocument;
+  defaultDocument?: UltimateEntityDocument;
   handleValueChange: (key: string, value: any) => void;
 }
 

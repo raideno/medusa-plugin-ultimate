@@ -1,5 +1,5 @@
 import { UltimateEntity } from "../../../types/ultimate-entity";
-import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../../types/ultimate-entity-document";
 import { UltimateEntityRelation } from "../../../types/ultimate-entity-relation";
 import { UltimateEntityRelationTypes } from "../../../types/ultimate-entity-relation-types";
 
@@ -10,8 +10,8 @@ import OneToManyControl from "./relation-controlers/one-to-many-relation-select-
 interface UltimateEntityRelationProps {
   entity: UltimateEntity;
   relation: UltimateEntityRelation;
-  document: UltimateEntityModel;
-  defaultDocument: UltimateEntityModel;
+  document: UltimateEntityDocument;
+  defaultDocument: UltimateEntityDocument;
   /*---*/
   handleValueChange: (key: string, value: any) => void;
 }

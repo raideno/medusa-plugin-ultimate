@@ -11,7 +11,7 @@ import { ULTIMATE_ENTITY_METADATA_KEY_NAME } from "../decorators/ultimate-entity
 import { ULTIMATE_ENTITY_FIELD_METADATA_KEY_NAME } from "../decorators/ultimate-entity-field";
 import { EntityMetadata, EntityTarget, Repository } from "typeorm";
 import { UltimateEntityFieldTypes } from "../types/ultimate-entity-field-types";
-import { UltimateEntityModel } from "../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../types/ultimate-entity-document";
 import { UltimateEntityRelation } from "../types/ultimate-entity-relation";
 import { ULTIMATE_ENTITY_RELATION_METADATA_KEY_NAME } from "../decorators/ultimate-entity-relation";
 import { UltimateEntityRelationTypes } from "../types/ultimate-entity-relation-types";
@@ -46,9 +46,9 @@ export default class UltimateEntityService extends TransactionBaseService {
 
   getUltimateEntityMetadataAndTargetFromUltimateEntityId(
     ultimateEntityId: string
-  ): [EntityMetadata, EntityTarget<UltimateEntityModel>] | undefined {
+  ): [EntityMetadata, EntityTarget<UltimateEntityDocument>] | undefined {
     let result:
-      | [EntityMetadata, EntityTarget<UltimateEntityModel>]
+      | [EntityMetadata, EntityTarget<UltimateEntityDocument>]
       | undefined = undefined;
 
     for (let [entityTarget, entityMetadata] of dataSource.entityMetadatasMap) {
@@ -63,7 +63,7 @@ export default class UltimateEntityService extends TransactionBaseService {
 
   getUltimateEntityRepositoryFromUltimateEntityId(
     ultimateEntityId: string
-  ): Repository<UltimateEntityModel> | undefined {
+  ): Repository<UltimateEntityDocument> | undefined {
     const result =
       this.getUltimateEntityMetadataAndTargetFromUltimateEntityId(
         ultimateEntityId
@@ -74,7 +74,7 @@ export default class UltimateEntityService extends TransactionBaseService {
     const [entityMetadata, entityTarget] = result;
 
     const genericEntityRepo =
-      this.activeManager_.getRepository<UltimateEntityModel>(entityTarget);
+      this.activeManager_.getRepository<UltimateEntityDocument>(entityTarget);
 
     return genericEntityRepo;
   }
@@ -106,7 +106,7 @@ export default class UltimateEntityService extends TransactionBaseService {
 
   listUltimateEntityRelations(
     entityMetadata: EntityMetadata,
-    entityTarget: EntityTarget<UltimateEntityModel>
+    entityTarget: EntityTarget<UltimateEntityDocument>
   ): UltimateEntityRelation[] {
     const relations = entityMetadata.relations
       .map((entityRelationMetadata) => {
@@ -148,7 +148,7 @@ export default class UltimateEntityService extends TransactionBaseService {
 
   listUltimateEntityFields(
     entityMetadata: EntityMetadata,
-    entityTarget: EntityTarget<UltimateEntityModel>
+    entityTarget: EntityTarget<UltimateEntityDocument>
   ): UltimateEntityField[] {
     const fields = entityMetadata.columns
       .map((entityColumnMetadata) => {

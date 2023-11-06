@@ -14,6 +14,7 @@ export enum UltimateEntityFieldComponents {
   DATE_INPUT = "DATE_INPUT",
   MARKDOWN_INPUT = "MARKDOWN_INPUT",
   COLOR_INPUT = "COLOR_INPUT",
+  NUMBER_INPUT = "NUMBER_INPUT",
 }
 
 // TODO: transform components into enum
@@ -23,16 +24,17 @@ export type UltimateEntityFieldTypeMap = {
   [UltimateEntityFieldTypes.STRING]: UltimateEntityFieldComponents.INPUT;
   [UltimateEntityFieldTypes.TEXT]: UltimateEntityFieldComponents.TEXT_AREA;
   [UltimateEntityFieldTypes.BOOLEAN]:
-    | UltimateEntityFieldComponents.SWITCH
-    | UltimateEntityFieldComponents.CHECBKOX;
+  | UltimateEntityFieldComponents.SWITCH
+  | UltimateEntityFieldComponents.CHECBKOX;
   [UltimateEntityFieldTypes.IMAGE]: UltimateEntityFieldComponents.IMAGE_INPUT;
   [UltimateEntityFieldTypes.UNKNOWN]: UltimateEntityFieldComponents.INPUT;
   [UltimateEntityFieldTypes.SELECT]:
-    | UltimateEntityFieldComponents.SELECT
-    | UltimateEntityFieldComponents.RADIO_GROUP;
+  | UltimateEntityFieldComponents.SELECT
+  | UltimateEntityFieldComponents.RADIO_GROUP;
   [UltimateEntityFieldTypes.STRING_ARRAY]: UltimateEntityFieldComponents.MULTI_STRING_INPUT;
   [UltimateEntityFieldTypes.DATE]: UltimateEntityFieldComponents.DATE_INPUT;
   [UltimateEntityFieldTypes.MARKDOWN]: UltimateEntityFieldComponents.MARKDOWN_INPUT;
+  [UltimateEntityFieldTypes.NUMBER]: UltimateEntityFieldComponents.NUMBER_INPUT;
 };
 
 export type UltimateEntityFieldDefaultValueMap = {
@@ -46,6 +48,7 @@ export type UltimateEntityFieldDefaultValueMap = {
   [UltimateEntityFieldTypes.STRING_ARRAY]: string[];
   [UltimateEntityFieldTypes.DATE]: Date;
   [UltimateEntityFieldTypes.MARKDOWN]: string;
+  [UltimateEntityFieldTypes.NUMBER]: number;
   [UltimateEntityFieldTypes.UNKNOWN]: any;
 };
 
@@ -68,9 +71,10 @@ export type UltimateFieldWithType<T extends UltimateEntityFieldTypes> = {
   description?: string;
 
   group?: string;
-  
+
   /**
    * only for select components
+   * TODO: make options appear as required when using SELECt type and hidden otherwise
    */
   options?: UltimateFieldOption[];
 
@@ -91,4 +95,5 @@ export type UltimateEntityField =
   | UltimateFieldWithType<UltimateEntityFieldTypes.STRING_ARRAY>
   | UltimateFieldWithType<UltimateEntityFieldTypes.DATE>
   | UltimateFieldWithType<UltimateEntityFieldTypes.MARKDOWN>
+  | UltimateFieldWithType<UltimateEntityFieldTypes.NUMBER>
   | UltimateFieldWithType<UltimateEntityFieldTypes.UNKNOWN>;

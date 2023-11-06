@@ -7,7 +7,7 @@ type HTMLElementType = React.ComponentProps<typeof MDEditor>;
 
 interface MarkdownControlProps
   extends Omit<HTMLElementType, "value" | "defaultValue" | "onChange">,
-    ControlProps<string> {}
+  ControlProps<string> { }
 
 const MarkdownControl = ({
   value,

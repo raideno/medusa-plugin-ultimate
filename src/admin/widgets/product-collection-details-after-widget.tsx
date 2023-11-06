@@ -10,7 +10,7 @@ import {
 
 import useUltimateEntity from "../hooks/ultimate-entities/use-ultimate-entity";
 
-import { UltimateEntityModel } from "../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../types/ultimate-entity-document";
 
 import updateUltimateEntityDocument from "../functions/ultimate-entities-documents-operations/update-ultimate-entity-document";
 
@@ -55,7 +55,7 @@ const ProductCollectionDetailsAfterWidget = ({
   const [isDocumentError, setIsDocumentError] = useState<boolean>(false);
   const [isDocumentLoading, setIsDocumentLoading] = useState<boolean>(true);
   const [document, setDocument] = useState<
-    UltimateEntityModel | undefined | null
+    UltimateEntityDocument | undefined | null
   >(undefined);
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const ProductCollectionDetailsAfterWidget = ({
               setDocument(collections[0] as any);
             }
           })
-          .catch(() => {})
+          .catch(() => { })
           .finally(() => {
             setIsDocumentLoading(false);
           });

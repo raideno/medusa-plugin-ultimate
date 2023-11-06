@@ -1,23 +1,23 @@
 import { UltimateEntityField } from "../../../types/ultimate-entity-field";
-import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../../types/ultimate-entity-document";
 import { UltimateEntityFieldTypes } from "../../../types/ultimate-entity-field-types";
 
 import TextControl from "./field-controlers/text-control";
 import DateControl from "./field-controlers/date-control";
 import ColorControl from "./field-controlers/color-control";
 import ImageControl from "./field-controlers/image-control";
+import NumberControl from "./field-controlers/number-control";
 import SelectControl from "./field-controlers/select-control";
 import StringControl from "./field-controlers/string-control";
 import BooleanControl from "./field-controlers/boolean-control";
 import MarkdownControl from "./field-controlers/markdown-control";
-import StringArrayControl from "./field-controlers/string-array-control";
-import Metadata from "./field-controlers/metadata-control/metadata";
 import MetadataControl from "./field-controlers/metadata-control";
+import StringArrayControl from "./field-controlers/string-array-control";
 
 interface UltimateEntityFieldProps {
   field: UltimateEntityField;
-  document: UltimateEntityModel;
-  defaultDocument: UltimateEntityModel;
+  document: UltimateEntityDocument;
+  defaultDocument: UltimateEntityDocument;
   /*---*/
   handleValueChange: (key: string, value: any) => void;
 }
@@ -44,6 +44,17 @@ const UltimateEntityField = ({
     case UltimateEntityFieldTypes.STRING:
       return (
         <StringControl
+          // varaint={field.variant}
+          defaultValue={defaultDocument[field.id]}
+          value={document[field.id]}
+          onValueChange={handleValueChange.bind(null, field.id)}
+          placeholder={field.name || field.id}
+        />
+      );
+      break;
+    case UltimateEntityFieldTypes.NUMBER:
+      return (
+        <NumberControl
           // varaint={field.variant}
           defaultValue={defaultDocument[field.id]}
           value={document[field.id]}

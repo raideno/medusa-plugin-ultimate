@@ -1,9 +1,9 @@
 import { startCase } from "lodash";
 
 import { UltimateEntity } from "../../types/ultimate-entity";
-import { UltimateEntityModel } from "../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../types/ultimate-entity-document";
 
-interface Document extends UltimateEntityModel {
+interface Document extends UltimateEntityDocument {
   [key: string]: any;
 }
 

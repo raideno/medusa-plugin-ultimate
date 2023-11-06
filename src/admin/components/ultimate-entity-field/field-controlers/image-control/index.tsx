@@ -3,20 +3,20 @@ import { Badge, Input } from "@medusajs/ui";
 import { Product } from "@medusajs/medusa";
 import { useAdminUploadFile } from "medusa-react";
 
-import { ControlProps } from ".";
-import ImageControlsImage from "./image-controls-image";
-import ImageControlsUploading from "./image-controls-uploading";
-import ImageControlsNoImage from "./image-controls-no-image";
+import { ControlProps } from "..";
+import ImageControlsImage from "./image-control-image";
+import ImageControlsUploading from "./image-control-uploading";
+import ImageControlsNoImage from "./image-control-no-image";
 import { PhotoSolid, XMark } from "@medusajs/icons";
 
 type HTMLElementType = HTMLInputElement;
 
 interface ImageControlProps
   extends Omit<
-      React.InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "size" | "onChange"
-    >,
-    ControlProps<string> {}
+    React.InputHTMLAttributes<HTMLElementType>,
+    "value" | "defaultValue" | "size" | "onChange"
+  >,
+  ControlProps<string> { }
 
 const ImageControl = ({
   value,

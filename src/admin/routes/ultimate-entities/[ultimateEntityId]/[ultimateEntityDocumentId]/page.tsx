@@ -1,16 +1,18 @@
+import { Toaster } from "@medusajs/ui";
 import { useParams } from "react-router-dom";
 import { RouteProps } from "@medusajs/admin";
 
 import { UltimateEntityDocumentPageProvider } from "../../../../contexts/ultimate-entity-document-page";
 
+import getPagePathname from "../../../../utils/get-page-pathname";
+
 import UltiamteEntityPageGoBackButton from "../../../../components/layout/ultimate-entity-page-go-back-button";
 
+import UltimateEntityRawData from "./components/ultimate-entity-raw-data";
 import UltimateEntityDocumentForm from "./components/ultimate-entity-document-form";
+import UltimateEntityDocumentInfos from "./components/ultimate-entity-document-infos";
 import UltimateEntityDocumentHeader from "./components/ultimate-entity-document-header";
 import UltimateEntityDocumentControlsBar from "./components/ultimate-entity-document-controls-bar";
-import UltimateEntityDocumentInfos from "./components/ultimate-entity-document-infos";
-import getPagePathname from "../../../../utils/get-page-pathname";
-import { Toaster } from "@medusajs/ui";
 
 const UltimateEntityDocumentPage = ({ notify }: RouteProps) => {
   const { ultimateEntityId, ultimateEntityDocumentId } = useParams();
@@ -24,6 +26,7 @@ const UltimateEntityDocumentPage = ({ notify }: RouteProps) => {
         <div className="relative">
           <UltiamteEntityPageGoBackButton
             children={"Go back."}
+            className="mb-xsmall"
             href={getPagePathname.entityDocuments(ultimateEntityId)}
           />
 
@@ -32,6 +35,8 @@ const UltimateEntityDocumentPage = ({ notify }: RouteProps) => {
           <UltimateEntityDocumentInfos />
 
           <UltimateEntityDocumentForm />
+
+          <UltimateEntityRawData />
 
           <UltimateEntityDocumentControlsBar />
 

@@ -12,8 +12,8 @@ export type UltimateEntityFieldTypeMap = {
   [UltimateEntityFieldTypes.STRING]: UltimateEntityFieldComponents.INPUT;
   [UltimateEntityFieldTypes.TEXT]: UltimateEntityFieldComponents.TEXT_AREA;
   [UltimateEntityFieldTypes.BOOLEAN]:
-    | UltimateEntityFieldComponents.SWITCH
-    | UltimateEntityFieldComponents.CHECBKOX;
+  | UltimateEntityFieldComponents.SWITCH
+  | UltimateEntityFieldComponents.CHECBKOX;
   [UltimateEntityFieldTypes.IMAGE]: UltimateEntityFieldComponents.IMAGE_INPUT;
   [UltimateEntityFieldTypes.UNKNOWN]: UltimateEntityFieldComponents.INPUT;
   [UltimateEntityFieldTypes.SELECT]: "select";
@@ -47,10 +47,10 @@ type HTMLElementType = HTMLButtonElement;
 
 interface BooleanControlProps
   extends Omit<
-      React.InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "onChange"
-    >,
-    ControlProps<boolean> {
+    React.InputHTMLAttributes<HTMLElementType>,
+    "value" | "defaultValue" | "onChange"
+  >,
+  ControlProps<boolean> {
   varaint?: UltimateEntityFieldTypeMap[UltimateEntityFieldTypes.BOOLEAN];
 }
 
@@ -74,7 +74,7 @@ const BooleanControl = ({
           checked={value}
           onCheckedChange={handleValueChange}
           defaultChecked={defaultValue}
-          //   {...props}
+        //   {...props}
         />
       );
       break;

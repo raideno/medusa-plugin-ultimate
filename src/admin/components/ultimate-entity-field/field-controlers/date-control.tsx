@@ -10,10 +10,10 @@ type HTMLElementType = any;
 
 interface DateControlProps
   extends Omit<
-      React.InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "size" | "onChange"
-    >,
-    ControlProps<Date> {}
+    React.InputHTMLAttributes<HTMLElementType>,
+    "value" | "defaultValue" | "size" | "onChange"
+  >,
+  ControlProps<Date> { }
 
 const DateControl = ({
   value,
@@ -32,7 +32,7 @@ const DateControl = ({
       defaultValue={defaultValue}
       value={value}
       onChange={handleValueChange}
-      // {...props}
+    // {...props}
     />
   );
 };

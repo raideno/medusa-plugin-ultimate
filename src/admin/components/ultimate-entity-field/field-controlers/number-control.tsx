@@ -1,38 +1,40 @@
 import React, { ChangeEvent } from "react";
+
 import { Input } from "@medusajs/ui";
 
 import { ControlProps } from ".";
 
 type HTMLElementType = HTMLInputElement;
 
-interface StringControlProps
+interface NumberControlProps
   extends Omit<
     React.InputHTMLAttributes<HTMLElementType>,
     "value" | "defaultValue" | "size" | "onChange"
   >,
-  ControlProps<string> { }
+  ControlProps<number> { }
 
-const StringControl = ({
+const NumberControl = ({
   value,
   defaultValue,
   onValueChange,
   ...props
-}: StringControlProps) => {
+}: NumberControlProps) => {
   function handleValueChange(event: ChangeEvent<HTMLElementType>) {
-    const value = event.target.value;
+    const value = parseFloat(event.target.value);
     onValueChange(value);
   }
 
   return (
     <Input
       size="base"
-      className="border border-border"
+      type="number"
       value={value}
       defaultValue={defaultValue}
       onChange={handleValueChange}
+      className="border border-border"
       {...props}
     />
   );
 };
 
-export default StringControl;
+export default NumberControl;

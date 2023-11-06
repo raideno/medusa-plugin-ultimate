@@ -1,6 +1,6 @@
 import { Text } from "@medusajs/ui";
 
-import { UltimateEntityModel } from "../../../types/ultimate-entity-model";
+import { UltimateEntityDocument } from "../../../types/ultimate-entity-document";
 
 import UltimateEntityRelation from "./ultimate-entity-relation";
 import { UltimateEntity } from "../../../types/ultimate-entity";
@@ -8,8 +8,8 @@ import { UltimateEntity } from "../../../types/ultimate-entity";
 interface UltimateEntityRelationContainerProps {
   entity: UltimateEntity;
   relation: UltimateEntityRelation;
-  document: UltimateEntityModel;
-  defaultDocument?: UltimateEntityModel;
+  document: UltimateEntityDocument;
+  defaultDocument?: UltimateEntityDocument;
   handleValueChange: (key: string, value: any) => void;
 }
 

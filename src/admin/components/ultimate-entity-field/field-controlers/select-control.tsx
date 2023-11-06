@@ -11,10 +11,10 @@ type HTMLElementType = HTMLSelectElement;
 
 interface SelectControlProps
   extends Omit<
-      React.InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "onChange"
-    >,
-    ControlProps<string> {
+    React.InputHTMLAttributes<HTMLElementType>,
+    "value" | "defaultValue" | "onChange"
+  >,
+  ControlProps<string> {
   options: UltimateFieldOption[];
 }
 

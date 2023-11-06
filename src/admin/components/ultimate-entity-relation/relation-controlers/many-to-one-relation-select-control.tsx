@@ -5,7 +5,6 @@ import useUltimateEntityDocuments from "../../../hooks/ultimate-entities-documen
 
 import ErrorLayout from "../../layout/error-layout";
 import Skeleton from "../../layout/skeleton";
-import { UltimateEntityModel } from "../../../../types/ultimate-entity-model";
 import CreateUltimateEntityDocumentButton from "../../create-ultimate-entity-document-button/create-ultimate-entity-document-button";
 import { ChevronUpDown, Plus, XMark } from "@medusajs/icons";
 import useDocumentName from "../../../hooks/use-document-name";
@@ -20,14 +19,14 @@ type HTMLElementType = HTMLSelectElement;
 
 interface ManyToOneRelationSelectControlProps
   extends Omit<
-      React.InputHTMLAttributes<HTMLElementType>,
-      "value" | "defaultValue" | "size" | "onChange"
-    >,
-    ControlProps<string> {
+    React.InputHTMLAttributes<HTMLElementType>,
+    "value" | "defaultValue" | "size" | "onChange"
+  >,
+  ControlProps<string> {
   relationEntityId: string;
   ultimateEntity: UltimateEntity;
   ultimateEntityRelation: UltimateEntityRelation;
-  ultimateEntityDocument: UltimateEntityModel;
+  ultimateEntityDocument: UltimateEntityDocument;
 }
 
 const DEFAULT_ONE_TO_MANY_SELECT_CONTROL_PLACEHOLDER = "Select a document.";
@@ -69,7 +68,7 @@ const ManyToOneRelationSelectControl = ({
     handleValueChange(null);
   }
 
-  // async function handleCreateEntityAndAssign(document: UltimateEntityModel) {
+  // async function handleCreateEntityAndAssign(document: UltimateEntityDocument) {
   //   await mutate({
   //     ...data,
   //     documents: [
