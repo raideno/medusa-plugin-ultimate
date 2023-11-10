@@ -42,7 +42,15 @@ const ProductDetailsAfterWidget = ({
 }: ProductDetailsWidgetProps) => {
   const medusa = useMedusa();
 
-  const { data, isLoading, error } = useUltimateEntity("product");
+  const { data, isLoading, error } = useUltimateEntity("product", {
+    // revalidateIfStale: false,
+    // revalidateOnFocus: false,
+    // revalidateOnMount: false,
+    // revalidateOnReconnect: false,
+    // ---
+    shouldRetryOnError: false,
+    errorRetryCount: 2,
+  });
 
   const [isSubmitLoading, setIsSubmitLoading] = useState<boolean>(false);
   const [isCancelationLoading, setIsCancelationLoading] =
@@ -178,19 +186,25 @@ const ProductDetailsAfterWidget = ({
     setDocument(newDocument);
   }
 
-  if (isLoading) return <Skeleton className="w-full h-[512px]" />;
+  // if (isLoading) return <Skeleton className="w-full h-[512px]" />;
+  if (isLoading) return null;
 
-  if (error) return <ErrorLayout />;
+  if (error) {
+    console.log("[medusa-plugin-ultimate](product-widget-ui):", "product isn't an ultimate entity, widget will not be displayed:", error)
+    return null;
+  }
 
-  const response = data.entity;
-
-  if (!response) return null;
+  if (!data || !data.entity) return null;
 
   const { entity, fields, relations } = data.entity;
 
-  if (isDocumentLoading) return <Skeleton className="w-full h-[512px]" />;
+  // if (isDocumentLoading) return <Skeleton className="w-full h-[512px]" />;
+  if (isDocumentLoading) return null;
 
-  if (isDocumentError) return <ErrorLayout />;
+  if (isDocumentError) {
+    console.log("[medusa-plugin-ultimate](product-widget-ui):", "invalid document.")
+    return null;
+  }
 
   return (
     <div className="pt-large pb-xlarge rounded-rounded bg-grey-0 border-grey-20 border">

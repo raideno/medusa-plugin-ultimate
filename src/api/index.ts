@@ -1,8 +1,11 @@
-import { Router } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { authenticate, ConfigModule } from "@medusajs/medusa";
+
+import { Router } from "express";
+
 import { getConfigFile } from "medusa-core-utils";
+import { authenticate, ConfigModule, errorHandler } from "@medusajs/medusa";
+
 import { attachStoreRoutes } from "./routes/store";
 import { attachAdminRoutes } from "./routes/admin";
 
@@ -49,6 +52,8 @@ export default (rootDirectory: string): Router | Router[] => {
   // Attach custom routes to these routers
   attachStoreRoutes(storeRouter);
   attachAdminRoutes(adminRouter);
+
+  router.use(errorHandler());
 
   return router;
 };

@@ -1,12 +1,11 @@
+import { Request, Response } from "express";
+
 import { MedusaError } from "@medusajs/utils";
 
-import { UltimateEntity } from "../../../../types/ultimate-entity";
-import { UltimateEntityField } from "../../../../types/ultimate-entity-field";
+import { GetUltimateEntityDocumentResponse } from "../../../../types/api/get-ultimate-entity-document-response";
 
-import { Request, Response } from "express";
 import UltimateEntityService from "../../../../services/ultimate-entity";
 import UltimateEntityDocumentsService from "../../../../services/ultimate-entity-documents";
-import { GetUltimateEntityDocumentResponse } from "../../../../types/api/get-ultimate-entity-document-response";
 
 export default async (req: Request, res: Response): Promise<void> => {
   const ultimateEntityService: UltimateEntityService = req.scope.resolve(

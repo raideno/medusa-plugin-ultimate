@@ -17,7 +17,13 @@ export default async (
     }
   );
 
-  const data = await response.json();
+  let data = undefined;
+
+  try {
+    data = await response.json()
+  } catch {
+    console.log("[medusa-plugin-ultimate](get-ultimate-entity):", "failed to convert to JSON.");
+  }
 
   return data;
 };

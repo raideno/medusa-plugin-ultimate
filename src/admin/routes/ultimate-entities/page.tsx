@@ -1,9 +1,8 @@
 import { CircleStack } from "@medusajs/icons";
+import { Button, Heading, Text } from "@medusajs/ui";
 import { RouteConfig, RouteProps } from "@medusajs/admin";
 
-import UltimateEntityPageHeader from "../../components/layout/ultimate-entity-page-header";
 import UltimateEntitiesPageEntitites from "./components/ultimate-entities-page-entities";
-import { Button, Heading, Text } from "@medusajs/ui";
 
 export const config: RouteConfig = {
   link: {
@@ -22,7 +21,7 @@ const UltimateEntitiesPage = ({ notify }: RouteProps) => {
             <Button variant="primary">Plugin Documentation.</Button>
           </a>
         </div>
-        <Text className="inter-base-regular text-grey-50">{"Here will be listed all the models you have marked with the @UltimateEntity decorator"}</Text>
+        <Text className="inter-base-regular text-grey-50">{"Here will be listed all the models you have marked with the @UltimateEntity decorator."}</Text>
       </div>
       <div className="flex flex-col gap-y-xsmall">
         <UltimateEntitiesPageEntitites />

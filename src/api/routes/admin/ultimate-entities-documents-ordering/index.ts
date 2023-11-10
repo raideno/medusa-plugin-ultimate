@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { wrapHandler } from "@medusajs/utils";
+import { wrapHandler } from "@medusajs/medusa";
 
 import areUltimateEntityDocumentsOrdered from "./are-ultimate-entity-documents-ordered";
 import resetUltimateEntityDocumentsOrdering from "./reset-ultimate-entity-documents-ordering";

@@ -44,6 +44,17 @@ interface UltimateEntityDocumentsPageContext {
 
     documents?: UltimateEntityDocument[] | undefined;
 
+    documentsSelectionManager: {
+        selectedDocumentsIds: string[];
+
+        isDocumentSelected: (documentId: string) => boolean
+        selectDocument: (documentId: string) => boolean;
+        unSelectDocument: (documentId: string) => boolean;
+        toggleDocumentSelection: (documentId: string) => boolean;
+        selectAllDocuments: () => boolean;
+        unSelectAllDocuments: () => boolean;
+    }
+
     isLoading: boolean;
     error: boolean;
     isValidating: boolean;
@@ -76,6 +87,8 @@ export const UltimateEntityDocumentsPageProvider = ({
 
     const [areDocumentsBeingReordered, setAreDocumentsBeingReordered] = useState<boolean>(false);
 
+    const [selectedDocumentsIds, setSelectedDocumentsIds] = useState<string[]>([]);
+
     const [filter, setFilter] = useState<Filter>(DEFAULT_FILTER);
     const [sorting, setSorting] = useState<Sorting>(DEFAULT_SORTING);
 
@@ -103,6 +116,53 @@ export const UltimateEntityDocumentsPageProvider = ({
         setSorting(newSorting);
     }
 
+    function isDocumentSelected(documentId: string): boolean {
+        return selectedDocumentsIds.includes(documentId);
+    }
+
+    function selectDocument(documentId: string): boolean {
+        if (isDocumentSelected(documentId))
+            return false;
+        const newSelectedDocuments = JSON.parse(JSON.stringify(selectedDocumentsIds)) as typeof selectedDocumentsIds;
+        selectedDocumentsIds.push(documentId);
+        setSelectedDocumentsIds(newSelectedDocuments);
+        return true;
+    }
+
+    function unSelectDocument(documentId: string): boolean {
+        if (!isDocumentSelected(documentId))
+            return false;
+        const newSelectedDocuments = JSON.parse(JSON.stringify(selectedDocumentsIds)) as typeof selectedDocumentsIds;
+        const documentIndex = newSelectedDocuments.findIndex((docId) => docId === documentId);
+        selectedDocumentsIds.splice(documentIndex, 1);
+        setSelectedDocumentsIds(newSelectedDocuments);
+        return true;
+    }
+
+    function toggleDocumentSelection(documentId: string): boolean {
+        if (isDocumentSelected(documentId))
+            unSelectDocument(documentId);
+        else
+            selectDocument(documentId);
+        return true;
+    }
+
+    function selectAllDocuments(): boolean {
+        const newSelectedDocuments = JSON.parse(JSON.stringify(selectedDocumentsIds)) as typeof selectedDocumentsIds;
+        if (!data || data.documents)
+            return false
+        data.documents.forEach((document) => selectDocument(document.id));
+        return true;
+    }
+
+    function unSelectAllDocuments(): boolean {
+        const newSelectedDocuments = JSON.parse(JSON.stringify(selectedDocumentsIds)) as typeof selectedDocumentsIds;
+        if (!data || data.documents)
+            return false
+        data.documents.forEach((document) => unSelectDocument(document.id));
+        return true;
+    }
+
     return (
         <UltimateEntityDocumentsPageContext.Provider
             value={{
@@ -121,6 +181,16 @@ export const UltimateEntityDocumentsPageProvider = ({
                 sorting,
                 handleSortingDirectionChange,
                 handleSortingFieldChange,
+
+                documentsSelectionManager: {
+                    selectedDocumentsIds,
+                    isDocumentSelected,
+                    selectAllDocuments,
+                    selectDocument,
+                    toggleDocumentSelection,
+                    unSelectAllDocuments,
+                    unSelectDocument,
+                }
             }}
         >
             {children}

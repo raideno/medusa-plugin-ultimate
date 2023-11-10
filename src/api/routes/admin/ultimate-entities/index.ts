@@ -6,7 +6,7 @@
 
 import { Router } from "express";
 
-import { wrapHandler } from "@medusajs/utils";
+import { wrapHandler } from "@medusajs/medusa";
 
 import getUltimateEntities from "./get-ultimate-entities";
 import getUltimateEntity from "./get-ultimate-entity";

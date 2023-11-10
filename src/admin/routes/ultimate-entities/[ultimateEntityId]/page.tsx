@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 
+import { PlusMini } from "@medusajs/icons";
 import { RouteProps } from "@medusajs/admin";
 import { Toaster, Button } from "@medusajs/ui";
 
@@ -18,7 +19,10 @@ import UltimateEntityPageHeader from "../../../components/layout/ultimate-entity
 import UltimateEntityDocumentsPageFilter from "./components/ultimate-entity-documents-page-filter";
 import UltimateEntityDocumentsPageDocuments from "./components/ultimate-entity-documents-page-documents";
 import UltiamteEntityPageGoBackButton from "../../../components/layout/ultimate-entity-page-go-back-button";
+import UltimateEntityDocumentsPageImportaDataButton from "./components/ultimate-entity-documents-page-importa-data-button";
+import UltimateEntityDocumentsPageDownloadDataButton from "./components/ultimate-entity-documents-page-download-data-button";
 import CreateUltimateEntityDocumentButton from "../../../components/create-ultimate-entity-document-button/create-ultimate-entity-document-button";
+import UltimateEntityDocumentsPagePagination from "./components/ultimate-entity-documents-page-pagination";
 
 const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
   const navigate = useNavigate();
@@ -63,27 +67,32 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
     <UltimateEntityDocumentsPageProvider
       ultimateEntity={entity}
     >
-      <div>
+      <div className="h-full">
         <div className="flex flex-row items-center justify-between mb-xsmall">
           <UltiamteEntityPageGoBackButton
             children="Go back to ultimate entities."
             href={getPagePathname.entities()}
           />
 
-          {!entity.isBuiltInEntity ? (
-            <CreateUltimateEntityDocumentButton
-              entity={entity}
-              fields={fields}
-              relations={relations}
-              onCreationComplete={handleDocumentCreationComplete}
-            >
-              <Button variant="secondary" type="reset">
-                Create Document
-              </Button>
-            </CreateUltimateEntityDocumentButton>
-          ) : (
-            <div />
-          )}
+          <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row items-center">
+              <UltimateEntityDocumentsPageImportaDataButton />
+              <UltimateEntityDocumentsPageDownloadDataButton ultimateEntity={entity} />
+            </div>
+            {!entity.isBuiltInEntity && (
+              <CreateUltimateEntityDocumentButton
+                entity={entity}
+                fields={fields}
+                relations={relations}
+                onCreationComplete={handleDocumentCreationComplete}
+              >
+                <Button variant="secondary" type="reset">
+                  <PlusMini />
+                  Create Document
+                </Button>
+              </CreateUltimateEntityDocumentButton>
+            )}
+          </div>
         </div>
 
         <UltimateEntityPageHeader
@@ -97,11 +106,13 @@ const UltimateEntityDocumentsPage = ({ notify }: RouteProps) => {
           ultimateEntity={entity}
         />
 
-        <div className="flex flex-col gap-y-xsmall">
+        <div className="w-full h-full flex flex-col gap-y-xsmall">
           <UltimateEntityDocumentsPageDocuments
             entity={entity}
           />
         </div>
+
+        <UltimateEntityDocumentsPagePagination entity={entity} />
 
         <div className="h-xlarge w-full" />
       </div>

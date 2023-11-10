@@ -19,7 +19,7 @@
 
 import { Router } from "express";
 
-import { wrapHandler } from "@medusajs/utils";
+import { wrapHandler } from "@medusajs/medusa";
 
 import createUltimateEntityDocument from "./create-ultimate-entity-document";
 import updateUltimateEntityDocument from "./update-ultimate-entity-document";

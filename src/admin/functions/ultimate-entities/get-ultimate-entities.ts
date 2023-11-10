@@ -12,7 +12,13 @@ export default async (): Promise<GetUltimateEntitiesResponse> => {
     credentials: "include",
   });
 
-  const data = await response.json();
+  let data = undefined;
+
+  try {
+    data = await response.json()
+  } catch {
+    console.log("[medusa-plugin-ultimate](get-ultimate-entities):", "failed to convert to JSON.");
+  }
 
   return data;
 };
